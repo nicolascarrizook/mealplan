@@ -59,7 +59,8 @@ async def generate_new_patient_plan(request: NewPatientRequest):
         filtered_recipes = chromadb_service.search_recipes(
             patient_restrictions=request.no_consume,
             preferences=request.le_gusta,
-            economic_level=request.nivel_economico
+            economic_level=request.nivel_economico.value,
+            patologias=request.patologias
         )
         
         # Generate prompt

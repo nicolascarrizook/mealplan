@@ -2,14 +2,39 @@ import chromadb
 from chromadb.utils import embedding_functions
 import json
 import os
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Set
 from ..config import settings
+from ..schemas.meal_plan import NivelEconomico
 
 class ChromaDBService:
     def __init__(self):
         self.client = None
         self.collection = None
         self.embedding_function = None
+        
+        # Ingredientes caros por categoría (del proyecto anterior)
+        self.expensive_ingredients = {
+            'carnes': ['lomo', 'solomillo', 'bife de chorizo', 'ojo de bife', 'entraña', 
+                      'matambre', 'vacío', 'cordero', 'lechón', 'pato', 'conejo'],
+            'pescados': ['salmón', 'atún rojo', 'lenguado', 'merluza negra', 'trucha',
+                        'langostinos', 'camarones', 'centolla', 'pulpo', 'calamar'],
+            'lácteos': ['queso azul', 'queso brie', 'queso camembert', 'queso parmesano',
+                       'queso gruyere', 'ricotta', 'queso de cabra'],
+            'otros': ['jamón crudo', 'frutos secos', 'aceite de oliva extra virgen',
+                     'quinoa', 'chía', 'almendras', 'nueces', 'pistachos', 'anacardos',
+                     'espárragos', 'alcachofas', 'hongos shiitake', 'palta']
+        }
+        
+        # Ingredientes económicos (del proyecto anterior)
+        self.economic_ingredients = {
+            'proteínas': ['pollo', 'huevo', 'lentejas', 'garbanzos', 'porotos', 
+                         'carne picada', 'hígado', 'mondongo'],
+            'carbohidratos': ['arroz', 'fideos', 'papa', 'batata', 'polenta', 
+                            'avena', 'pan', 'harina'],
+            'vegetales': ['zanahoria', 'cebolla', 'tomate', 'lechuga', 'zapallo',
+                         'zapallito', 'acelga', 'espinaca', 'repollo'],
+            'frutas': ['banana', 'manzana', 'naranja', 'mandarina']
+        }
         
     def initialize(self):
         """Initialize ChromaDB client and collection"""
@@ -104,6 +129,7 @@ class ChromaDBService:
         patient_restrictions: Optional[str] = None,
         preferences: Optional[str] = None,
         economic_level: str = "Medio",
+        patologias: Optional[str] = None,
         n_results: int = 50
     ) -> str:
         """Search and filter recipes based on patient criteria"""
@@ -114,8 +140,20 @@ class ChromaDBService:
             query_text += f"Recetas con {preferences}. "
         
         # Add economic level considerations
-        if economic_level == "Bajo recursos":
-            query_text += "Recetas económicas sin ingredientes caros. "
+        if economic_level in ["Bajo recursos", "limitado"]:
+            query_text += "Recetas económicas con ingredientes accesibles. "
+        elif economic_level == "Sin restricciones":
+            query_text += "Recetas variadas con ingredientes premium. "
+        
+        # Add pathology considerations
+        if patologias:
+            patologias_lower = patologias.lower()
+            if "diabetes" in patologias_lower:
+                query_text += "Recetas bajas en carbohidratos simples. "
+            if "hipertension" in patologias_lower or "hipertensión" in patologias_lower:
+                query_text += "Recetas bajas en sodio. "
+            if "celiaquia" in patologias_lower or "celiaquía" in patologias_lower:
+                query_text += "Recetas sin gluten. "
         
         # Search recipes
         results = self.collection.query(
@@ -129,28 +167,17 @@ class ChromaDBService:
         for i, metadata in enumerate(results['metadatas'][0]):
             recipe_json = json.loads(metadata['recipe_json'])
             
-            # Check restrictions
-            if patient_restrictions:
-                ingredients_text = " ".join([
-                    ing['item'] for ing in recipe_json.get('ingredientes', [])
-                ])
-                
-                # Skip if contains restricted ingredients
-                if any(restricted.lower() in ingredients_text.lower() 
-                      for restricted in patient_restrictions.split(',')):
-                    continue
-            
-            # Economic filter
-            if economic_level == "Bajo recursos":
-                expensive_ingredients = ['salmón', 'lomo', 'camarones', 'langostinos', 'trucha']
-                ingredients_text = " ".join([
-                    ing['item'] for ing in recipe_json.get('ingredientes', [])
-                ])
-                
-                if any(exp in ingredients_text.lower() for exp in expensive_ingredients):
-                    continue
+            # Skip recipe if doesn't pass filters
+            if not self._passes_filters(recipe_json, patient_restrictions, 
+                                      economic_level, patologias):
+                continue
             
             filtered_recipes.append(recipe_json)
+        
+        # Sort by relevance and variety
+        filtered_recipes = self._sort_recipes_by_relevance(
+            filtered_recipes, preferences, economic_level
+        )
         
         # Format recipes for prompt
         return self._format_recipes_for_prompt(filtered_recipes[:30])
@@ -202,6 +229,111 @@ class ChromaDBService:
             recipes.append(recipe_json)
         
         return self._format_recipes_for_prompt(recipes)
+    
+    def _passes_filters(
+        self, 
+        recipe: Dict,
+        restrictions: Optional[str],
+        economic_level: str,
+        patologias: Optional[str]
+    ) -> bool:
+        """Check if recipe passes all filters"""
+        
+        ingredients = recipe.get('ingredientes', [])
+        ingredients_text = " ".join([ing['item'].lower() for ing in ingredients])
+        
+        # Check dietary restrictions
+        if restrictions:
+            restriction_list = [r.strip().lower() for r in restrictions.split(',')]
+            for restriction in restriction_list:
+                if restriction in ingredients_text:
+                    return False
+        
+        # Check economic level
+        if economic_level in [NivelEconomico.bajo_recursos.value, NivelEconomico.limitado.value]:
+            # Check if contains expensive ingredients
+            all_expensive = []
+            for category_items in self.expensive_ingredients.values():
+                all_expensive.extend(category_items)
+            
+            for expensive_item in all_expensive:
+                if expensive_item.lower() in ingredients_text:
+                    return False
+        
+        # Check pathology-specific restrictions
+        if patologias:
+            patologias_lower = patologias.lower()
+            apto_para = [a.lower() for a in recipe.get('apto_para', [])]
+            
+            # Celiac disease
+            if ("celiaquia" in patologias_lower or "celiaquía" in patologias_lower):
+                if "celiaquia" not in apto_para and "sin gluten" not in apto_para:
+                    # Check for gluten-containing ingredients
+                    gluten_ingredients = ['harina', 'pan', 'fideos', 'pasta', 'galletas']
+                    if any(gluten in ingredients_text for gluten in gluten_ingredients):
+                        return False
+            
+            # Diabetes
+            if "diabetes" in patologias_lower:
+                # Avoid high glycemic index foods
+                high_gi_foods = ['azúcar', 'miel', 'mermelada', 'dulce']
+                if any(food in ingredients_text for food in high_gi_foods):
+                    return False
+            
+            # Hypertension
+            if "hipertension" in patologias_lower or "hipertensión" in patologias_lower:
+                # Avoid high sodium foods
+                high_sodium = ['embutidos', 'fiambre', 'salame', 'jamón', 'queso']
+                if any(food in ingredients_text for food in high_sodium):
+                    return False
+        
+        return True
+    
+    def _sort_recipes_by_relevance(
+        self,
+        recipes: List[Dict],
+        preferences: Optional[str],
+        economic_level: str
+    ) -> List[Dict]:
+        """Sort recipes by relevance and variety"""
+        
+        # Score each recipe
+        scored_recipes = []
+        for recipe in recipes:
+            score = 0
+            ingredients_text = " ".join([
+                ing['item'].lower() for ing in recipe.get('ingredientes', [])
+            ])
+            
+            # Preference matching
+            if preferences:
+                pref_list = [p.strip().lower() for p in preferences.split(',')]
+                for pref in pref_list:
+                    if pref in recipe['nombre'].lower() or pref in ingredients_text:
+                        score += 10
+            
+            # Economic bonus
+            if economic_level in [NivelEconomico.bajo_recursos.value, NivelEconomico.limitado.value]:
+                # Bonus for economic ingredients
+                for category_items in self.economic_ingredients.values():
+                    for economic_item in category_items:
+                        if economic_item.lower() in ingredients_text:
+                            score += 2
+            
+            # Nutritional balance bonus
+            macros = {
+                'protein': recipe.get('proteinas_aprox', 0),
+                'carbs': recipe.get('carbohidratos_aprox', 0),
+                'fats': recipe.get('grasas_aprox', 0)
+            }
+            if all(m > 0 for m in macros.values()):
+                score += 5
+            
+            scored_recipes.append((score, recipe))
+        
+        # Sort by score (descending) and return recipes
+        scored_recipes.sort(key=lambda x: x[0], reverse=True)
+        return [recipe for score, recipe in scored_recipes]
     
     def _format_recipes_for_prompt(self, recipes: List[Dict]) -> str:
         """Format recipes for inclusion in prompt"""

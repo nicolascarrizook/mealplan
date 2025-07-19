@@ -1,22 +1,66 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from typing import Dict, Optional, List
+from enum import Enum
+
+# Enums para mejor validación y consistencia
+class Sexo(str, Enum):
+    masculino = "masculino"
+    femenino = "femenino"
+
+class Objetivo(str, Enum):
+    mantener = "mantener"
+    bajar_025 = "bajar_025"  # Bajar 0.25 kg/semana
+    bajar_05 = "bajar_05"    # Bajar 0.5 kg/semana
+    bajar_075 = "bajar_075"  # Bajar 0.75 kg/semana
+    bajar_1 = "bajar_1"      # Bajar 1 kg/semana
+    subir_025 = "subir_025"  # Subir 0.25 kg/semana
+    subir_05 = "subir_05"    # Subir 0.5 kg/semana
+    subir_075 = "subir_075"  # Subir 0.75 kg/semana
+    subir_1 = "subir_1"      # Subir 1 kg/semana
+
+class NivelEconomico(str, Enum):
+    sin_restricciones = "Sin restricciones"
+    medio = "Medio"
+    limitado = "Limitado"
+    bajo_recursos = "Bajo recursos"
+
+class TipoPeso(str, Enum):
+    crudo = "crudo"
+    cocido = "cocido"
+
+class TipoColacion(str, Enum):
+    no = "No"
+    por_saciedad = "Por saciedad"
+    pre_entreno = "Pre-entreno"
+    post_entreno = "Post-entreno"
+
+class ProteinLevel(str, Enum):
+    muy_baja = "muy_baja"        # 0.5-0.8 g/kg (patologías renales)
+    conservada = "conservada"     # 0.8-1.2 g/kg (normal)
+    moderada = "moderada"         # 1.2-1.6 g/kg (personas activas no deportistas)
+    alta = "alta"                 # 1.6-2.2 g/kg (uso deportivo)
+    muy_alta = "muy_alta"        # 2.2-2.8 g/kg (deportistas alto rendimiento)
+    extrema = "extrema"          # 3.0-3.5 g/kg (atletas con requerimientos especiales)
+
+class DistributionType(str, Enum):
+    traditional = "traditional"   # Distribución variable de calorías (más en almuerzo)
+    equitable = "equitable"      # Distribución equitativa entre comidas
 
 class NewPatientRequest(BaseModel):
     # Datos personales
-    nombre: str
-    edad: int
-    sexo: str
-    estatura: float = Field(..., description="Altura en cm")
-    peso: float = Field(..., description="Peso en kg")
+    nombre: str = Field(..., min_length=2, max_length=100)
+    edad: int = Field(..., ge=1, le=120)
+    sexo: Sexo
+    estatura: float = Field(..., gt=50, le=250, description="Altura en cm")
+    peso: float = Field(..., gt=20, le=300, description="Peso en kg")
     
     # Objetivo
-    objetivo: str = Field(..., description="bajar/subir/mantener peso")
-    objetivo_semanal: Optional[str] = Field(None, description="0.5kg o 1kg por semana")
+    objetivo: Objetivo
     
     # Actividad física
     tipo_actividad: str
-    frecuencia_semanal: int
-    duracion_sesion: int = Field(..., description="Duración en minutos")
+    frecuencia_semanal: int = Field(..., ge=0, le=7)
+    duracion_sesion: int = Field(..., description="Duración en minutos (30/45/60/75/90/120)")
     
     # Especificaciones médicas
     suplementacion: Optional[str] = None
@@ -28,15 +72,46 @@ class NewPatientRequest(BaseModel):
     horarios: Dict[str, str] = Field(..., description="Horarios de cada comida")
     
     # Configuración del plan
-    nivel_economico: str = "Medio"
+    nivel_economico: NivelEconomico = NivelEconomico.medio
     notas_personales: Optional[str] = None
-    comidas_principales: int = 4
-    colaciones: str = "No"
-    tipo_peso: str = "crudo"
+    comidas_principales: int = Field(default=4, ge=3, le=4)
+    colaciones: TipoColacion = TipoColacion.no
+    tipo_peso: TipoPeso = TipoPeso.crudo
+    
+    # Personalización de macros (nuevos campos)
+    carbs_percentage: Optional[int] = Field(None, ge=5, le=65, description="Porcentaje de carbohidratos (5-65%)")
+    protein_level: Optional[ProteinLevel] = Field(None, description="Nivel de proteína según actividad")
+    fat_percentage: Optional[int] = Field(None, ge=15, le=45, description="Porcentaje de grasas")
+    distribution_type: DistributionType = Field(default=DistributionType.traditional)
+    
+    @validator('duracion_sesion')
+    def validate_duration(cls, v):
+        valid_durations = [30, 45, 60, 75, 90, 120]
+        if v not in valid_durations:
+            raise ValueError(f'La duración debe ser una de: {valid_durations}')
+        return v
+    
+    @validator('carbs_percentage')
+    def validate_carbs(cls, v):
+        if v is not None and v % 5 != 0:
+            raise ValueError('El porcentaje de carbohidratos debe ser múltiplo de 5')
+        return v
     
     @property
     def imc(self) -> float:
         return round(self.peso / (self.estatura/100)**2, 1)
+    
+    @property
+    def imc_category(self) -> str:
+        """Categoría del IMC"""
+        if self.imc < 18.5:
+            return "bajo peso"
+        elif self.imc < 25:
+            return "normal"
+        elif self.imc < 30:
+            return "sobrepeso"
+        else:
+            return "obesidad"
 
 class ControlPatientRequest(BaseModel):
     # Datos del control
@@ -59,7 +134,7 @@ class ControlPatientRequest(BaseModel):
     # Plan anterior
     plan_anterior: str = Field(..., description="Plan anterior completo en texto")
     
-    tipo_peso: str = "crudo"
+    tipo_peso: TipoPeso = TipoPeso.crudo
     
     @property
     def diferencia_peso(self) -> float:
@@ -81,7 +156,7 @@ class MealReplacementRequest(BaseModel):
     grasas: float
     calorias: float
     
-    tipo_peso: str = "crudo"
+    tipo_peso: TipoPeso = TipoPeso.crudo
 
 class MealPlanResponse(BaseModel):
     meal_plan: str = Field(..., description="Plan generado en formato texto")

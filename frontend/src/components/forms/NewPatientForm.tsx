@@ -13,19 +13,28 @@ import { useToast } from "@/components/ui/use-toast"
 import { mealPlanService } from '@/services/api'
 import { MealPlanDisplay } from '@/components/MealPlanDisplay'
 import { Loader2 } from 'lucide-react'
-import type { NewPatientData, MealPlanResponse } from '@/types'
+import type { 
+  NewPatientData, 
+  MealPlanResponse,
+  Sexo,
+  Objetivo,
+  NivelEconomico,
+  TipoPeso,
+  TipoColacion,
+  ProteinLevel,
+  DistributionType
+} from '@/types'
 
 const formSchema = z.object({
   nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   edad: z.number().min(1).max(120),
-  sexo: z.enum(['masculino', 'femenino']),
+  sexo: z.nativeEnum(Sexo),
   estatura: z.number().min(50).max(250),
   peso: z.number().min(20).max(300),
-  objetivo: z.enum(['bajar', 'subir', 'mantener']),
-  objetivo_semanal: z.string().optional(),
+  objetivo: z.nativeEnum(Objetivo),
   tipo_actividad: z.string().min(2),
   frecuencia_semanal: z.number().min(0).max(7),
-  duracion_sesion: z.number().min(0).max(300),
+  duracion_sesion: z.enum([30, 45, 60, 75, 90, 120]),
   suplementacion: z.string().optional(),
   patologias: z.string().optional(),
   no_consume: z.string().optional(),
@@ -36,11 +45,16 @@ const formSchema = z.object({
     merienda: z.string(),
     cena: z.string(),
   }),
-  nivel_economico: z.enum(['Sin restricciones', 'Medio', 'Limitado', 'Bajo recursos']),
+  nivel_economico: z.nativeEnum(NivelEconomico),
   notas_personales: z.string().optional(),
   comidas_principales: z.number().min(3).max(4),
-  colaciones: z.enum(['No', 'Por saciedad', 'Pre-entreno', 'Post-entreno']),
-  tipo_peso: z.enum(['crudo', 'cocido']),
+  colaciones: z.nativeEnum(TipoColacion),
+  tipo_peso: z.nativeEnum(TipoPeso),
+  // Nuevos campos
+  carbs_percentage: z.number().min(5).max(65).multipleOf(5).optional(),
+  protein_level: z.nativeEnum(ProteinLevel).optional(),
+  fat_percentage: z.number().min(15).max(45).optional(),
+  distribution_type: z.nativeEnum(DistributionType),
 })
 
 export function NewPatientForm() {
@@ -53,10 +67,10 @@ export function NewPatientForm() {
     defaultValues: {
       nombre: '',
       edad: 30,
-      sexo: 'masculino',
+      sexo: Sexo.masculino,
       estatura: 170,
       peso: 70,
-      objetivo: 'mantener',
+      objetivo: Objetivo.mantener,
       tipo_actividad: 'Sedentario',
       frecuencia_semanal: 3,
       duracion_sesion: 60,
@@ -66,10 +80,12 @@ export function NewPatientForm() {
         merienda: '17:00',
         cena: '21:00',
       },
-      nivel_economico: 'Medio',
+      nivel_economico: NivelEconomico.medio,
+      notas_personales: '',
       comidas_principales: 4,
-      colaciones: 'No',
-      tipo_peso: 'crudo',
+      colaciones: TipoColacion.no,
+      tipo_peso: TipoPeso.crudo,
+      distribution_type: DistributionType.traditional,
     },
   })
 
@@ -146,8 +162,8 @@ export function NewPatientForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="masculino">Masculino</SelectItem>
-                        <SelectItem value="femenino">Femenino</SelectItem>
+                        <SelectItem value={Sexo.masculino}>Masculino</SelectItem>
+                        <SelectItem value={Sexo.femenino}>Femenino</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -205,26 +221,74 @@ export function NewPatientForm() {
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="bajar" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Bajar de peso
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="subir" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Subir de peso
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="mantener" />
+                            <RadioGroupItem value={Objetivo.mantener} />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Mantener peso
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.bajar_025} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Bajar 0.25 kg/semana
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.bajar_05} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Bajar 0.5 kg/semana
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.bajar_075} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Bajar 0.75 kg/semana
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.bajar_1} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Bajar 1 kg/semana
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.subir_025} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Subir 0.25 kg/semana
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.subir_05} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Subir 0.5 kg/semana
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.subir_075} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Subir 0.75 kg/semana
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={Objetivo.subir_1} />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Subir 1 kg/semana
                           </FormLabel>
                         </FormItem>
                       </RadioGroup>
@@ -234,29 +298,6 @@ export function NewPatientForm() {
                 )}
               />
 
-              {(form.watch('objetivo') === 'bajar' || form.watch('objetivo') === 'subir') && (
-                <FormField
-                  control={form.control}
-                  name="objetivo_semanal"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Objetivo semanal</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccionar objetivo semanal" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="0.5kg">0.5 kg por semana</SelectItem>
-                          <SelectItem value="1kg">1 kg por semana</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
             </CardContent>
           </Card>
 
@@ -300,10 +341,22 @@ export function NewPatientForm() {
                 name="duracion_sesion"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Duración por sesión (minutos)</FormLabel>
-                    <FormControl>
-                      <Input type="number" min="0" max="300" {...field} onChange={e => field.onChange(parseInt(e.target.value))} />
-                    </FormControl>
+                    <FormLabel>Duración por sesión</FormLabel>
+                    <Select onValueChange={(value) => field.onChange(parseInt(value))} defaultValue={field.value?.toString()}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar duración" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="30">30 minutos</SelectItem>
+                        <SelectItem value="45">45 minutos</SelectItem>
+                        <SelectItem value="60">60 minutos</SelectItem>
+                        <SelectItem value="75">75 minutos</SelectItem>
+                        <SelectItem value="90">90 minutos</SelectItem>
+                        <SelectItem value="120">120 minutos</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -474,10 +527,10 @@ export function NewPatientForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Sin restricciones">Sin restricciones</SelectItem>
-                        <SelectItem value="Medio">Medio</SelectItem>
-                        <SelectItem value="Limitado">Limitado</SelectItem>
-                        <SelectItem value="Bajo recursos">Bajo recursos</SelectItem>
+                        <SelectItem value={NivelEconomico.sin_restricciones}>{NivelEconomico.sin_restricciones}</SelectItem>
+                        <SelectItem value={NivelEconomico.medio}>{NivelEconomico.medio}</SelectItem>
+                        <SelectItem value={NivelEconomico.limitado}>{NivelEconomico.limitado}</SelectItem>
+                        <SelectItem value={NivelEconomico.bajo_recursos}>{NivelEconomico.bajo_recursos}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -520,10 +573,10 @@ export function NewPatientForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="No">No</SelectItem>
-                        <SelectItem value="Por saciedad">Por saciedad</SelectItem>
-                        <SelectItem value="Pre-entreno">Pre-entreno</SelectItem>
-                        <SelectItem value="Post-entreno">Post-entreno</SelectItem>
+                        <SelectItem value={TipoColacion.no}>{TipoColacion.no}</SelectItem>
+                        <SelectItem value={TipoColacion.por_saciedad}>{TipoColacion.por_saciedad}</SelectItem>
+                        <SelectItem value={TipoColacion.pre_entreno}>{TipoColacion.pre_entreno}</SelectItem>
+                        <SelectItem value={TipoColacion.post_entreno}>{TipoColacion.post_entreno}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -544,8 +597,8 @@ export function NewPatientForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="crudo">Peso crudo</SelectItem>
-                        <SelectItem value="cocido">Peso cocido</SelectItem>
+                        <SelectItem value={TipoPeso.crudo}>Peso crudo</SelectItem>
+                        <SelectItem value={TipoPeso.cocido}>Peso cocido</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormDescription>
@@ -569,6 +622,119 @@ export function NewPatientForm() {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Personalización de Macronutrientes</CardTitle>
+              <CardDescription>Configuración avanzada de macros (opcional)</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <FormField
+                control={form.control}
+                name="protein_level"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nivel de proteína</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar nivel de proteína" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={ProteinLevel.muy_baja}>Muy baja (0.5-0.8 g/kg) - Patologías renales</SelectItem>
+                        <SelectItem value={ProteinLevel.conservada}>Conservada (0.8-1.2 g/kg) - Normal</SelectItem>
+                        <SelectItem value={ProteinLevel.moderada}>Moderada (1.2-1.6 g/kg) - Personas activas</SelectItem>
+                        <SelectItem value={ProteinLevel.alta}>Alta (1.6-2.2 g/kg) - Uso deportivo</SelectItem>
+                        <SelectItem value={ProteinLevel.muy_alta}>Muy alta (2.2-2.8 g/kg) - Alto rendimiento</SelectItem>
+                        <SelectItem value={ProteinLevel.extrema}>Extrema (3.0-3.5 g/kg) - Requerimientos especiales</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="carbs_percentage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Porcentaje de carbohidratos</FormLabel>
+                    <Select onValueChange={(value) => field.onChange(parseInt(value))} defaultValue={field.value?.toString()}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar porcentaje de carbohidratos" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="20">20%</SelectItem>
+                        <SelectItem value="25">25%</SelectItem>
+                        <SelectItem value="30">30%</SelectItem>
+                        <SelectItem value="35">35%</SelectItem>
+                        <SelectItem value="40">40%</SelectItem>
+                        <SelectItem value="45">45%</SelectItem>
+                        <SelectItem value="50">50%</SelectItem>
+                        <SelectItem value="55">55%</SelectItem>
+                        <SelectItem value="60">60%</SelectItem>
+                        <SelectItem value="65">65%</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Porcentaje del total calórico diario
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="fat_percentage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Porcentaje de grasas</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        min="15" 
+                        max="45" 
+                        placeholder="15-45%"
+                        {...field} 
+                        onChange={e => field.onChange(parseInt(e.target.value) || undefined)} 
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Porcentaje del total calórico diario (15-45%)
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="distribution_type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tipo de distribución calórica</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar tipo de distribución" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={DistributionType.traditional}>Tradicional (más calorías en almuerzo)</SelectItem>
+                        <SelectItem value={DistributionType.equitable}>Equitativa (mismas calorías en cada comida)</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

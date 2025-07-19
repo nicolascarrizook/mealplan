@@ -1,4 +1,7 @@
 from typing import Dict, List, Optional
+from ..utils.calculations import NutritionalCalculator
+from ..utils.validators import InputValidator
+from ..schemas.meal_plan import NewPatientRequest, Objetivo
 
 class PromptGenerator:
     def __init__(self):
@@ -16,8 +19,26 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
 10. Adaptarse al nivel económico
 """
 
-    def generate_motor1_prompt(self, patient_data, recipes_json):
-        """Motor 1: Paciente Nuevo"""
+    def generate_motor1_prompt(self, patient_data: NewPatientRequest, recipes_json: str):
+        """Motor 1: Paciente Nuevo con cálculos nutricionales integrados"""
+        
+        # Calcular requerimientos nutricionales
+        daily_calories = NutritionalCalculator.calculate_daily_calories(patient_data)
+        macro_distribution = NutritionalCalculator.calculate_macro_distribution(patient_data)
+        meal_distribution = NutritionalCalculator.calculate_meal_distribution(
+            daily_calories,
+            patient_data.comidas_principales,
+            patient_data.distribution_type.value,
+            patient_data.colaciones != "No"
+        )
+        
+        # Calcular gramos de macros
+        protein_g = round((daily_calories * macro_distribution["proteinas"]) / 4)
+        carbs_g = round((daily_calories * macro_distribution["carbohidratos"]) / 4)
+        fat_g = round((daily_calories * macro_distribution["grasas"]) / 9)
+        
+        # Formatear objetivo para mostrar
+        objetivo_text = self._format_objetivo(patient_data.objetivo)
         
         prompt = f"""
 {self.base_rules}
@@ -28,11 +49,11 @@ Generá un plan alimentario de 3 días iguales siguiendo el método.
 DATOS DEL PACIENTE:
 - Nombre: {patient_data.nombre}
 - Edad: {patient_data.edad} años
-- Sexo: {patient_data.sexo}
+- Sexo: {patient_data.sexo.value}
 - Estatura: {patient_data.estatura} cm
 - Peso: {patient_data.peso} kg
-- IMC: {patient_data.imc}
-- Objetivo: {patient_data.objetivo} {patient_data.objetivo_semanal or ''}
+- IMC: {patient_data.imc} ({patient_data.imc_category})
+- Objetivo: {objetivo_text}
 
 ACTIVIDAD FÍSICA:
 - Tipo: {patient_data.tipo_actividad}
@@ -43,8 +64,19 @@ ESPECIFICACIONES MÉDICAS:
 - Suplementación: {patient_data.suplementacion or 'Ninguna'}
 - Patologías/Medicación: {patient_data.patologias or 'Sin patologías'}
 - NO consume: {patient_data.no_consume or 'Sin restricciones'}
-- Le gusta: {patient_data.le_gusta}
-- Nivel económico: {patient_data.nivel_economico}
+- Le gusta: {patient_data.le_gusta or 'Sin preferencias específicas'}
+- Nivel económico: {patient_data.nivel_economico.value}
+
+REQUERIMIENTOS NUTRICIONALES CALCULADOS:
+- Calorías diarias: {daily_calories} kcal
+- Proteínas: {protein_g}g ({round(macro_distribution['proteinas']*100)}%)
+- Carbohidratos: {carbs_g}g ({round(macro_distribution['carbohidratos']*100)}%)
+- Grasas: {fat_g}g ({round(macro_distribution['grasas']*100)}%)
+
+DISTRIBUCIÓN DE CALORÍAS POR COMIDA:
+{self._format_meal_distribution(meal_distribution)}
+
+{self._get_macro_customization_note(patient_data)}
 
 HORARIOS:
 {self._format_horarios(patient_data.horarios)}
@@ -220,3 +252,51 @@ Calorías: XXX | XXX
             formatted.append(f"- {comida.capitalize()}: {hora}")
         
         return "\n".join(formatted)
+    
+    def _format_objetivo(self, objetivo: Objetivo) -> str:
+        """Formatea el objetivo de manera legible"""
+        objetivo_map = {
+            Objetivo.mantener: "Mantener peso",
+            Objetivo.bajar_025: "Bajar 0.25 kg por semana",
+            Objetivo.bajar_05: "Bajar 0.5 kg por semana",
+            Objetivo.bajar_075: "Bajar 0.75 kg por semana",
+            Objetivo.bajar_1: "Bajar 1 kg por semana",
+            Objetivo.subir_025: "Subir 0.25 kg por semana",
+            Objetivo.subir_05: "Subir 0.5 kg por semana",
+            Objetivo.subir_075: "Subir 0.75 kg por semana",
+            Objetivo.subir_1: "Subir 1 kg por semana",
+        }
+        return objetivo_map.get(objetivo, objetivo.value)
+    
+    def _format_meal_distribution(self, distribution: Dict[str, float]) -> str:
+        """Formatea la distribución de calorías por comida"""
+        formatted = []
+        for meal, calories in distribution.items():
+            formatted.append(f"- {meal.capitalize()}: {int(calories)} kcal")
+        return "\n".join(formatted)
+    
+    def _get_macro_customization_note(self, patient_data: NewPatientRequest) -> str:
+        """Genera nota sobre personalización de macros si aplica"""
+        notes = []
+        
+        if patient_data.protein_level:
+            protein_map = {
+                "muy_baja": "Muy baja (0.5-0.8 g/kg) - Adaptada para patologías renales",
+                "conservada": "Conservada (0.8-1.2 g/kg) - Nivel normal",
+                "moderada": "Moderada (1.2-1.6 g/kg) - Para personas activas",
+                "alta": "Alta (1.6-2.2 g/kg) - Uso deportivo",
+                "muy_alta": "Muy alta (2.2-2.8 g/kg) - Alto rendimiento",
+                "extrema": "Extrema (3.0-3.5 g/kg) - Requerimientos especiales"
+            }
+            notes.append(f"NIVEL DE PROTEÍNA: {protein_map.get(patient_data.protein_level.value, patient_data.protein_level.value)}")
+        
+        if patient_data.carbs_percentage is not None:
+            notes.append(f"CARBOHIDRATOS PERSONALIZADOS: {patient_data.carbs_percentage}% del total calórico")
+        
+        if patient_data.fat_percentage is not None:
+            notes.append(f"GRASAS PERSONALIZADAS: {patient_data.fat_percentage}% del total calórico")
+        
+        if patient_data.distribution_type.value == "equitable":
+            notes.append("DISTRIBUCIÓN EQUITATIVA: Todas las comidas tienen las mismas calorías")
+        
+        return "\n".join(notes) if notes else ""
