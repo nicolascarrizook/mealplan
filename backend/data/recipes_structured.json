@@ -1,0 +1,1879 @@
+{
+  "metadata": {
+    "total_recipes": 85,
+    "version": "1.0",
+    "last_updated": "2024-01-19"
+  },
+  "recipes": [
+    {
+      "id": "REC_0001",
+      "nombre": "Pancakes de banana, avena y miel",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "banana", "cantidad": "1 unidad" },
+        { "item": "avena", "cantidad": "30gr" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "miel", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Pisar la banana, mezclar con el huevo batido y la avena. Cocinar en sartén antiadherente formando pancakes pequeños. Servir con miel.",
+      "calorias_aprox": 250,
+      "proteinas_aprox": 10,
+      "carbohidratos_aprox": 40,
+      "grasas_aprox": 6,
+      "tiempo_preparacion": 15,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["antioxidante", "refrescante", "rapido"]
+    },
+    {
+      "id": "REC_0032",
+      "nombre": "Muffins de banana y avena",
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
+      "ingredientes": [
+        { "item": "banana", "cantidad": "2 unidades" },
+        { "item": "avena", "cantidad": "150gr" },
+        { "item": "huevos", "cantidad": "2 unidades" },
+        { "item": "polvo de hornear", "cantidad": "1 cdita" },
+        { "item": "canela", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Pisar bananas, mezclar con huevos batidos, avena, polvo de hornear y canela. Hornear 20 min a 180°C.",
+      "calorias_aprox": 120,
+      "proteinas_aprox": 5,
+      "carbohidratos_aprox": 22,
+      "grasas_aprox": 3,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["portable", "dulce_natural", "sin_azucar"]
+    },
+    {
+      "id": "REC_0033",
+      "nombre": "Wrap de pollo y vegetales",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "tortilla integral", "cantidad": "1 unidad" },
+        { "item": "pollo", "cantidad": "100gr" },
+        { "item": "lechuga", "cantidad": "50gr" },
+        { "item": "tomate", "cantidad": "1/2 unidad" },
+        { "item": "queso crema light", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Calentar tortilla. Untar queso crema, agregar pollo grillado, lechuga y tomate. Enrollar.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 25,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general"],
+      "tags": ["portable", "practico", "completo"]
+    },
+    {
+      "id": "REC_0034",
+      "nombre": "Salmón al horno con limón",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "salmón", "cantidad": "150gr" },
+        { "item": "limón", "cantidad": "1 unidad" },
+        { "item": "ajo", "cantidad": "2 dientes" },
+        { "item": "perejil", "cantidad": "a gusto" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Marinar salmón con limón, ajo y perejil. Hornear 15 minutos a 180°C.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 3,
+      "grasas_aprox": 22,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["omega3", "elegante", "facil"]
+    },
+    {
+      "id": "REC_0035",
+      "nombre": "Falafel al horno",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "garbanzos", "cantidad": "200gr" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "ajo", "cantidad": "2 dientes" },
+        { "item": "perejil", "cantidad": "abundante" },
+        { "item": "comino", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Procesar garbanzos cocidos con cebolla, ajo, perejil y especias. Formar bolitas. Hornear 20 min.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 38,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 35,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["medio_oriente", "proteico", "vegetariano"]
+    },
+    {
+      "id": "REC_0036",
+      "nombre": "Berenjenas rellenas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "berenjenas", "cantidad": "1 unidad" },
+        { "item": "carne molida", "cantidad": "100gr" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "tomate", "cantidad": "1 unidad" },
+        { "item": "queso", "cantidad": "50gr" }
+      ],
+      "preparacion": "Ahuecar berenjenas. Saltear carne con cebolla y tomate. Rellenar berenjenas, cubrir con queso. Hornear 30 min.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 22,
+      "carbohidratos_aprox": 18,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["relleno", "completo", "sabroso"]
+    },
+    {
+      "id": "REC_0037",
+      "nombre": "Tarta de espinaca",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "masa de tarta", "cantidad": "1 unidad" },
+        { "item": "espinaca", "cantidad": "500gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "queso", "cantidad": "100gr" },
+        { "item": "huevos", "cantidad": "2 unidades" }
+      ],
+      "preparacion": "Saltear espinaca con cebolla. Mezclar con queso y huevos. Verter sobre masa. Hornear 35 min.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 16,
+      "carbohidratos_aprox": 32,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 50,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["clasico", "vegetales", "argentino"]
+    },
+    {
+      "id": "REC_0038",
+      "nombre": "Pollo al curry",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pollo", "cantidad": "150gr" },
+        { "item": "leche de coco", "cantidad": "100ml" },
+        { "item": "curry", "cantidad": "1 cda" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "arroz", "cantidad": "60gr" }
+      ],
+      "preparacion": "Dorar pollo. Hacer salsa con cebolla, curry y leche de coco. Servir sobre arroz hervido.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 42,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["exotico", "especiado", "cremoso"]
+    },
+    {
+      "id": "REC_0039",
+      "nombre": "Ensalada griega",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "tomate", "cantidad": "2 unidades" },
+        { "item": "pepino", "cantidad": "1 unidad" },
+        { "item": "queso feta", "cantidad": "100gr" },
+        { "item": "aceitunas", "cantidad": "50gr" },
+        { "item": "aceite de oliva", "cantidad": "2 cdas" }
+      ],
+      "preparacion": "Cortar tomate y pepino. Agregar queso feta en cubos y aceitunas. Aderezar con aceite de oliva.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 15,
+      "grasas_aprox": 22,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["mediterraneo", "fresco", "rapido"]
+    },
+    {
+      "id": "REC_0040",
+      "nombre": "Risotto de hongos",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "arroz arborio", "cantidad": "80gr" },
+        { "item": "hongos mixtos", "cantidad": "200gr" },
+        { "item": "caldo", "cantidad": "500ml" },
+        { "item": "queso parmesano", "cantidad": "50gr" },
+        { "item": "vino blanco", "cantidad": "50ml" }
+      ],
+      "preparacion": "Tostar arroz. Agregar vino. Incorporar caldo de a poco, revolviendo. Agregar hongos y queso al final.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 14,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 35,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["cremoso", "elegante", "italiano"]
+    },
+    {
+      "id": "REC_0041",
+      "nombre": "Albóndigas en salsa",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "carne molida", "cantidad": "150gr" },
+        { "item": "pan rallado", "cantidad": "30gr" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "salsa de tomate", "cantidad": "200ml" },
+        { "item": "perejil", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Mezclar carne, pan rallado, huevo y perejil. Formar bolitas. Cocinar en salsa 20 minutos.",
+      "calorias_aprox": 350,
+      "proteinas_aprox": 25,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 35,
+      "apto_para": ["general"],
+      "tags": ["tradicional", "reconfortante", "familiar"]
+    },
+    {
+      "id": "REC_0042",
+      "nombre": "Tacos de pescado",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pescado blanco", "cantidad": "150gr" },
+        { "item": "tortillas", "cantidad": "2 unidades" },
+        { "item": "repollo", "cantidad": "100gr" },
+        { "item": "palta", "cantidad": "1/2 unidad" },
+        { "item": "lima", "cantidad": "1 unidad" }
+      ],
+      "preparacion": "Cocinar pescado a la plancha. Calentar tortillas. Armar tacos con pescado, repollo rallado y palta.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 26,
+      "carbohidratos_aprox": 30,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general"],
+      "tags": ["mexicano", "fresco", "ligero"]
+    },
+    {
+      "id": "REC_0043",
+      "nombre": "Cazuela de lentejas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "lentejas", "cantidad": "80gr" },
+        { "item": "chorizo colorado", "cantidad": "50gr" },
+        { "item": "papa", "cantidad": "100gr" },
+        { "item": "zanahoria", "cantidad": "1 unidad" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir lentejas. Saltear chorizo con verduras. Agregar lentejas y papa. Cocinar 20 min más.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 22,
+      "carbohidratos_aprox": 48,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["legumbres", "completo", "economico"]
+    },
+    {
+      "id": "REC_0044",
+      "nombre": "Brochetas de pollo y verduras",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pollo", "cantidad": "150gr" },
+        { "item": "pimiento", "cantidad": "1 unidad" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "champiñones", "cantidad": "100gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Cortar pollo y verduras en cubos. Armar brochetas alternando. Pincelar con aceite. Asar 15 min.",
+      "calorias_aprox": 250,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 12,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["parrilla", "colorido", "verano"]
+    },
+    {
+      "id": "REC_0045",
+      "nombre": "Pasta con pesto",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pasta integral", "cantidad": "80gr" },
+        { "item": "albahaca", "cantidad": "50gr" },
+        { "item": "piñones", "cantidad": "30gr" },
+        { "item": "queso parmesano", "cantidad": "30gr" },
+        { "item": "aceite de oliva", "cantidad": "3 cdas" }
+      ],
+      "preparacion": "Hervir pasta. Procesar albahaca, piñones, queso y aceite para hacer pesto. Mezclar pasta con pesto.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 14,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 20,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["italiano", "aromatico", "clasico"]
+    },
+    {
+      "id": "REC_0046",
+      "nombre": "Ensalada de quinoa y garbanzos",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "quinoa", "cantidad": "60gr" },
+        { "item": "garbanzos", "cantidad": "100gr" },
+        { "item": "pepino", "cantidad": "1/2 unidad" },
+        { "item": "tomate cherry", "cantidad": "100gr" },
+        { "item": "limón", "cantidad": "1 unidad" }
+      ],
+      "preparacion": "Hervir quinoa. Mezclar con garbanzos cocidos, pepino y tomates. Aderezar con limón y aceite.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 14,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 6,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["proteico", "vegetal", "completo"]
+    },
+    {
+      "id": "REC_0047",
+      "nombre": "Pollo teriyaki",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pollo", "cantidad": "150gr" },
+        { "item": "salsa teriyaki", "cantidad": "3 cdas" },
+        { "item": "arroz", "cantidad": "60gr" },
+        { "item": "brócoli", "cantidad": "150gr" },
+        { "item": "sésamo", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Marinar pollo en teriyaki. Cocinar a la plancha. Servir con arroz y brócoli al vapor. Espolvorear sésamo.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 45,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general"],
+      "tags": ["asiatico", "dulce_salado", "popular"]
+    },
+    {
+      "id": "REC_0048",
+      "nombre": "Tortilla de espinaca",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "huevos", "cantidad": "3 unidades" },
+        { "item": "espinaca", "cantidad": "200gr" },
+        { "item": "queso", "cantidad": "50gr" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Saltear espinaca con cebolla. Batir huevos, mezclar con espinaca y queso. Cocinar como tortilla.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 22,
+      "carbohidratos_aprox": 8,
+      "grasas_aprox": 20,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["vegetales", "proteico", "facil"]
+    },
+    {
+      "id": "REC_0049",
+      "nombre": "Sopa de calabaza",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "calabaza", "cantidad": "400gr" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "jengibre", "cantidad": "10gr" },
+        { "item": "caldo", "cantidad": "500ml" },
+        { "item": "crema", "cantidad": "50ml" }
+      ],
+      "preparacion": "Hervir calabaza con cebolla y jengibre en caldo. Licuar. Agregar crema antes de servir.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 4,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["cremoso", "reconfortante", "otoño"]
+    },
+    {
+      "id": "REC_0050",
+      "nombre": "Milanesa de berenjena",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "berenjena", "cantidad": "1 unidad grande" },
+        { "item": "pan rallado", "cantidad": "100gr" },
+        { "item": "huevos", "cantidad": "2 unidades" },
+        { "item": "queso", "cantidad": "100gr" },
+        { "item": "salsa de tomate", "cantidad": "100ml" }
+      ],
+      "preparacion": "Cortar berenjena en rodajas. Pasar por huevo y pan rallado. Hornear. Servir con queso y salsa.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 16,
+      "carbohidratos_aprox": 38,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 40,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["vegetariano", "crujiente", "italiano"]
+    },
+    {
+      "id": "REC_0051",
+      "nombre": "Arroz con pollo",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "arroz", "cantidad": "80gr" },
+        { "item": "pollo", "cantidad": "150gr" },
+        { "item": "arvejas", "cantidad": "50gr" },
+        { "item": "pimiento", "cantidad": "1/2 unidad" },
+        { "item": "azafrán", "cantidad": "1 pizca" }
+      ],
+      "preparacion": "Dorar pollo. Agregar arroz y verduras. Cubrir con caldo con azafrán. Cocinar 20 min tapado.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 35,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["tradicional", "completo", "familiar"]
+    },
+    {
+      "id": "REC_0052",
+      "nombre": "Ensalada Waldorf",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "manzana", "cantidad": "1 unidad" },
+        { "item": "apio", "cantidad": "2 tallos" },
+        { "item": "nueces", "cantidad": "50gr" },
+        { "item": "mayonesa light", "cantidad": "2 cdas" },
+        { "item": "lechuga", "cantidad": "100gr" }
+      ],
+      "preparacion": "Cortar manzana y apio en cubitos. Mezclar con nueces y mayonesa. Servir sobre lechuga.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 6,
+      "carbohidratos_aprox": 25,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 15,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["clasico", "crujiente", "agridulce"]
+    },
+    {
+      "id": "REC_0053",
+      "nombre": "Guiso de mondongo",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "mondongo", "cantidad": "200gr" },
+        { "item": "porotos", "cantidad": "50gr" },
+        { "item": "chorizo", "cantidad": "50gr" },
+        { "item": "tomate", "cantidad": "2 unidades" },
+        { "item": "papa", "cantidad": "100gr" }
+      ],
+      "preparacion": "Hervir mondongo hasta tierno. Hacer guiso con chorizo, tomate, porotos y papa. Cocinar 30 min.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 120,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["tradicional", "invernal", "argentino"]
+    },
+    {
+      "id": "REC_0054",
+      "nombre": "Budín inglés integral",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "harina integral", "cantidad": "200gr" },
+        { "item": "huevos", "cantidad": "3 unidades" },
+        { "item": "aceite", "cantidad": "100ml" },
+        { "item": "frutas secas", "cantidad": "100gr" },
+        { "item": "polvo de hornear", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Batir huevos con aceite. Agregar harina, polvo de hornear y frutas. Hornear 45 min a 160°C.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 8,
+      "carbohidratos_aprox": 42,
+      "grasas_aprox": 15,
+      "tiempo_preparacion": 60,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["tradicional", "frutas_secas", "te"]
+    },
+    {
+      "id": "REC_0055",
+      "nombre": "Carne al horno con papas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "roast beef", "cantidad": "150gr" },
+        { "item": "papas", "cantidad": "200gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "vino tinto", "cantidad": "100ml" },
+        { "item": "romero", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Sellar carne. Colocar en fuente con papas y cebolla. Agregar vino y romero. Hornear 45 min.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 60,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["domingo", "horno", "familiar"]
+    },
+    {
+      "id": "REC_0056",
+      "nombre": "Empanadas de carne",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "masa para empanadas", "cantidad": "12 tapas" },
+        { "item": "carne molida", "cantidad": "300gr" },
+        { "item": "cebolla", "cantidad": "2 unidades" },
+        { "item": "huevo duro", "cantidad": "2 unidades" },
+        { "item": "aceitunas", "cantidad": "50gr" }
+      ],
+      "preparacion": "Hacer relleno con carne, cebolla, huevo y aceitunas. Armar empanadas. Hornear 20 min a 200°C.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 10,
+      "carbohidratos_aprox": 20,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general"],
+      "tags": ["argentino", "fiesta", "tradicional"]
+    },
+    {
+      "id": "REC_0057",
+      "nombre": "Paella vegetariana",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "arroz", "cantidad": "100gr" },
+        { "item": "verduras mixtas", "cantidad": "300gr" },
+        { "item": "azafrán", "cantidad": "1 pizca" },
+        { "item": "pimiento", "cantidad": "1 unidad" },
+        { "item": "alcachofas", "cantidad": "4 unidades" }
+      ],
+      "preparacion": "Sofreír verduras. Agregar arroz y azafrán. Cubrir con caldo. Cocinar sin revolver 20 min.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 10,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 40,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["español", "colorido", "arroz"]
+    },
+    {
+      "id": "REC_0058",
+      "nombre": "Lomo a la pimienta",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "lomo", "cantidad": "150gr" },
+        { "item": "pimienta negra", "cantidad": "1 cda" },
+        { "item": "crema", "cantidad": "50ml" },
+        { "item": "coñac", "cantidad": "30ml" },
+        { "item": "manteca", "cantidad": "20gr" }
+      ],
+      "preparacion": "Cubrir lomo con pimienta. Sellar en manteca. Flambear con coñac. Hacer salsa con crema.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 3,
+      "grasas_aprox": 28,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["elegante", "especial", "francesa"]
+    },
+    {
+      "id": "REC_0059",
+      "nombre": "Canelones de verdura",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "panqueques", "cantidad": "8 unidades" },
+        { "item": "espinaca", "cantidad": "300gr" },
+        { "item": "ricotta", "cantidad": "200gr" },
+        { "item": "salsa blanca", "cantidad": "300ml" },
+        { "item": "queso rallado", "cantidad": "50gr" }
+      ],
+      "preparacion": "Mezclar espinaca cocida con ricotta. Rellenar panqueques. Cubrir con salsa y queso. Gratinar.",
+      "calorias_aprox": 360,
+      "proteinas_aprox": 20,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["cremoso", "vegetales", "gratinado"]
+    },
+    {
+      "id": "REC_0060",
+      "nombre": "Pastel de papa",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "papa", "cantidad": "400gr" },
+        { "item": "carne molida", "cantidad": "300gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "leche", "cantidad": "50ml" }
+      ],
+      "preparacion": "Hacer puré. Cocinar carne con cebolla. En fuente: carne, puré, huevo batido. Hornear hasta dorar.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 24,
+      "carbohidratos_aprox": 38,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 50,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["familiar", "reconfortante", "clasico"]
+    },
+    {
+      "id": "REC_0061",
+      "nombre": "Tostada francesa",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "pan integral", "cantidad": "2 rebanadas" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "leche", "cantidad": "50ml" },
+        { "item": "canela", "cantidad": "1 cdita" },
+        { "item": "miel", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Mezclar huevo, leche y canela. Remojar pan. Cocinar en sartén hasta dorar. Servir con miel.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 42,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["dulce", "clasico", "desayuno"]
+    },
+    {
+      "id": "REC_0062",
+      "nombre": "Ensalada de pasta",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pasta corta", "cantidad": "80gr" },
+        { "item": "tomate cherry", "cantidad": "150gr" },
+        { "item": "mozzarella", "cantidad": "100gr" },
+        { "item": "albahaca", "cantidad": "hojas" },
+        { "item": "aceite de oliva", "cantidad": "2 cdas" }
+      ],
+      "preparacion": "Hervir pasta. Enfriar. Mezclar con tomates, mozzarella en cubos y albahaca. Aderezar.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 18,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["frio", "verano", "italiano"]
+    },
+    {
+      "id": "REC_0063",
+      "nombre": "Pollo a la portuguesa",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pollo", "cantidad": "150gr" },
+        { "item": "arroz", "cantidad": "50gr" },
+        { "item": "arvejas", "cantidad": "50gr" },
+        { "item": "tomate", "cantidad": "2 unidades" },
+        { "item": "caldo", "cantidad": "200ml" }
+      ],
+      "preparacion": "Dorar pollo. Agregar arroz, arvejas y tomate. Cubrir con caldo. Cocinar 25 min tapado.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 30,
+      "carbohidratos_aprox": 45,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 35,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["completo", "tradicional", "sabroso"]
+    },
+    {
+      "id": "REC_0064",
+      "nombre": "Tarta de atún",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "masa de tarta", "cantidad": "1 unidad" },
+        { "item": "atún", "cantidad": "200gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "huevo", "cantidad": "2 unidades" },
+        { "item": "queso", "cantidad": "100gr" }
+      ],
+      "preparacion": "Saltear cebolla. Mezclar con atún, huevos batidos y queso. Verter sobre masa. Hornear 30 min.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 14,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general"],
+      "tags": ["economico", "proteico", "facil"]
+    },
+    {
+      "id": "REC_0065",
+      "nombre": "Medallones de pescado",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pescado blanco", "cantidad": "200gr" },
+        { "item": "papa", "cantidad": "100gr" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "perejil", "cantidad": "abundante" },
+        { "item": "pan rallado", "cantidad": "50gr" }
+      ],
+      "preparacion": "Procesar pescado con papa hervida. Agregar huevo y perejil. Formar medallones. Rebozar y cocinar.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 24,
+      "carbohidratos_aprox": 30,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general"],
+      "tags": ["pescado", "economico", "niños"]
+    },
+    {
+      "id": "REC_0066",
+      "nombre": "Sándwich de milanesa",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "milanesa", "cantidad": "1 unidad" },
+        { "item": "pan francés", "cantidad": "1 unidad" },
+        { "item": "lechuga", "cantidad": "hojas" },
+        { "item": "tomate", "cantidad": "rodajas" },
+        { "item": "mayonesa", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Cocinar milanesa. Cortar pan, untar mayonesa. Armar con milanesa, lechuga y tomate.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 25,
+      "carbohidratos_aprox": 45,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 15,
+      "apto_para": ["general"],
+      "tags": ["argentino", "rapido", "callejero"]
+    },
+    {
+      "id": "REC_0067",
+      "nombre": "Revuelto de zapallitos",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "zapallitos", "cantidad": "2 unidades" },
+        { "item": "huevos", "cantidad": "3 unidades" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "queso", "cantidad": "50gr" }
+      ],
+      "preparacion": "Saltear zapallitos y cebolla. Agregar huevos batidos. Revolver. Agregar queso al final.",
+      "calorias_aprox": 250,
+      "proteinas_aprox": 20,
+      "carbohidratos_aprox": 10,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 15,
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["rapido", "vegetales", "economico"]
+    },
+    {
+      "id": "REC_0068",
+      "nombre": "Pollo relleno",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "suprema de pollo", "cantidad": "1 unidad grande" },
+        { "item": "jamón", "cantidad": "50gr" },
+        { "item": "queso", "cantidad": "50gr" },
+        { "item": "espinaca", "cantidad": "100gr" }
+      ],
+      "preparacion": "Abrir suprema. Rellenar con jamón, queso y espinaca. Enrollar. Hornear 30 min a 180°C.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 42,
+      "carbohidratos_aprox": 3,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 40,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["elegante", "relleno", "proteico"]
+    },
+    {
+      "id": "REC_0069",
+      "nombre": "Budín de pan",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "pan del día anterior", "cantidad": "200gr" },
+        { "item": "leche", "cantidad": "400ml" },
+        { "item": "huevos", "cantidad": "3 unidades" },
+        { "item": "azúcar", "cantidad": "100gr" },
+        { "item": "vainilla", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Remojar pan en leche. Agregar huevos batidos, azúcar y vainilla. Hornear con caramelo 45 min.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 10,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 60,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["aprovechamiento", "dulce", "economico"]
+    },
+    {
+      "id": "REC_0070",
+      "nombre": "Locro",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "maíz blanco", "cantidad": "100gr" },
+        { "item": "porotos", "cantidad": "50gr" },
+        { "item": "zapallo", "cantidad": "200gr" },
+        { "item": "carne", "cantidad": "150gr" },
+        { "item": "chorizo", "cantidad": "50gr" }
+      ],
+      "preparacion": "Remojar maíz y porotos. Hervir con carne. Agregar zapallo y chorizo. Cocinar 2 horas.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 25,
+      "carbohidratos_aprox": 48,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 180,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["patrio", "invernal", "tradicional"]
+    },
+    {
+      "id": "REC_0071",
+      "nombre": "Tostadas con queso y tomate",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "pan integral", "cantidad": "2 rebanadas" },
+        { "item": "queso", "cantidad": "50gr" },
+        { "item": "tomate", "cantidad": "1 unidad" },
+        { "item": "orégano", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Tostar pan. Colocar queso y rodajas de tomate. Espolvorear orégano. Gratinar hasta derretir queso.",
+      "calorias_aprox": 220,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["rapido", "simple", "sabroso"]
+    },
+    {
+      "id": "REC_0072",
+      "nombre": "Guiso de lentejas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "lentejas", "cantidad": "100gr" },
+        { "item": "chorizo colorado", "cantidad": "50gr" },
+        { "item": "papa", "cantidad": "150gr" },
+        { "item": "zanahoria", "cantidad": "1 unidad" },
+        { "item": "tomate", "cantidad": "2 unidades" }
+      ],
+      "preparacion": "Hervir lentejas. Hacer sofrito con chorizo y verduras. Agregar lentejas y papa. Cocinar 20 min.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 22,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["legumbres", "economico", "nutritivo"]
+    },
+    {
+      "id": "REC_0073",
+      "nombre": "Matambre a la pizza",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "matambre", "cantidad": "150gr" },
+        { "item": "salsa de tomate", "cantidad": "100ml" },
+        { "item": "queso mozzarella", "cantidad": "100gr" },
+        { "item": "orégano", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Cocinar matambre a la plancha. Cubrir con salsa y queso. Gratinar hasta derretir.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 35,
+      "carbohidratos_aprox": 5,
+      "grasas_aprox": 26,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["argentino", "proteico", "innovador"]
+    },
+    {
+      "id": "REC_0074",
+      "nombre": "Tarta pascualina",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "masa de hojaldre", "cantidad": "2 discos" },
+        { "item": "acelga", "cantidad": "500gr" },
+        { "item": "huevos", "cantidad": "6 unidades" },
+        { "item": "queso", "cantidad": "100gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" }
+      ],
+      "preparacion": "Saltear acelga y cebolla. En tartera: masa, acelga, huevos enteros, queso, tapa de masa. Hornear.",
+      "calorias_aprox": 350,
+      "proteinas_aprox": 18,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 50,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["pascuas", "tradicional", "vegetales"]
+    },
+    {
+      "id": "REC_0075",
+      "nombre": "Bifes a la criolla",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "bifes", "cantidad": "150gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "pimiento", "cantidad": "1 unidad" },
+        { "item": "tomate", "cantidad": "2 unidades" },
+        { "item": "ajo", "cantidad": "2 dientes" }
+      ],
+      "preparacion": "Sellar bifes. Hacer salsa con cebolla, pimiento, tomate y ajo. Cocinar bifes en la salsa.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 12,
+      "grasas_aprox": 20,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["criollo", "sabroso", "tradicional"]
+    },
+    {
+      "id": "REC_0076",
+      "nombre": "Ñoquis de papa",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "papa", "cantidad": "500gr" },
+        { "item": "harina", "cantidad": "150gr" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "sal", "cantidad": "a gusto" },
+        { "item": "salsa a elección", "cantidad": "200ml" }
+      ],
+      "preparacion": "Hacer puré de papa. Mezclar con harina y huevo. Formar ñoquis. Hervir. Servir con salsa.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 10,
+      "carbohidratos_aprox": 72,
+      "grasas_aprox": 6,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["29", "italiano", "casero"]
+    },
+    {
+      "id": "REC_0077",
+      "nombre": "Pollo al disco",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pollo", "cantidad": "150gr" },
+        { "item": "papa", "cantidad": "200gr" },
+        { "item": "batata", "cantidad": "100gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "vino blanco", "cantidad": "100ml" }
+      ],
+      "preparacion": "En disco o sartén grande: dorar pollo. Agregar verduras y vino. Cocinar tapado 40 min.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 48,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 50,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["campo", "rustico", "abundante"]
+    },
+    {
+      "id": "REC_0078",
+      "nombre": "Tortilla de verduras",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "huevos", "cantidad": "3 unidades" },
+        { "item": "zapallito", "cantidad": "1 unidad" },
+        { "item": "zanahoria", "cantidad": "1 unidad" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "queso", "cantidad": "50gr" }
+      ],
+      "preparacion": "Saltear verduras. Batir huevos, mezclar con verduras. Cocinar tortilla, agregar queso.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 20,
+      "carbohidratos_aprox": 12,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["colorido", "nutritivo", "versatil"]
+    },
+    {
+      "id": "REC_0079",
+      "nombre": "Empanadas de humita",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "choclo", "cantidad": "300gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "queso", "cantidad": "100gr" },
+        { "item": "masa de empanadas", "cantidad": "12 tapas" },
+        { "item": "salsa blanca", "cantidad": "100ml" }
+      ],
+      "preparacion": "Saltear cebolla. Agregar choclo y salsa blanca. Armar empanadas con relleno y queso. Hornear.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 8,
+      "carbohidratos_aprox": 26,
+      "grasas_aprox": 6,
+      "tiempo_preparacion": 40,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["norteño", "maiz", "cremoso"]
+    },
+    {
+      "id": "REC_0080",
+      "nombre": "Carré de cerdo con papas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "carré de cerdo", "cantidad": "150gr" },
+        { "item": "papas", "cantidad": "200gr" },
+        { "item": "romero", "cantidad": "ramitas" },
+        { "item": "ajo", "cantidad": "3 dientes" },
+        { "item": "aceite de oliva", "cantidad": "2 cdas" }
+      ],
+      "preparacion": "Condimentar carré. Hornear con papas, romero y ajo. 40 minutos a 180°C.",
+      "calorias_aprox": 420,
+      "proteinas_aprox": 30,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 20,
+      "tiempo_preparacion": 50,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["jugoso", "aromatico", "horno"]
+    },
+    {
+      "id": "REC_0081",
+      "nombre": "Sándwich de jamón y queso tostado",
+      "tipo_comida": ["desayuno", "merienda", "cena"],
+      "ingredientes": [
+        { "item": "pan integral", "cantidad": "2 rebanadas" },
+        { "item": "jamón", "cantidad": "50gr" },
+        { "item": "queso", "cantidad": "50gr" },
+        { "item": "manteca", "cantidad": "10gr" }
+      ],
+      "preparacion": "Armar sándwich. Untar manteca por fuera. Tostar en sartén hasta dorar y derretir queso.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 20,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general"],
+      "tags": ["clasico", "rapido", "crujiente"]
+    },
+    {
+      "id": "REC_0082",
+      "nombre": "Galletas de avena y banana",
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
+      "ingredientes": [
+        { "item": "avena", "cantidad": "200gr" },
+        { "item": "banana", "cantidad": "2 unidades" },
+        { "item": "chips de chocolate", "cantidad": "50gr" },
+        { "item": "canela", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Pisar bananas. Mezclar con avena, chocolate y canela. Formar galletas. Hornear 15 min a 180°C.",
+      "calorias_aprox": 90,
+      "proteinas_aprox": 3,
+      "carbohidratos_aprox": 16,
+      "grasas_aprox": 2,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["saludable", "sin_harina", "dulce"]
+    },
+    {
+      "id": "REC_0083",
+      "nombre": "Arroz chaufa",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "arroz cocido", "cantidad": "200gr" },
+        { "item": "pollo", "cantidad": "100gr" },
+        { "item": "huevos", "cantidad": "2 unidades" },
+        { "item": "cebolla de verdeo", "cantidad": "2 unidades" },
+        { "item": "salsa de soja", "cantidad": "2 cdas" }
+      ],
+      "preparacion": "Saltear pollo en cubos. Hacer huevos revueltos. Mezclar con arroz y verdeo. Condimentar con soja.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 42,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general"],
+      "tags": ["chino", "wok", "completo"]
+    },
+    {
+      "id": "REC_0084",
+      "nombre": "Tostadas con pasta de maní",
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
+      "ingredientes": [
+        { "item": "pan integral", "cantidad": "2 rebanadas" },
+        { "item": "pasta de maní", "cantidad": "2 cdas" },
+        { "item": "banana", "cantidad": "1/2 unidad" },
+        { "item": "miel", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Tostar pan. Untar pasta de maní. Agregar rodajas de banana. Rociar con miel.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 45,
+      "grasas_aprox": 14,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["energetico", "dulce", "proteico"]
+    },
+    {
+      "id": "REC_0085",
+      "nombre": "Batido de proteínas",
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
+      "ingredientes": [
+        { "item": "leche", "cantidad": "250ml" },
+        { "item": "banana", "cantidad": "1 unidad" },
+        { "item": "avena", "cantidad": "30gr" },
+        { "item": "mantequilla de maní", "cantidad": "1 cda" },
+        { "item": "cacao en polvo", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Licuar todos los ingredientes hasta obtener consistencia suave. Servir frío.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 16,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 14,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["post_entreno", "nutritivo", "bebible"]
+    },
+    {
+      "id": "REC_0001",
+      "nombre": "Huevos revueltos",
+      "tipo_comida": ["desayuno"],
+      "ingredientes": [
+        { "item": "huevos", "cantidad": "1 unidad" },
+        { "item": "aceite", "cantidad": "1 cdita" },
+        { "item": "sal", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Batir los huevos, cocinar en sartén con aceite a fuego medio-bajo, revolviendo constantemente hasta obtener la consistencia deseada.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 2,
+      "grasas_aprox": 14,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["proteico", "rapido", "basico", "saludable"]
+    },
+    {
+      "id": "REC_0002",
+      "nombre": "Huevos revueltos",
+      "tipo_comida": ["desayuno", "almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "huevos", "cantidad": "2 unidades" },
+        { "item": "aceite", "cantidad": "1 cdita" },
+        { "item": "sal", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Batir los huevos, cocinar en sartén con aceite a fuego medio-bajo, revolviendo constantemente hasta obtener la consistencia deseada.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 2,
+      "grasas_aprox": 14,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["proteico", "rapido", "basico"]
+    },
+    {
+      "id": "REC_0003",
+      "nombre": "Omelette de queso y tomate",
+      "tipo_comida": ["desayuno", "almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "huevos", "cantidad": "2 unidades" },
+        { "item": "queso", "cantidad": "30gr" },
+        { "item": "tomate", "cantidad": "1/2 unidad" },
+        { "item": "aceite", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Batir los huevos, verter en sartén caliente. Agregar queso y tomate en cubitos. Doblar por la mitad cuando esté casi listo.",
+      "calorias_aprox": 220,
+      "proteinas_aprox": 15,
+      "carbohidratos_aprox": 4,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["proteico", "rapido", "sabroso"]
+    },
+    {
+      "id": "REC_0004",
+      "nombre": "Yogur natural con frutas",
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
+      "ingredientes": [
+        { "item": "yogur natural", "cantidad": "200ml" },
+        { "item": "frutas mixtas", "cantidad": "100gr" },
+        { "item": "miel", "cantidad": "1 cdita" },
+        { "item": "semillas", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Servir el yogur en un bowl, agregar las frutas cortadas, endulzar con miel y espolvorear semillas.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 8,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["fresco", "ligero", "nutritivo"]
+    },
+    {
+      "id": "REC_0005",
+      "nombre": "Banana y frutillas con mantequilla de maní",
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
+      "ingredientes": [
+        { "item": "banana", "cantidad": "1 unidad" },
+        { "item": "frutillas", "cantidad": "100gr" },
+        { "item": "mantequilla de maní", "cantidad": "2 cdas" }
+      ],
+      "preparacion": "Cortar la banana en rodajas, las frutillas por la mitad. Servir con la mantequilla de maní.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 8,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 14,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["energetico", "dulce", "sin_coccion"]
+    },
+    {
+      "id": "REC_0006",
+      "nombre": "Porridge de avena",
+      "tipo_comida": ["desayuno"],
+      "ingredientes": [
+        { "item": "avena", "cantidad": "40gr" },
+        { "item": "leche", "cantidad": "200ml" },
+        { "item": "canela", "cantidad": "1 pizca" },
+        { "item": "miel", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Cocinar la avena en la leche a fuego medio por 5-7 minutos, revolviendo. Agregar canela y endulzar con miel.",
+      "calorias_aprox": 220,
+      "proteinas_aprox": 8,
+      "carbohidratos_aprox": 38,
+      "grasas_aprox": 5,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["reconfortante", "nutritivo", "caliente"]
+    },
+    {
+      "id": "REC_0007",
+      "nombre": "Tortilla de avena dulce",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "avena", "cantidad": "30gr" },
+        { "item": "esencia de vainilla", "cantidad": "unas gotas" },
+        { "item": "stevia", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Mezclar todos los ingredientes. Cocinar en sartén antiadherente como una tortilla tradicional.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 9,
+      "carbohidratos_aprox": 22,
+      "grasas_aprox": 6,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["dulce", "proteico", "versatil"]
+    },
+    {
+      "id": "REC_0008",
+      "nombre": "Licuado de banana",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "banana", "cantidad": "1 unidad" },
+        { "item": "leche", "cantidad": "200ml" },
+        { "item": "miel", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Licuar todos los ingredientes hasta obtener consistencia homogénea.",
+      "calorias_aprox": 200,
+      "proteinas_aprox": 7,
+      "carbohidratos_aprox": 38,
+      "grasas_aprox": 3,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["bebible", "rapido", "energetico"]
+    },
+    {
+      "id": "REC_0009",
+      "nombre": "Chía pudding",
+      "tipo_comida": ["desayuno", "merienda"],
+      "ingredientes": [
+        { "item": "semillas de chía", "cantidad": "2 cdas" },
+        { "item": "leche", "cantidad": "200ml" },
+        { "item": "miel", "cantidad": "1 cdita" },
+        { "item": "frutas", "cantidad": "50gr" }
+      ],
+      "preparacion": "Mezclar chía con leche y miel. Dejar reposar 2 horas o toda la noche. Servir con frutas.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 6,
+      "carbohidratos_aprox": 24,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["preparacion_previa", "nutritivo", "omega3"]
+    },
+    {
+      "id": "REC_0010",
+      "nombre": "Wok de pollo",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pollo", "cantidad": "150gr" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "morrón", "cantidad": "1/2 unidad" },
+        { "item": "zanahoria", "cantidad": "1 unidad" },
+        { "item": "zapallito verde", "cantidad": "1 unidad" },
+        { "item": "aceite", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Cortar pollo y verduras en juliana. Saltear el pollo, agregar verduras. Cocinar 10 minutos a fuego alto.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 15,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["alto_proteina", "colorido", "saludable"]
+    },
+    {
+      "id": "REC_0011",
+      "nombre": "Suprema de pollo",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pechuga de pollo", "cantidad": "140gr" },
+        { "item": "avena", "cantidad": "30gr" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "condimentos", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Aplanar el pollo, pasar por huevo batido y luego por avena. Cocinar al horno 20 minutos a 180°C.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 38,
+      "carbohidratos_aprox": 22,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general"],
+      "tags": ["crujiente", "alto_proteina", "horno"]
+    },
+    {
+      "id": "REC_0012",
+      "nombre": "Tarta integral de verduras",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "harina integral", "cantidad": "60gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "clara de huevo", "cantidad": "1 unidad" },
+        { "item": "verduras mixtas", "cantidad": "200gr" },
+        { "item": "queso", "cantidad": "50gr" }
+      ],
+      "preparacion": "Hacer masa con harina, aceite y clara. Estirar en tartera. Rellenar con verduras salteadas y queso. Hornear 30 min.",
+      "calorias_aprox": 350,
+      "proteinas_aprox": 18,
+      "carbohidratos_aprox": 45,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["integral", "vegetales", "completo"]
+    },
+    {
+      "id": "REC_0013",
+      "nombre": "Bife a la plancha",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "bife de carne vacuna", "cantidad": "150gr" },
+        { "item": "sal", "cantidad": "a gusto" },
+        { "item": "pimienta", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Calentar plancha o sartén. Condimentar la carne y cocinar 3-4 minutos por lado según punto deseado.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 26,
+      "carbohidratos_aprox": 0,
+      "grasas_aprox": 20,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["simple", "proteico", "rapido"]
+    },
+    {
+      "id": "REC_0014",
+      "nombre": "Ensalada César con pollo",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "lechuga", "cantidad": "150gr" },
+        { "item": "pollo", "cantidad": "100gr" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "queso parmesano", "cantidad": "25gr" },
+        { "item": "pan integral", "cantidad": "50gr" },
+        { "item": "salsa césar", "cantidad": "2 cdas" }
+      ],
+      "preparacion": "Grillar pollo. Mezclar lechuga, pollo en tiras, huevo duro, queso y croutones. Aderezar con salsa.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 35,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 16,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general"],
+      "tags": ["clasico", "completo", "fresco"]
+    },
+    {
+      "id": "REC_0015",
+      "nombre": "Milanesa de merluza",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "filete de merluza", "cantidad": "140gr" },
+        { "item": "avena", "cantidad": "30gr" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Pasar el pescado por huevo y avena. Cocinar en horno 15 minutos a 180°C. Servir con limón.",
+      "calorias_aprox": 250,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 22,
+      "grasas_aprox": 5,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general"],
+      "tags": ["pescado", "ligero", "omega3"]
+    },
+    {
+      "id": "REC_0016",
+      "nombre": "Wok de verduras y tofu",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "tofu", "cantidad": "120gr" },
+        { "item": "verduras mixtas", "cantidad": "200gr" },
+        { "item": "salsa de soja", "cantidad": "1 cda" },
+        { "item": "aceite de sésamo", "cantidad": "1 cdita" },
+        { "item": "semillas de sésamo", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Dorar tofu en cubos. Saltear verduras. Mezclar todo con salsa de soja y semillas de sésamo.",
+      "calorias_aprox": 220,
+      "proteinas_aprox": 14,
+      "carbohidratos_aprox": 18,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 15,
+      "apto_para": ["vegetariano", "vegano", "celiaquia"],
+      "tags": ["asiatico", "vegetariano", "proteico"]
+    },
+    {
+      "id": "REC_0017",
+      "nombre": "Pollo al horno con vegetales",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pechuga de pollo", "cantidad": "150gr" },
+        { "item": "papa", "cantidad": "150gr" },
+        { "item": "zanahoria", "cantidad": "100gr" },
+        { "item": "cebolla", "cantidad": "1 unidad" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Cortar vegetales, colocar en fuente con pollo. Rociar con aceite. Hornear 40 min a 180°C.",
+      "calorias_aprox": 350,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 50,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["horno", "completo", "familiar"]
+    },
+    {
+      "id": "REC_0018",
+      "nombre": "Hamburguesa casera",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "carne molida", "cantidad": "150gr" },
+        { "item": "cebolla", "cantidad": "1/4 unidad" },
+        { "item": "ajo", "cantidad": "1 diente" },
+        { "item": "perejil", "cantidad": "a gusto" },
+        { "item": "pan integral", "cantidad": "50gr" }
+      ],
+      "preparacion": "Mezclar carne con cebolla, ajo y perejil picados. Formar hamburguesa. Cocinar en plancha 4 min por lado.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 25,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general"],
+      "tags": ["clasico", "sabroso", "personalizable"]
+    },
+    {
+      "id": "REC_0019",
+      "nombre": "Sopa de verduras",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "zapallo", "cantidad": "150gr" },
+        { "item": "zanahoria", "cantidad": "100gr" },
+        { "item": "apio", "cantidad": "50gr" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "caldo", "cantidad": "500ml" }
+      ],
+      "preparacion": "Cortar verduras, hervir en caldo 20 minutos. Licuar hasta obtener consistencia deseada.",
+      "calorias_aprox": 120,
+      "proteinas_aprox": 4,
+      "carbohidratos_aprox": 22,
+      "grasas_aprox": 2,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["reconfortante", "bajo_calorias", "fibra"]
+    },
+    {
+      "id": "REC_0020",
+      "nombre": "Arroz integral con pollo",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "arroz integral", "cantidad": "60gr" },
+        { "item": "pollo", "cantidad": "120gr" },
+        { "item": "verduras mixtas", "cantidad": "100gr" },
+        { "item": "aceite", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Hervir arroz. Saltear pollo en cubos con verduras. Mezclar todo y servir caliente.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 45,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 35,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["integral", "completo", "nutritivo"]
+    },
+    {
+      "id": "REC_0021",
+      "nombre": "Tostadas con palta y huevo",
+      "tipo_comida": ["desayuno", "almuerzo"],
+      "ingredientes": [
+        { "item": "pan integral", "cantidad": "50gr" },
+        { "item": "palta", "cantidad": "1/2 unidad" },
+        { "item": "huevo", "cantidad": "1 unidad" },
+        { "item": "limón", "cantidad": "unas gotas" }
+      ],
+      "preparacion": "Tostar pan. Pisar palta con limón. Hacer huevo poché. Armar tostada con palta y huevo encima.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["trendy", "nutritivo", "saciante"]
+    },
+    {
+      "id": "REC_0022",
+      "nombre": "Ensalada de atún",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "atún al natural", "cantidad": "120gr" },
+        { "item": "lechuga", "cantidad": "100gr" },
+        { "item": "tomate", "cantidad": "1 unidad" },
+        { "item": "huevo duro", "cantidad": "1 unidad" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" }
+      ],
+      "preparacion": "Mezclar lechuga, tomate en cubos, atún desmenuzado y huevo en rodajas. Aderezar con aceite.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 35,
+      "carbohidratos_aprox": 8,
+      "grasas_aprox": 14,
+      "tiempo_preparacion": 10,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["proteico", "rapido", "fresco"]
+    },
+    {
+      "id": "REC_0023",
+      "nombre": "Budín de zapallo",
+      "tipo_comida": ["almuerzo", "cena", "merienda"],
+      "ingredientes": [
+        { "item": "zapallo", "cantidad": "300gr" },
+        { "item": "huevos", "cantidad": "2 unidades" },
+        { "item": "harina integral", "cantidad": "100gr" },
+        { "item": "queso", "cantidad": "50gr" },
+        { "item": "polvo de hornear", "cantidad": "1 cdita" }
+      ],
+      "preparacion": "Hacer puré de zapallo. Mezclar con huevos, harina y polvo de hornear. Hornear 35 min a 180°C.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 10,
+      "carbohidratos_aprox": 28,
+      "grasas_aprox": 5,
+      "tiempo_preparacion": 50,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["vegetales", "esponjoso", "versatil"]
+    },
+    {
+      "id": "REC_0024",
+      "nombre": "Fideos integrales con salsa de tomate",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "fideos integrales", "cantidad": "80gr" },
+        { "item": "tomate", "cantidad": "2 unidades" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "ajo", "cantidad": "1 diente" },
+        { "item": "albahaca", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Hervir fideos. Hacer salsa con tomate, cebolla y ajo. Servir fideos con salsa y albahaca fresca.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano"],
+      "tags": ["clasico", "economico", "reconfortante"]
+    },
+    {
+      "id": "REC_0025",
+      "nombre": "Tortilla de papa",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "papa", "cantidad": "200gr" },
+        { "item": "huevos", "cantidad": "3 unidades" },
+        { "item": "cebolla", "cantidad": "1/2 unidad" },
+        { "item": "aceite", "cantidad": "2 cdas" }
+      ],
+      "preparacion": "Cortar papas finas, dorar con cebolla. Batir huevos, mezclar con papas. Cocinar tortilla 5 min por lado.",
+      "calorias_aprox": 350,
+      "proteinas_aprox": 18,
+      "carbohidratos_aprox": 35,
+      "grasas_aprox": 18,
+      "tiempo_preparacion": 30,
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["tradicional", "economico", "saciante"]
+    },
+    {
+      "id": "REC_0026",
+      "nombre": "Pollo a la mostaza",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pechuga de pollo", "cantidad": "150gr" },
+        { "item": "mostaza", "cantidad": "2 cdas" },
+        { "item": "miel", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Marinar pollo con mostaza, miel y limón. Cocinar en horno 25 minutos a 180°C.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 32,
+      "carbohidratos_aprox": 15,
+      "grasas_aprox": 8,
+      "tiempo_preparacion": 35,
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["sabroso", "agridulce", "jugoso"]
+    },
+    {
+      "id": "REC_0027",
+      "nombre": "Lasaña de berenjenas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "berenjenas", "cantidad": "2 unidades" },
+        { "item": "salsa de tomate", "cantidad": "200ml" },
+        { "item": "queso mozzarella", "cantidad": "150gr" },
+        { "item": "queso ricotta", "cantidad": "100gr" },
+        { "item": "albahaca", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Cortar berenjenas en láminas, grillar. Armar capas con salsa y quesos. Hornear 30 min a 180°C.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 22,
+      "carbohidratos_aprox": 18,
+      "grasas_aprox": 20,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["sin_pasta", "cremoso", "vegetales"]
+    },
+    {
+      "id": "REC_0028",
+      "nombre": "Ceviche de pescado",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "pescado blanco", "cantidad": "150gr" },
+        { "item": "limón", "cantidad": "3 unidades" },
+        { "item": "cebolla morada", "cantidad": "1/2 unidad" },
+        { "item": "cilantro", "cantidad": "a gusto" },
+        { "item": "ají", "cantidad": "al gusto" }
+      ],
+      "preparacion": "Cortar pescado en cubos. Marinar en limón 15 min. Agregar cebolla, cilantro y ají.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 28,
+      "carbohidratos_aprox": 10,
+      "grasas_aprox": 3,
+      "tiempo_preparacion": 20,
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["fresco", "citrico", "sin_coccion"]
+    },
+    {
+      "id": "REC_0029",
+      "nombre": "Quinoa con verduras",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "quinoa", "cantidad": "60gr" },
+        { "item": "verduras mixtas", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir quinoa. Saltear verduras. Mezclar quinoa con verduras, aderezar con aceite y limón.",
+      "calorias_aprox": 280,
+      "proteinas_aprox": 10,
+      "carbohidratos_aprox": 42,
+      "grasas_aprox": 10,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["superalimento", "completo", "sin_gluten"]
+    },
+    {
+      "id": "REC_0030",
+      "nombre": "Pizza integral casera",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "harina integral", "cantidad": "100gr" },
+        { "item": "levadura", "cantidad": "5gr" },
+        { "item": "salsa de tomate", "cantidad": "100ml" },
+        { "item": "queso mozzarella", "cantidad": "100gr" },
+        { "item": "orégano", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Hacer masa con harina, levadura y agua. Dejar levar. Estirar, agregar salsa y queso. Hornear 15 min.",
+      "calorias_aprox": 380,
+      "proteinas_aprox": 18,
+      "carbohidratos_aprox": 52,
+      "grasas_aprox": 12,
+      "tiempo_preparacion": 45,
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["favorito", "casero", "personalizable"]
+    },
+    {
+      "id": "REC_0031",
+      "nombre": "Smoothie de frutos rojos",
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
+      "ingredientes": [
+        { "item": "frutos rojos mixtos", "cantidad": "150gr" },
+        { "item": "yogur griego", "cantidad": "120ml" },
+        { "item": "miel", "cantidad": "1 cda" },
+        { "item": "hielo", "cantidad": "a gusto" }
+      ],
+      "preparacion": "Licuar todos los ingredientes hasta obtener consistencia suave y cremosa.",
+      "calorias_aprox": 180,
+      "proteinas_aprox": 8,
+      "carbohidratos_aprox": 32,
+      "grasas_aprox": 3,
+      "tiempo_preparacion": 5,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0032",
+      "nombre": "Pasta con pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0033",
+      "nombre": "Pasta con pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0034",
+      "nombre": "Pasta con pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0035",
+      "nombre": "Pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0036",
+      "nombre": "Pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0037",
+      "nombre": "Pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0038",
+      "nombre": "Pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0039",
+      "nombre": "Pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0040",
+      "nombre": "Pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
+    }
+  ]
+}
