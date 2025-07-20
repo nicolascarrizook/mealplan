@@ -222,11 +222,16 @@ export function NewPatientForm() {
     setMealPlanResult(null)
     
     try {
+      // Obtener las actividades, suplementos y medicamentos del formulario
+      const activities = form.watch('activities') || []
+      const supplements = form.watch('supplements') || []
+      const medications = form.watch('medications') || []
+      
       // Calcular tipo_actividad basado en las actividades seleccionadas
       let tipo_actividad = values.tipo_actividad
       if (activities.length > 0) {
         // Calcular las calorías totales de las actividades
-        const totalCalories = activities.reduce((sum, act) => sum + act.calories, 0)
+        const totalCalories = activities.reduce((sum: number, act: any) => sum + act.calories, 0)
         
         // Determinar el tipo de actividad basado en las calorías quemadas
         if (totalCalories < 200) {
