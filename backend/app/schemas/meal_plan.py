@@ -69,9 +69,6 @@ class NewPatientRequest(BaseModel):
     no_consume: Optional[str] = None
     le_gusta: Optional[str] = None
     
-    # Horarios
-    horarios: Dict[str, str] = Field(..., description="Horarios de cada comida")
-    
     # Configuración del plan
     nivel_economico: NivelEconomico = NivelEconomico.medio
     notas_personales: Optional[str] = None

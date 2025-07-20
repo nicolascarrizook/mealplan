@@ -40,12 +40,6 @@ const formSchema = z.object({
   patologias: z.string().optional(),
   no_consume: z.string().optional(),
   le_gusta: z.string().optional(),
-  horarios: z.object({
-    desayuno: z.string(),
-    almuerzo: z.string(),
-    merienda: z.string(),
-    cena: z.string(),
-  }),
   nivel_economico: z.nativeEnum(NivelEconomico),
   notas_personales: z.string().optional(),
   comidas_principales: z.number().min(3).max(4),
@@ -76,12 +70,6 @@ export function NewPatientForm() {
       tipo_actividad: 'Sedentario',
       frecuencia_semanal: 3,
       duracion_sesion: 60,
-      horarios: {
-        desayuno: '08:00',
-        almuerzo: '13:00',
-        merienda: '17:00',
-        cena: '21:00',
-      },
       nivel_economico: NivelEconomico.medio,
       notas_personales: '',
       comidas_principales: 4,
@@ -551,70 +539,6 @@ export function NewPatientForm() {
                         className="resize-none"
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Horarios de Comidas</CardTitle>
-              <CardDescription>Horarios habituales para cada comida</CardDescription>
-            </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="horarios.desayuno"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Desayuno</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="horarios.almuerzo"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Almuerzo</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="horarios.merienda"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Merienda</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="horarios.cena"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cena</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -15,8 +15,7 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
 6. Incluir forma de preparación para cada comida
 7. No usar suplementos salvo indicación expresa
 8. Usar léxico argentino
-9. Respetar horarios del paciente
-10. Adaptarse al nivel económico
+9. Adaptarse al nivel económico
 """
 
     def generate_motor1_prompt(self, patient_data: NewPatientRequest, recipes_json: str):
@@ -81,9 +80,6 @@ DISTRIBUCIÓN DE CALORÍAS POR COMIDA:
 
 {self._format_custom_meal_distribution(patient_data.custom_meal_distribution) if patient_data.distribution_type.value == "custom" and patient_data.custom_meal_distribution else ""}
 
-HORARIOS:
-{self._format_horarios(patient_data.horarios)}
-
 CONFIGURACIÓN DEL PLAN:
 - Comidas principales: {patient_data.comidas_principales}
 - Colaciones: {patient_data.colaciones}
@@ -104,20 +100,20 @@ FORMATO DE SALIDA ESPERADO:
 
 PLAN ALIMENTARIO - 3 DÍAS IGUALES
 
-DESAYUNO (horario)
+DESAYUNO
 - [Nombre de la receta de la base de datos]
 - Ingredientes con cantidades ajustadas:
   * Ingrediente 1: XXg
   * Ingrediente 2: XXg
 - Preparación: [de la receta]
 
-ALMUERZO (horario)
+ALMUERZO
 [Mismo formato]
 
-MERIENDA (horario)
+MERIENDA
 [Mismo formato]
 
-CENA (horario)
+CENA
 [Mismo formato]
 
 COLACIÓN PRE/POST ENTRENO (si aplica)
@@ -244,17 +240,6 @@ Calorías: XXX | XXX
 ✓ Diferencia dentro de rangos aceptables
 """
         return prompt
-
-    def _format_horarios(self, horarios: Dict[str, str]) -> str:
-        """Formatea los horarios del paciente"""
-        if not horarios:
-            return "- No especificados"
-        
-        formatted = []
-        for comida, hora in horarios.items():
-            formatted.append(f"- {comida.capitalize()}: {hora}")
-        
-        return "\n".join(formatted)
     
     def _format_objetivo(self, objetivo: Objetivo) -> str:
         """Formatea el objetivo de manera legible"""

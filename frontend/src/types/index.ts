@@ -82,12 +82,6 @@ export interface NewPatientData {
   patologias?: string
   no_consume?: string
   le_gusta?: string
-  horarios: {
-    desayuno: string
-    almuerzo: string
-    merienda: string
-    cena: string
-  }
   nivel_economico: NivelEconomico
   notas_personales?: string
   comidas_principales: number
