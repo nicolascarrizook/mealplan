@@ -47,6 +47,30 @@ class DistributionType(str, Enum):
     equitable = "equitable"      # Distribución equitativa entre comidas
     custom = "custom"            # Distribución personalizada por el usuario
 
+# Schemas para suplementos con información clínica
+class SupplementInfo(BaseModel):
+    id: str
+    name: str
+    servings: float = 1
+    custom_dose: Optional[str] = None  # Ej: "400mg", "10g", "2000UI"
+    frequency: Optional[str] = None    # Ej: "1 vez al día", "con desayuno y cena"
+    clinical_relevance: bool = False   # Marca si tiene incidencia clínica
+    calories: float = 0
+    protein: float = 0
+    carbs: float = 0
+    fats: float = 0
+    serving_size: Optional[str] = None
+    notes: Optional[str] = None
+
+# Schema para medicamentos con más detalle
+class MedicationInfo(BaseModel):
+    id: str
+    name: str
+    dose: Optional[str] = None
+    frequency: Optional[str] = None
+    impact: Optional[str] = None
+    considerations: Optional[str] = None
+
 class NewPatientRequest(BaseModel):
     # Datos personales
     nombre: str = Field(..., min_length=2, max_length=100)

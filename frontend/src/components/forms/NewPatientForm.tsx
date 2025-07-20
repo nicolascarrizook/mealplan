@@ -17,6 +17,8 @@ import { CustomDistribution } from './CustomDistribution'
 import { ActivitySelector } from './ActivitySelector'
 import { SupplementSelector } from './SupplementSelector'
 import { MedicationSelector } from './MedicationSelector'
+import { SupplementWarnings } from './SupplementWarnings'
+import { checkInteractions, checkDoseWarnings, checkSynergies } from '@/utils/interactions'
 import { Loader2 } from 'lucide-react'
 import { 
   Sexo,
@@ -532,6 +534,30 @@ export function NewPatientForm() {
               />
             </CardContent>
           </Card>
+
+          {/* Mostrar advertencias de interacciones si hay suplementos y medicamentos */}
+          {(() => {
+            const supplements = form.watch('supplements') || []
+            const medications = form.watch('medications') || []
+            
+            if (supplements.length > 0 && medications.length > 0) {
+              const interactions = checkInteractions(medications, supplements)
+              const doseWarnings = checkDoseWarnings(supplements)
+              const synergies = checkSynergies(supplements)
+              
+              if (interactions.length > 0 || doseWarnings.length > 0 || synergies.length > 0) {
+                return (
+                  <SupplementWarnings
+                    interactions={interactions}
+                    doseWarnings={doseWarnings}
+                    synergies={synergies}
+                  />
+                )
+              }
+            }
+            
+            return null
+          })()}
 
           <Card>
             <CardHeader>

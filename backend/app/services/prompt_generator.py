@@ -2,6 +2,7 @@ from typing import Dict, List, Optional
 from ..utils.calculations import NutritionalCalculator
 from ..utils.validators import InputValidator
 from ..schemas.meal_plan import NewPatientRequest, Objetivo
+from ..data.interactions import check_interactions, check_max_doses, get_synergies
 import json
 
 class PromptGenerator:
@@ -48,7 +49,7 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
         
         # Formatear actividades, suplementos y medicamentos
         activities_text = self._format_activities(patient_data.activities) if patient_data.activities else '- Tipo: ' + patient_data.tipo_actividad + '\n- Frecuencia: ' + str(patient_data.frecuencia_semanal) + 'x por semana\n- Duración: ' + str(patient_data.duracion_sesion) + ' minutos'
-        supplements_text = self._format_supplements(patient_data.supplements) if patient_data.supplements else '- Suplementación: ' + (patient_data.suplementacion or 'Ninguna')
+        supplements_text = self._format_supplements(patient_data.supplements, patient_data.medications) if patient_data.supplements else '- Suplementación: ' + (patient_data.suplementacion or 'Ninguna')
         medications_text = self._format_medications(patient_data.medications) if patient_data.medications else '- Patologías/Medicación: ' + (patient_data.patologias or 'Sin patologías')
         
         prompt = f"""
@@ -333,8 +334,8 @@ Calorías: XXX | XXX
         
         return "\n".join(formatted)
     
-    def _format_supplements(self, supplements: List[Dict]) -> str:
-        """Formatea los suplementos para el prompt"""
+    def _format_supplements(self, supplements: List[Dict], medications: List[Dict] = None) -> str:
+        """Formatea los suplementos para el prompt incluyendo advertencias de interacciones"""
         if not supplements:
             return ""
         
@@ -342,8 +343,18 @@ Calorías: XXX | XXX
         total_macros = {"calories": 0, "protein": 0, "carbs": 0, "fats": 0}
         
         for supp in supplements:
-            formatted.append(f"- {supp['name']}: {supp['servings']} porción(es) diarias ({supp['serving_size']})")
+            dose_info = f"{supp['servings']} porción(es)"
+            if supp.get('custom_dose'):
+                dose_info = supp['custom_dose']
+            if supp.get('frequency'):
+                dose_info += f" - {supp['frequency']}"
+            
+            formatted.append(f"- {supp['name']}: {dose_info} ({supp.get('serving_size', '')})")
             formatted.append(f"  Aporta: {supp['calories']} kcal, P: {supp['protein']}g, C: {supp['carbs']}g, G: {supp['fats']}g")
+            
+            # Marcar relevancia clínica
+            if supp.get('clinical_relevance'):
+                formatted.append("  ⚠️ RELEVANCIA CLÍNICA - Requiere consideración especial")
             
             total_macros['calories'] += supp.get('calories', 0)
             total_macros['protein'] += supp.get('protein', 0)
@@ -356,6 +367,33 @@ Calorías: XXX | XXX
         formatted.append(f"- Carbohidratos: {total_macros['carbs']}g")
         formatted.append(f"- Grasas: {total_macros['fats']}g")
         formatted.append("- Nota: Estos macros YA están incluidos en los totales diarios calculados")
+        
+        # Verificar interacciones si hay medicamentos
+        if medications:
+            interactions = check_interactions([med['name'] for med in medications], supplements)
+            if interactions:
+                formatted.append("\n⚠️ ADVERTENCIAS DE INTERACCIONES:")
+                for warning in interactions:
+                    formatted.append(f"- {warning['supplement']} con {warning['medication']}:")
+                    formatted.append(f"  {warning['interaction']['recommendation']}")
+        
+        # Verificar dosis máximas
+        dose_warnings = check_max_doses(supplements)
+        if dose_warnings:
+            formatted.append("\n⚠️ ADVERTENCIAS DE DOSIS:")
+            for warning in dose_warnings:
+                formatted.append(f"- {warning['supplement']}: Dosis actual {warning['current_dose']} excede máximo recomendado {warning['max_dose']}")
+                if warning.get('side_effect'):
+                    formatted.append(f"  Posible efecto: {warning['side_effect']}")
+        
+        # Identificar sinergias
+        synergies = get_synergies(supplements)
+        if synergies:
+            formatted.append("\n💡 SINERGIAS BENEFICIOSAS:")
+            for synergy in synergies:
+                formatted.append(f"- {synergy['benefit']}")
+                if synergy.get('recommendation'):
+                    formatted.append(f"  Recomendación: {synergy['recommendation']}")
         
         return "\n".join(formatted)
     

@@ -360,6 +360,107 @@ SUPPLEMENTS_DATABASE = {
         "carbs": 0,
         "fats": 14,
         "notes": "En café o batidos"
+    },
+    
+    # Nuevos suplementos con información clínica detallada
+    "fiber_supplement": {
+        "name": "Fibra Dietaria (Psyllium, Inulina, Salvado de avena)",
+        "category": "fibra",
+        "serving_size": "5-10g por toma",
+        "calories": 20,
+        "protein": 0,
+        "carbs": 8,
+        "fats": 0,
+        "dosis_general": "25-30 g/día (mínimo)",
+        "dosis_max_single": "10g (con GLP-1)",
+        "forms": ["Psyllium", "Inulina", "Salvado de avena"],
+        "notes": "Aumentar hidratación 500-1000 mL/día extra",
+        "interactions": {
+            "levotiroxina": "Separar al menos 4h para no interferir absorción",
+            "glp1": "No exceder 10g en una sola ingesta para evitar náuseas"
+        },
+        "clinical_relevance": True
+    },
+    "collagen_hydrolyzed": {
+        "name": "Colágeno Hidrolizado",
+        "category": "proteinas",
+        "serving_size": "10g",
+        "calories": 35,
+        "protein": 9,
+        "carbs": 0,
+        "fats": 0,
+        "dosis_standard": "10 g/día",
+        "synergy": "Mejores resultados con 50-100mg vitamina C",
+        "benefits": "Mejora articular, elasticidad cutánea y masa magra con entrenamiento",
+        "notes": "Compatible con hipotiroidismo, sin interferencia medicamentosa",
+        "interactions": {},
+        "clinical_relevance": False
+    },
+    "omega3_epa_dha": {
+        "name": "Omega 3 (EPA/DHA)",
+        "category": "grasas",
+        "serving_size": "1000-3000mg aceite de pescado",
+        "calories": 10,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 1,
+        "dosis_general": "1-2g EPA+DHA/día",
+        "dosis_max": "3-4g/día (bajo supervisión)",
+        "benefits": "Mejora perfil lipídico y sensibilidad hormona tiroidea",
+        "notes": "En dislipidemias o inflamación crónica hasta 3-4g/día",
+        "interactions": {
+            "levotiroxina": "Separar 1h de la toma"
+        },
+        "clinical_relevance": True
+    },
+    "magnesium_supplement": {
+        "name": "Magnesio (Citrato, Bisglicinato, Malato)",
+        "category": "minerales",
+        "serving_size": "300-400mg",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "dosis_general": "300-400 mg/día",
+        "forms": ["Citrato", "Bisglicinato", "Malato"],
+        "avoid_forms": ["Óxido"],
+        "benefits": "Mejora sueño, función muscular, tránsito intestinal",
+        "notes": "Frecuente déficit en hipotiroidismo. Útil en constipación/calambres",
+        "interactions": {
+            "levotiroxina": "Separar 4h"
+        },
+        "clinical_relevance": True
+    },
+    "vitamin_c_supplement": {
+        "name": "Vitamina C",
+        "category": "vitaminas",
+        "serving_size": "500-1000mg",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "dosis_standard": "500-1000 mg/día",
+        "dosis_max_tolerable": "2000mg (puede causar diarrea)",
+        "benefits": "Antioxidante, soporte inmunológico, mejora absorción hierro no hemo",
+        "synergy": "Potencia efecto del colágeno",
+        "notes": "No tóxica en altas dosis",
+        "interactions": {},
+        "clinical_relevance": False
+    },
+    "vitamin_d3_k2": {
+        "name": "Vitamina D3 + K2",
+        "category": "vitaminas",
+        "serving_size": "D3: 2000-4000 UI + K2: 90-180 mcg",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "dosis_d3": "2000-4000 UI/día",
+        "dosis_k2": "90-180 mcg/día (menaquinona-7)",
+        "benefits": "Mejora salud ósea y distribución del calcio",
+        "notes": "Frecuente déficit en hipotiroidismo, especialmente Hashimoto. Evaluar niveles séricos",
+        "interactions": {},
+        "clinical_relevance": True
     }
 }
 

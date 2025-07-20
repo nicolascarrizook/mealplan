@@ -85,6 +85,74 @@ const SUPPLEMENTS_DATABASE = {
       spirulina: { name: "Espirulina", serving: "5g", calories: 20, protein: 3, carbs: 1, fats: 0.5 },
       mct_oil: { name: "Aceite MCT", serving: "15ml", calories: 130, protein: 0, carbs: 0, fats: 14 }
     }
+  },
+  fibra: {
+    name: "Fibra",
+    supplements: {
+      fiber_supplement: { 
+        name: "Fibra Dietaria (Psyllium, Inulina, Salvado de avena)", 
+        serving: "5-10g por toma", 
+        calories: 20, 
+        protein: 0, 
+        carbs: 8, 
+        fats: 0
+      }
+    }
+  },
+  minerales_adicionales: {
+    name: "Minerales Adicionales",
+    supplements: {
+      magnesium_supplement: { 
+        name: "Magnesio (Citrato, Bisglicinato, Malato)", 
+        serving: "300-400mg", 
+        calories: 0, 
+        protein: 0, 
+        carbs: 0, 
+        fats: 0
+      }
+    }
+  },
+  vitaminas_adicionales: {
+    name: "Vitaminas Adicionales",
+    supplements: {
+      vitamin_c_supplement: { 
+        name: "Vitamina C", 
+        serving: "500-1000mg", 
+        calories: 0, 
+        protein: 0, 
+        carbs: 0, 
+        fats: 0
+      },
+      vitamin_d3_k2: { 
+        name: "Vitamina D3 + K2", 
+        serving: "D3: 2000-4000 UI + K2: 90-180 mcg", 
+        calories: 0, 
+        protein: 0, 
+        carbs: 0, 
+        fats: 0
+      }
+    }
+  },
+  especializados: {
+    name: "Suplementos Especializados",
+    supplements: {
+      collagen_hydrolyzed: { 
+        name: "Colágeno Hidrolizado", 
+        serving: "10g", 
+        calories: 35, 
+        protein: 9, 
+        carbs: 0, 
+        fats: 0
+      },
+      omega3_epa_dha: { 
+        name: "Omega 3 (EPA/DHA)", 
+        serving: "1000-3000mg aceite de pescado", 
+        calories: 10, 
+        protein: 0, 
+        carbs: 0, 
+        fats: 1
+      }
+    }
   }
 }
 
@@ -92,6 +160,9 @@ interface Supplement {
   id: string
   name: string
   servings: number
+  custom_dose?: string
+  frequency?: string
+  clinical_relevance?: boolean
   calories: number
   protein: number
   carbs: number
@@ -109,6 +180,9 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
   const [selectedCategory, setSelectedCategory] = useState<string>('proteinas')
   const [selectedSupplement, setSelectedSupplement] = useState<string>('')
   const [servings, setServings] = useState<number>(1)
+  const [customDose, setCustomDose] = useState<string>('')
+  const [frequency, setFrequency] = useState<string>('')
+  const [clinicalRelevance, setClinicalRelevance] = useState<boolean>(false)
 
   useEffect(() => {
     onChange(selectedSupplements)
@@ -132,6 +206,9 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
       id: `${selectedSupplement}_${Date.now()}`,
       name: supplementData.name,
       servings,
+      custom_dose: customDose || undefined,
+      frequency: frequency || undefined,
+      clinical_relevance: clinicalRelevance,
       calories: supplementData.calories * servings,
       protein: supplementData.protein * servings,
       carbs: supplementData.carbs * servings,
@@ -144,6 +221,9 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
     // Reset form
     setSelectedSupplement('')
     setServings(1)
+    setCustomDose('')
+    setFrequency('')
+    setClinicalRelevance(false)
   }
 
   const removeSupplement = (id: string) => {
@@ -221,6 +301,44 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
         ) : null
       })()}
 
+      {/* Nuevos campos para dosis personalizada */}
+      {selectedSupplement && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div>
+            <Label className="text-sm">Dosis personalizada (opcional)</Label>
+            <Input
+              placeholder="Ej: 400mg, 10g, 2000UI"
+              value={customDose}
+              onChange={(e) => setCustomDose(e.target.value)}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label className="text-sm">Frecuencia (opcional)</Label>
+            <Input
+              placeholder="Ej: Con desayuno y cena"
+              value={frequency}
+              onChange={(e) => setFrequency(e.target.value)}
+              className="mt-1"
+            />
+          </div>
+          <div className="flex items-end">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="clinical-relevance"
+                checked={clinicalRelevance}
+                onChange={(e) => setClinicalRelevance(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <Label htmlFor="clinical-relevance" className="cursor-pointer text-sm">
+                Relevancia clínica
+              </Label>
+            </div>
+          </div>
+        </div>
+      )}
+
       {selectedSupplements.length > 0 && (
         <Card>
           <CardContent className="pt-6">
@@ -231,9 +349,15 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
                 <div key={supplement.id} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <p className="font-medium text-sm">{supplement.name}</p>
+                      <p className="font-medium text-sm">
+                        {supplement.name}
+                        {supplement.clinical_relevance && (
+                          <span className="ml-2 text-xs text-orange-600 font-medium">⚠️ Relevancia clínica</span>
+                        )}
+                      </p>
                       <p className="text-xs text-muted-foreground">
-                        {supplement.servings} {supplement.servings === 1 ? 'porción' : 'porciones'} • {supplement.serving_size}
+                        {supplement.custom_dose || `${supplement.servings} ${supplement.servings === 1 ? 'porción' : 'porciones'}`} • {supplement.serving_size}
+                        {supplement.frequency && ` • ${supplement.frequency}`}
                       </p>
                     </div>
                     <Button
