@@ -39,11 +39,30 @@ class ChromaDBService:
     def initialize(self):
         """Initialize ChromaDB client and collection"""
         try:
-            # Connect to ChromaDB
-            self.client = chromadb.HttpClient(
-                host=settings.chromadb_host,
-                port=settings.chromadb_port
-            )
+            # Try different connection methods for ChromaDB compatibility
+            try:
+                # First try with tenant/database (newer ChromaDB versions)
+                self.client = chromadb.HttpClient(
+                    host=settings.chromadb_host,
+                    port=settings.chromadb_port,
+                    tenant="default_tenant",
+                    database="default_database"
+                )
+                self.client.heartbeat()
+                print("Connected to ChromaDB with tenant/database")
+            except:
+                try:
+                    # Fallback to simple connection (older ChromaDB versions)
+                    self.client = chromadb.HttpClient(
+                        host=settings.chromadb_host,
+                        port=settings.chromadb_port
+                    )
+                    self.client.heartbeat()
+                    print("Connected to ChromaDB with simple connection")
+                except:
+                    # Try with default settings
+                    self.client = chromadb.HttpClient()
+                    print("Connected to ChromaDB with default settings")
             
             # Setup embedding function
             self.embedding_function = embedding_functions.OpenAIEmbeddingFunction(
@@ -61,9 +80,14 @@ class ChromaDBService:
             if self.collection.count() == 0:
                 self._load_recipes_from_json()
                 
+            print("ChromaDB initialized successfully")
+                
         except Exception as e:
             print(f"Error initializing ChromaDB: {e}")
-            raise
+            print("App will continue without ChromaDB recipe search")
+            # Don't raise - let the app continue without ChromaDB
+            self.client = None
+            self.collection = None
     
     def _load_recipes_from_json(self):
         """Load recipes from JSON file into ChromaDB"""
@@ -133,6 +157,11 @@ class ChromaDBService:
         n_results: int = 50
     ) -> str:
         """Search and filter recipes based on patient criteria"""
+        
+        # If ChromaDB is not available, return empty JSON
+        if not self.collection:
+            print("Warning: ChromaDB not available, returning empty recipe list")
+            return "[]"
         
         # Build query based on preferences
         query_text = ""
