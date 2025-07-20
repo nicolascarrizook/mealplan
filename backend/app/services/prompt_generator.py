@@ -57,7 +57,9 @@ DATOS DEL PACIENTE:
 - Objetivo: {objetivo_text}
 
 ACTIVIDAD FÍSICA:
-{self._format_activities(patient_data.activities) if patient_data.activities else f"- Tipo: {patient_data.tipo_actividad}\\n- Frecuencia: {patient_data.frecuencia_semanal}x por semana\\n- Duración: {patient_data.duracion_sesion} minutos"}
+{self._format_activities(patient_data.activities) if patient_data.activities else f"- Tipo: {patient_data.tipo_actividad}
+- Frecuencia: {patient_data.frecuencia_semanal}x por semana
+- Duración: {patient_data.duracion_sesion} minutos"}
 
 ESPECIFICACIONES MÉDICAS:
 {self._format_supplements(patient_data.supplements) if patient_data.supplements else f"- Suplementación: {patient_data.suplementacion or 'Ninguna'}"}
