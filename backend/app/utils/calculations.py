@@ -194,12 +194,20 @@ class NutritionalCalculator:
         daily_calories: float, 
         meals_per_day: int, 
         distribution_type: str,
-        include_snacks: bool = False
+        include_snacks: bool = False,
+        custom_distribution: Optional[Dict[str, Dict[str, float]]] = None
     ) -> Dict[str, float]:
         """
         Calcula la distribución de calorías entre las comidas
         """
-        if distribution_type == "equitable":
+        if distribution_type == "custom" and custom_distribution:
+            # Usar distribución personalizada
+            distribution = {}
+            for meal, data in custom_distribution.items():
+                if isinstance(data, dict) and 'calories' in data:
+                    distribution[meal] = data['calories']
+            return distribution
+        elif distribution_type == "equitable":
             # Distribución equitativa
             calories_per_meal = daily_calories / meals_per_day
             if meals_per_day == 3:

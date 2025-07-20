@@ -45,6 +45,7 @@ class ProteinLevel(str, Enum):
 class DistributionType(str, Enum):
     traditional = "traditional"   # Distribución variable de calorías (más en almuerzo)
     equitable = "equitable"      # Distribución equitativa entre comidas
+    custom = "custom"            # Distribución personalizada por el usuario
 
 class NewPatientRequest(BaseModel):
     # Datos personales
@@ -79,10 +80,16 @@ class NewPatientRequest(BaseModel):
     tipo_peso: TipoPeso = TipoPeso.crudo
     
     # Personalización de macros (nuevos campos)
-    carbs_percentage: Optional[int] = Field(None, ge=5, le=65, description="Porcentaje de carbohidratos (5-65%)")
+    carbs_percentage: Optional[int] = Field(None, ge=0, le=55, description="Porcentaje de carbohidratos (0-55%)")
     protein_level: Optional[ProteinLevel] = Field(None, description="Nivel de proteína según actividad")
     fat_percentage: Optional[int] = Field(None, ge=15, le=45, description="Porcentaje de grasas")
     distribution_type: DistributionType = Field(default=DistributionType.traditional)
+    
+    # Distribución personalizada por comida (solo si distribution_type == "custom")
+    custom_meal_distribution: Optional[Dict[str, Dict[str, float]]] = Field(
+        None, 
+        description="Distribución personalizada de calorías y macros por comida"
+    )
     
     @validator('duracion_sesion')
     def validate_duration(cls, v):
@@ -93,8 +100,11 @@ class NewPatientRequest(BaseModel):
     
     @validator('carbs_percentage')
     def validate_carbs(cls, v):
-        if v is not None and v % 5 != 0:
-            raise ValueError('El porcentaje de carbohidratos debe ser múltiplo de 5')
+        if v is not None:
+            if v % 5 != 0:
+                raise ValueError('El porcentaje de carbohidratos debe ser múltiplo de 5')
+            if v < 0 or v > 55:
+                raise ValueError('El porcentaje de carbohidratos debe estar entre 0 y 55')
         return v
     
     @property

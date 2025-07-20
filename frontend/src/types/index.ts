@@ -46,7 +46,26 @@ export enum ProteinLevel {
 
 export enum DistributionType {
   traditional = "traditional",
-  equitable = "equitable"
+  equitable = "equitable",
+  custom = "custom"
+}
+
+export interface MealMacroDistribution {
+  calories: number
+  calories_percentage: number
+  protein_g: number
+  protein_percentage: number
+  carbs_g: number
+  carbs_percentage: number
+  fats_g: number
+  fats_percentage: number
+}
+
+export interface CustomMealDistribution {
+  desayuno?: MealMacroDistribution
+  almuerzo?: MealMacroDistribution
+  merienda?: MealMacroDistribution
+  cena?: MealMacroDistribution
 }
 
 export interface NewPatientData {
@@ -79,6 +98,7 @@ export interface NewPatientData {
   protein_level?: ProteinLevel
   fat_percentage?: number
   distribution_type: DistributionType
+  custom_meal_distribution?: CustomMealDistribution
 }
 
 export interface ControlPatientData {

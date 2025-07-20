@@ -10,12 +10,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
+import { RangeSlider } from "@/components/ui/range-slider"
 import { mealPlanService } from '@/services/api'
 import { MealPlanDisplay } from '@/components/MealPlanDisplay'
+import { CustomDistribution } from './CustomDistribution'
 import { Loader2 } from 'lucide-react'
-import type { 
-  NewPatientData, 
-  MealPlanResponse,
+import { 
   Sexo,
   Objetivo,
   NivelEconomico,
@@ -24,6 +24,7 @@ import type {
   ProteinLevel,
   DistributionType
 } from '@/types'
+import type { NewPatientData, MealPlanResponse } from '@/types'
 
 const formSchema = z.object({
   nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -51,10 +52,11 @@ const formSchema = z.object({
   colaciones: z.nativeEnum(TipoColacion),
   tipo_peso: z.nativeEnum(TipoPeso),
   // Nuevos campos
-  carbs_percentage: z.number().min(5).max(65).multipleOf(5).optional(),
+  carbs_percentage: z.number().min(0).max(55).optional(),
   protein_level: z.nativeEnum(ProteinLevel).optional(),
   fat_percentage: z.number().min(15).max(45).optional(),
   distribution_type: z.nativeEnum(DistributionType),
+  custom_meal_distribution: z.any().optional(),
 })
 
 export function NewPatientForm() {
@@ -88,6 +90,119 @@ export function NewPatientForm() {
       distribution_type: DistributionType.traditional,
     },
   })
+
+  // Función para calcular BMR (Basal Metabolic Rate)
+  const calculateBMR = () => {
+    const peso = form.watch('peso') || 70
+    const estatura = form.watch('estatura') || 170
+    const edad = form.watch('edad') || 30
+    const sexo = form.watch('sexo')
+    
+    if (sexo === Sexo.masculino) {
+      return 10 * peso + 6.25 * estatura - 5 * edad + 5
+    } else {
+      return 10 * peso + 6.25 * estatura - 5 * edad - 161
+    }
+  }
+
+  // Función para calcular calorías diarias
+  const calculateDailyCalories = () => {
+    const bmr = calculateBMR()
+    const tipo_actividad = form.watch('tipo_actividad')
+    const frecuencia = form.watch('frecuencia_semanal')
+    const duracion = form.watch('duracion_sesion')
+    const objetivo = form.watch('objetivo')
+    
+    // Factor de actividad
+    let activityFactor = 1.2 // sedentario por defecto
+    if (tipo_actividad && tipo_actividad.toLowerCase() !== 'sedentario') {
+      const horasSemanales = (frecuencia * duracion) / 60
+      if (horasSemanales < 3) activityFactor = 1.375
+      else if (horasSemanales < 5) activityFactor = 1.55
+      else if (horasSemanales < 7) activityFactor = 1.725
+      else activityFactor = 1.9
+    }
+    
+    let tdee = bmr * activityFactor
+    
+    // Ajuste por objetivo
+    const objetivoAdjustments: Record<string, number> = {
+      [Objetivo.mantener]: 0,
+      [Objetivo.bajar_025]: -250,
+      [Objetivo.bajar_05]: -500,
+      [Objetivo.bajar_075]: -750,
+      [Objetivo.bajar_1]: -1000,
+      [Objetivo.subir_025]: 250,
+      [Objetivo.subir_05]: 500,
+      [Objetivo.subir_075]: 750,
+      [Objetivo.subir_1]: 1000,
+    }
+    
+    const adjustment = objetivoAdjustments[objetivo] || 0
+    return Math.round(tdee + adjustment)
+  }
+
+  // Función para calcular macros diarios
+  const calculateDailyMacros = () => {
+    const dailyCalories = calculateDailyCalories()
+    const proteinLevel = form.watch('protein_level')
+    const carbsPercentage = form.watch('carbs_percentage') || 40
+    const fatsPercentage = form.watch('fat_percentage') || 30
+    const peso = form.watch('peso') || 70
+    
+    // Calcular proteína
+    let proteinGPerKg = 1.0 // default
+    if (proteinLevel) {
+      const proteinMap: Record<string, number> = {
+        [ProteinLevel.muy_baja]: 0.65,
+        [ProteinLevel.conservada]: 1.0,
+        [ProteinLevel.moderada]: 1.4,
+        [ProteinLevel.alta]: 1.9,
+        [ProteinLevel.muy_alta]: 2.5,
+        [ProteinLevel.extrema]: 3.2,
+      }
+      proteinGPerKg = proteinMap[proteinLevel] || 1.0
+    }
+    
+    const totalProteinG = peso * proteinGPerKg
+    const proteinCalories = totalProteinG * 4
+    const proteinPercentage = Math.min((proteinCalories / dailyCalories) * 100, 40)
+    
+    // Calcular otros macros
+    const carbsG = Math.round((dailyCalories * (carbsPercentage / 100)) / 4)
+    const fatsG = Math.round((dailyCalories * (fatsPercentage / 100)) / 9)
+    
+    return {
+      calories: dailyCalories,
+      protein: Math.round(totalProteinG),
+      carbs: carbsG,
+      fats: fatsG
+    }
+  }
+
+  // Función para calcular el porcentaje de grasas restante
+  const calculateRemainingFatPercentage = () => {
+    const proteinLevel = form.watch('protein_level')
+    const carbsPercentage = form.watch('carbs_percentage') || 0
+    
+    // Calcular proteína aproximada basada en el nivel
+    let proteinPercentage = 25 // default
+    if (proteinLevel) {
+      const proteinMap: Record<string, number> = {
+        [ProteinLevel.muy_baja]: 10,
+        [ProteinLevel.conservada]: 20,
+        [ProteinLevel.moderada]: 25,
+        [ProteinLevel.alta]: 30,
+        [ProteinLevel.muy_alta]: 35,
+        [ProteinLevel.extrema]: 40,
+      }
+      proteinPercentage = proteinMap[proteinLevel] || 25
+    }
+    
+    const remaining = 100 - proteinPercentage - carbsPercentage
+    // Asegurar que esté dentro del rango válido (15-45%)
+    return Math.max(15, Math.min(45, remaining))
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
@@ -667,27 +782,18 @@ export function NewPatientForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Porcentaje de carbohidratos</FormLabel>
-                    <Select onValueChange={(value) => field.onChange(parseInt(value))} defaultValue={field.value?.toString()}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar porcentaje de carbohidratos" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="20">20%</SelectItem>
-                        <SelectItem value="25">25%</SelectItem>
-                        <SelectItem value="30">30%</SelectItem>
-                        <SelectItem value="35">35%</SelectItem>
-                        <SelectItem value="40">40%</SelectItem>
-                        <SelectItem value="45">45%</SelectItem>
-                        <SelectItem value="50">50%</SelectItem>
-                        <SelectItem value="55">55%</SelectItem>
-                        <SelectItem value="60">60%</SelectItem>
-                        <SelectItem value="65">65%</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <RangeSlider
+                        min={0}
+                        max={55}
+                        step={5}
+                        value={field.value || 40}
+                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                        suffix="%"
+                      />
+                    </FormControl>
                     <FormDescription>
-                      Porcentaje del total calórico diario
+                      Porcentaje del total calórico diario (0-55% en intervalos de 5%)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -700,16 +806,30 @@ export function NewPatientForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Porcentaje de grasas</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        min="15" 
-                        max="45" 
-                        placeholder="15-45%"
-                        {...field} 
-                        onChange={e => field.onChange(parseInt(e.target.value) || undefined)} 
-                      />
-                    </FormControl>
+                    <div className="space-y-2">
+                      <FormControl>
+                        <RangeSlider
+                          min={15}
+                          max={45}
+                          step={1}
+                          value={field.value || 30}
+                          onChange={(e) => field.onChange(parseInt(e.target.value))}
+                          suffix="%"
+                        />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="w-full"
+                        onClick={() => {
+                          const calculated = calculateRemainingFatPercentage()
+                          field.onChange(calculated)
+                        }}
+                      >
+                        Calcular automáticamente ({calculateRemainingFatPercentage()}%)
+                      </Button>
+                    </div>
                     <FormDescription>
                       Porcentaje del total calórico diario (15-45%)
                     </FormDescription>
@@ -733,12 +853,39 @@ export function NewPatientForm() {
                       <SelectContent>
                         <SelectItem value={DistributionType.traditional}>Tradicional (más calorías en almuerzo)</SelectItem>
                         <SelectItem value={DistributionType.equitable}>Equitativa (mismas calorías en cada comida)</SelectItem>
+                        <SelectItem value={DistributionType.custom}>Personalizada (definir calorías y macros por comida)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {form.watch('distribution_type') === DistributionType.custom && (
+                <FormField
+                  control={form.control}
+                  name="custom_meal_distribution"
+                  render={({ field }) => {
+                    const macros = calculateDailyMacros()
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <CustomDistribution
+                            dailyCalories={macros.calories}
+                            dailyProtein={macros.protein}
+                            dailyCarbs={macros.carbs}
+                            dailyFats={macros.fats}
+                            mealsCount={form.watch('comidas_principales')}
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
+                />
+              )}
             </CardContent>
           </Card>
 

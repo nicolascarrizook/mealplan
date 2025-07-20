@@ -29,7 +29,8 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
             daily_calories,
             patient_data.comidas_principales,
             patient_data.distribution_type.value,
-            patient_data.colaciones != "No"
+            patient_data.colaciones != "No",
+            patient_data.custom_meal_distribution
         )
         
         # Calcular gramos de macros
@@ -77,6 +78,8 @@ DISTRIBUCIÓN DE CALORÍAS POR COMIDA:
 {self._format_meal_distribution(meal_distribution)}
 
 {self._get_macro_customization_note(patient_data)}
+
+{self._format_custom_meal_distribution(patient_data.custom_meal_distribution) if patient_data.distribution_type.value == "custom" and patient_data.custom_meal_distribution else ""}
 
 HORARIOS:
 {self._format_horarios(patient_data.horarios)}
@@ -300,3 +303,18 @@ Calorías: XXX | XXX
             notes.append("DISTRIBUCIÓN EQUITATIVA: Todas las comidas tienen las mismas calorías")
         
         return "\n".join(notes) if notes else ""
+    
+    def _format_custom_meal_distribution(self, custom_distribution: Dict[str, Dict[str, float]]) -> str:
+        """Formatea la distribución personalizada de macros por comida"""
+        if not custom_distribution:
+            return ""
+        
+        formatted = ["DISTRIBUCIÓN PERSONALIZADA POR COMIDA:"]
+        for meal, data in custom_distribution.items():
+            formatted.append(f"\n{meal.upper()}:")
+            formatted.append(f"  - Calorías: {int(data.get('calories', 0))} kcal")
+            formatted.append(f"  - Proteínas: {int(data.get('protein_g', 0))}g")
+            formatted.append(f"  - Carbohidratos: {int(data.get('carbs_g', 0))}g")
+            formatted.append(f"  - Grasas: {int(data.get('fats_g', 0))}g")
+        
+        return "\n".join(formatted)
