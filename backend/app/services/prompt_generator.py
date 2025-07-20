@@ -41,6 +41,16 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
         # Formatear objetivo para mostrar
         objetivo_text = self._format_objetivo(patient_data.objetivo)
         
+        # Preparar strings que contienen saltos de línea
+        meal_distribution_text = self._format_meal_distribution(meal_distribution)
+        macro_note_text = self._get_macro_customization_note(patient_data)
+        custom_distribution_text = self._format_custom_meal_distribution(patient_data.custom_meal_distribution) if patient_data.distribution_type.value == "custom" and patient_data.custom_meal_distribution else ""
+        
+        # Formatear actividades, suplementos y medicamentos
+        activities_text = self._format_activities(patient_data.activities) if patient_data.activities else '- Tipo: ' + patient_data.tipo_actividad + '\n- Frecuencia: ' + str(patient_data.frecuencia_semanal) + 'x por semana\n- Duración: ' + str(patient_data.duracion_sesion) + ' minutos'
+        supplements_text = self._format_supplements(patient_data.supplements) if patient_data.supplements else '- Suplementación: ' + (patient_data.suplementacion or 'Ninguna')
+        medications_text = self._format_medications(patient_data.medications) if patient_data.medications else '- Patologías/Medicación: ' + (patient_data.patologias or 'Sin patologías')
+        
         prompt = f"""
 {self.base_rules}
 
@@ -57,11 +67,11 @@ DATOS DEL PACIENTE:
 - Objetivo: {objetivo_text}
 
 ACTIVIDAD FÍSICA:
-{self._format_activities(patient_data.activities) if patient_data.activities else '- Tipo: ' + patient_data.tipo_actividad + '\n- Frecuencia: ' + str(patient_data.frecuencia_semanal) + 'x por semana\n- Duración: ' + str(patient_data.duracion_sesion) + ' minutos'}
+{activities_text}
 
 ESPECIFICACIONES MÉDICAS:
-{self._format_supplements(patient_data.supplements) if patient_data.supplements else '- Suplementación: ' + (patient_data.suplementacion or 'Ninguna')}
-{self._format_medications(patient_data.medications) if patient_data.medications else '- Patologías/Medicación: ' + (patient_data.patologias or 'Sin patologías')}
+{supplements_text}
+{medications_text}
 - NO consume: {patient_data.no_consume or 'Sin restricciones'}
 - Le gusta: {patient_data.le_gusta or 'Sin preferencias específicas'}
 - Nivel económico: {patient_data.nivel_economico.value}
@@ -73,11 +83,11 @@ REQUERIMIENTOS NUTRICIONALES CALCULADOS:
 - Grasas: {fat_g}g ({round(macro_distribution['grasas']*100)}%)
 
 DISTRIBUCIÓN DE CALORÍAS POR COMIDA:
-{self._format_meal_distribution(meal_distribution)}
+{meal_distribution_text}
 
-{self._get_macro_customization_note(patient_data)}
+{macro_note_text}
 
-{self._format_custom_meal_distribution(patient_data.custom_meal_distribution) if patient_data.distribution_type.value == "custom" and patient_data.custom_meal_distribution else ""}
+{custom_distribution_text}
 
 CONFIGURACIÓN DEL PLAN:
 - Comidas principales: {patient_data.comidas_principales}
