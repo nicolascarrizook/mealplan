@@ -222,7 +222,33 @@ export function NewPatientForm() {
     setMealPlanResult(null)
     
     try {
-      const result = await mealPlanService.generateNewPatientPlan(values as NewPatientData)
+      // Calcular tipo_actividad basado en las actividades seleccionadas
+      let tipo_actividad = values.tipo_actividad
+      if (activities.length > 0) {
+        // Calcular las calorías totales de las actividades
+        const totalCalories = activities.reduce((sum, act) => sum + act.calories, 0)
+        
+        // Determinar el tipo de actividad basado en las calorías quemadas
+        if (totalCalories < 200) {
+          tipo_actividad = "Actividad ligera"
+        } else if (totalCalories < 400) {
+          tipo_actividad = "Actividad moderada"
+        } else if (totalCalories < 600) {
+          tipo_actividad = "Actividad alta"
+        } else {
+          tipo_actividad = "Actividad muy alta"
+        }
+      }
+      
+      const data: NewPatientData = {
+        ...values,
+        tipo_actividad,
+        activities: activities.length > 0 ? activities : undefined,
+        supplements: supplements.length > 0 ? supplements : undefined,
+        medications: medications.length > 0 ? medications : undefined,
+      }
+      
+      const result = await mealPlanService.generateNewPatientPlan(data)
       setMealPlanResult(result)
       toast({
         title: "Plan generado exitosamente",
