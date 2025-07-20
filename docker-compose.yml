@@ -1,40 +1,31 @@
-version: "3.8"
+version: '3.8'
 
 services:
   backend:
     build: ./backend
+    container_name: meal_planner_backend
     ports:
       - "8000:8000"
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - CHROMADB_HOST=chromadb
-      - CHROMADB_PORT=8000
-    depends_on:
-      - chromadb
+    env_file:
+      - .env
     volumes:
-      - ./backend:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      - ./backend/data:/app/data
+      - ./pdfs:/app/pdfs
+    restart: unless-stopped
+    networks:
+      - meal_planner_network
 
   frontend:
     build: ./frontend
+    container_name: meal_planner_frontend
     ports:
-      - "3000:3000"
+      - "80:80"
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:8000
+    restart: unless-stopped
+    networks:
+      - meal_planner_network
 
-  chromadb:
-    image: chromadb/chroma:latest
-    ports:
-      - "8001:8000"
-    volumes:
-      - chromadb_data:/chroma/chroma
-    environment:
-      - IS_PERSISTENT=TRUE
-
-volumes:
-  chromadb_data:
+networks:
+  meal_planner_network:
+    driver: bridge

@@ -13,62 +13,59 @@ const ACTIVITIES_DATABASE = {
   cardiovascular: {
     name: "Cardiovascular",
     activities: {
-      caminar_lento: { name: "Caminar (ritmo lento)", kcal_per_hour: 150, met: 2.5 },
-      caminar_moderado: { name: "Caminar (ritmo moderado)", kcal_per_hour: 270, met: 3.5 },
-      caminar_rapido: { name: "Caminar (ritmo rápido)", kcal_per_hour: 360, met: 4.5 },
-      correr_lento: { name: "Correr (8 km/h)", kcal_per_hour: 480, met: 8.0 },
-      correr_moderado: { name: "Correr (10 km/h)", kcal_per_hour: 600, met: 10.0 },
-      correr_rapido: { name: "Correr (12 km/h)", kcal_per_hour: 720, met: 12.0 },
-      bicicleta_paseo: { name: "Bicicleta (paseo)", kcal_per_hour: 240, met: 4.0 },
-      bicicleta_moderado: { name: "Bicicleta (ritmo moderado)", kcal_per_hour: 420, met: 7.0 },
-      bicicleta_intenso: { name: "Bicicleta (ritmo intenso)", kcal_per_hour: 600, met: 10.0 },
-      natacion_suave: { name: "Natación (ritmo suave)", kcal_per_hour: 360, met: 6.0 },
-      natacion_moderado: { name: "Natación (ritmo moderado)", kcal_per_hour: 420, met: 7.0 },
-      natacion_intenso: { name: "Natación (ritmo intenso)", kcal_per_hour: 600, met: 10.0 },
-      eliptica: { name: "Elíptica", kcal_per_hour: 400, met: 6.0 },
-      remo: { name: "Máquina de remo", kcal_per_hour: 440, met: 7.0 },
-      saltar_cuerda: { name: "Saltar la cuerda", kcal_per_hour: 600, met: 10.0 }
+      caminar_lento: { name: "Caminata lenta (recreativa)", kcal_per_minute: 3.5, kcal_per_hour: 210 },
+      caminar_rapido: { name: "Caminata rápida", kcal_per_minute: 4.5, kcal_per_hour: 270 },
+      running_moderado: { name: "Running (trote medio, 8-10 km/h)", kcal_per_minute: 11, kcal_per_hour: 660 },
+      running_intenso: { name: "Running (fondo o competitivo)", kcal_per_minute: 13.5, kcal_per_hour: 810 },
+      bicicleta_urbana: { name: "Bicicleta urbana (traslado)", kcal_per_minute: 5.5, kcal_per_hour: 330 },
+      bicicleta_entrenamiento: { name: "Bicicleta entrenamiento (ritmo moderado)", kcal_per_minute: 10.5, kcal_per_hour: 630 },
+      bicicleta_fondo: { name: "Bicicleta fondo (>80 km)", kcal_per_minute: 14.5, kcal_per_hour: 870 },
+      natacion_recreativa: { name: "Natación recreativa", kcal_per_minute: 8, kcal_per_hour: 480 },
+      natacion_competicion: { name: "Natación de competición", kcal_per_minute: 11.5, kcal_per_hour: 690 },
+      trekking: { name: "Trekking (moderado)", kcal_per_minute: 6, kcal_per_hour: 360 },
+      eliptica: { name: "Elíptica", kcal_per_hour: 400 },
+      remo: { name: "Máquina de remo", kcal_per_hour: 440 },
+      saltar_cuerda: { name: "Saltar la cuerda", kcal_per_hour: 600 }
     }
   },
   fuerza: {
     name: "Fuerza/Gimnasio",
     activities: {
-      pesas_ligero: { name: "Pesas (intensidad ligera)", kcal_per_hour: 180, met: 3.0 },
-      pesas_moderado: { name: "Pesas (intensidad moderada)", kcal_per_hour: 270, met: 4.5 },
-      pesas_intenso: { name: "Pesas (intensidad alta)", kcal_per_hour: 360, met: 6.0 },
-      crossfit: { name: "CrossFit", kcal_per_hour: 600, met: 10.0 },
-      calistenia: { name: "Calistenia", kcal_per_hour: 400, met: 6.5 }
+      pesas_aparatos: { name: "Pesas / Aparatos", kcal_per_minute: 5.5, kcal_per_hour: 330 },
+      calistenia: { name: "Calistenia", kcal_per_minute: 6.5, kcal_per_hour: 390 },
+      crossfit: { name: "CrossFit", kcal_per_minute: 11, kcal_per_hour: 660 },
+      funcional_hiit: { name: "Entrenamiento Funcional / HIIT", kcal_per_minute: 9, kcal_per_hour: 540 }
     }
   },
   clases: {
     name: "Clases grupales",
     activities: {
-      spinning: { name: "Spinning/Ciclismo indoor", kcal_per_hour: 500, met: 8.5 },
-      zumba: { name: "Zumba", kcal_per_hour: 400, met: 6.5 },
-      aerobicos: { name: "Aeróbicos", kcal_per_hour: 360, met: 6.0 },
-      yoga: { name: "Yoga", kcal_per_hour: 180, met: 3.0 },
-      yoga_power: { name: "Power Yoga", kcal_per_hour: 300, met: 5.0 },
-      pilates: { name: "Pilates", kcal_per_hour: 210, met: 3.5 },
-      boxeo: { name: "Boxeo (entrenamiento)", kcal_per_hour: 540, met: 9.0 }
+      spinning: { name: "Spinning/Ciclismo indoor", kcal_per_hour: 500 },
+      zumba: { name: "Zumba", kcal_per_hour: 400 },
+      aerobicos: { name: "Aeróbicos", kcal_per_hour: 360 },
+      yoga: { name: "Yoga", kcal_per_hour: 180 },
+      yoga_power: { name: "Power Yoga", kcal_per_hour: 300 },
+      pilates: { name: "Pilates", kcal_per_hour: 210 },
+      boxeo: { name: "Boxeo (entrenamiento)", kcal_per_hour: 540 }
     }
   },
   deportes: {
     name: "Deportes",
     activities: {
-      futbol: { name: "Fútbol", kcal_per_hour: 500, met: 8.0 },
-      basquet: { name: "Básquetbol", kcal_per_hour: 440, met: 7.5 },
-      tenis: { name: "Tenis", kcal_per_hour: 400, met: 7.0 },
-      paddle: { name: "Paddle", kcal_per_hour: 350, met: 6.0 },
-      golf: { name: "Golf (caminando)", kcal_per_hour: 240, met: 4.0 },
-      voleibol: { name: "Voleibol", kcal_per_hour: 270, met: 4.5 }
+      futbol: { name: "Fútbol", kcal_per_hour: 500 },
+      basquet: { name: "Básquetbol", kcal_per_hour: 440 },
+      tenis: { name: "Tenis", kcal_per_hour: 400 },
+      paddle: { name: "Paddle", kcal_per_hour: 350 },
+      golf: { name: "Golf (caminando)", kcal_per_hour: 240 },
+      voleibol: { name: "Voleibol", kcal_per_hour: 270 }
     }
   },
   recreativo: {
     name: "Actividades recreativas",
     activities: {
-      baile_social: { name: "Baile social", kcal_per_hour: 270, met: 4.5 },
-      senderismo: { name: "Senderismo/Trekking", kcal_per_hour: 340, met: 5.5 },
-      escalada: { name: "Escalada", kcal_per_hour: 540, met: 9.0 }
+      baile_social: { name: "Baile social", kcal_per_hour: 270 },
+      senderismo: { name: "Senderismo/Trekking", kcal_per_hour: 340 },
+      escalada: { name: "Escalada", kcal_per_hour: 540 }
     }
   }
 }
@@ -102,11 +99,20 @@ export function ActivitySelector({ activities, onChange, bodyWeight = 70 }: Acti
 
   const calculateCalories = (activityKey: string, duration: number, frequency: number) => {
     // Find the category that contains this activity
-    for (const [categoryKey, categoryData] of Object.entries(ACTIVITIES_DATABASE)) {
+    for (const [_, categoryData] of Object.entries(ACTIVITIES_DATABASE)) {
       if (activityKey in categoryData.activities) {
-        const activity = categoryData.activities[activityKey as keyof typeof categoryData.activities]
-        const kcalPerHour = activity.kcal_per_hour * (bodyWeight / 70) // Adjust for body weight
-        const kcalPerSession = (kcalPerHour / 60) * duration
+        const activity = (categoryData.activities as any)[activityKey]
+        
+        // Use the new formula: (Kcal/min x peso paciente / 70) x duración en minutos
+        let kcalPerSession: number
+        if ('kcal_per_minute' in activity) {
+          kcalPerSession = (activity.kcal_per_minute * bodyWeight / 70) * duration
+        } else {
+          // Fallback for activities without kcal_per_minute
+          const kcalPerHour = activity.kcal_per_hour * (bodyWeight / 70)
+          kcalPerSession = (kcalPerHour / 60) * duration
+        }
+        
         const kcalPerWeek = kcalPerSession * frequency
         const kcalPerDay = kcalPerWeek / 7
         
@@ -124,7 +130,7 @@ export function ActivitySelector({ activities, onChange, bodyWeight = 70 }: Acti
     let activityData: any = null
     for (const categoryData of Object.values(ACTIVITIES_DATABASE)) {
       if (selectedActivity in categoryData.activities) {
-        activityData = categoryData.activities[selectedActivity as keyof typeof categoryData.activities]
+        activityData = (categoryData.activities as any)[selectedActivity]
         break
       }
     }

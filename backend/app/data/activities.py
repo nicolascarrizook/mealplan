@@ -1,91 +1,88 @@
 # Actividades físicas con gasto calórico estimado
-# Formato: kcal/hora para una persona de 70kg aproximadamente
+# Formato: kcal/minuto para una persona de 70kg
+# Fórmula general: Gasto total semanal = (Kcal/min x peso paciente / 70) x duración en minutos x frecuencia semanal
 
 ACTIVITIES_DATABASE = {
     # Cardiovascular
     "caminar_lento": {
-        "name": "Caminar (ritmo lento)",
+        "name": "Caminata lenta (recreativa)",
         "category": "cardiovascular",
-        "kcal_per_hour": 150,
+        "kcal_per_minute": 3.5,  # 3-4 kcal/min
+        "kcal_per_hour": 210,
         "intensity": "baja",
-        "met": 2.5
-    },
-    "caminar_moderado": {
-        "name": "Caminar (ritmo moderado)",
-        "category": "cardiovascular", 
-        "kcal_per_hour": 270,
-        "intensity": "moderada",
-        "met": 3.5
+        "notes": "Recreativa"
     },
     "caminar_rapido": {
-        "name": "Caminar (ritmo rápido)",
+        "name": "Caminata rápida",
         "category": "cardiovascular",
-        "kcal_per_hour": 360,
+        "kcal_per_minute": 4.5,  # 4-5 kcal/min
+        "kcal_per_hour": 270,
         "intensity": "moderada",
-        "met": 4.5
+        "notes": "Uso cardiovascular"
     },
-    "correr_lento": {
-        "name": "Correr (8 km/h)",
+    "running_moderado": {
+        "name": "Running (trote medio, 8-10 km/h)",
         "category": "cardiovascular",
-        "kcal_per_hour": 480,
+        "kcal_per_minute": 11,  # 10-12 kcal/min
+        "kcal_per_hour": 660,
         "intensity": "alta",
-        "met": 8.0
+        "notes": "Ritmo sostenido"
     },
-    "correr_moderado": {
-        "name": "Correr (10 km/h)",
+    "running_intenso": {
+        "name": "Running (fondo o competitivo)",
         "category": "cardiovascular",
-        "kcal_per_hour": 600,
-        "intensity": "alta",
-        "met": 10.0
-    },
-    "correr_rapido": {
-        "name": "Correr (12 km/h)",
-        "category": "cardiovascular",
-        "kcal_per_hour": 720,
+        "kcal_per_minute": 13.5,  # 12-15 kcal/min
+        "kcal_per_hour": 810,
         "intensity": "muy alta",
-        "met": 12.0
+        "notes": "Carreras o entrenamientos intensos"
     },
-    "bicicleta_paseo": {
-        "name": "Bicicleta (paseo)",
+    "bicicleta_urbana": {
+        "name": "Bicicleta urbana (traslado)",
         "category": "cardiovascular",
-        "kcal_per_hour": 240,
+        "kcal_per_minute": 5.5,  # 5-6 kcal/min
+        "kcal_per_hour": 330,
         "intensity": "baja",
-        "met": 4.0
+        "notes": "Uso recreativo o transporte"
     },
-    "bicicleta_moderado": {
-        "name": "Bicicleta (ritmo moderado)",
+    "bicicleta_entrenamiento": {
+        "name": "Bicicleta entrenamiento (ritmo moderado)",
         "category": "cardiovascular",
-        "kcal_per_hour": 420,
+        "kcal_per_minute": 10.5,  # 9-12 kcal/min
+        "kcal_per_hour": 630,
         "intensity": "moderada",
-        "met": 7.0
+        "notes": "Ejercicio sostenido"
     },
-    "bicicleta_intenso": {
-        "name": "Bicicleta (ritmo intenso)",
+    "bicicleta_fondo": {
+        "name": "Bicicleta fondo (>80 km)",
         "category": "cardiovascular",
-        "kcal_per_hour": 600,
-        "intensity": "alta",
-        "met": 10.0
+        "kcal_per_minute": 14.5,  # 13-16 kcal/min
+        "kcal_per_hour": 870,
+        "intensity": "muy alta",
+        "notes": "Alta duración, carga cardiovascular"
     },
-    "natacion_suave": {
-        "name": "Natación (ritmo suave)",
+    "natacion_recreativa": {
+        "name": "Natación recreativa",
         "category": "cardiovascular",
+        "kcal_per_minute": 8,  # 7-9 kcal/min
+        "kcal_per_hour": 480,
+        "intensity": "moderada",
+        "notes": "Estilo libre, ritmo medio"
+    },
+    "natacion_competicion": {
+        "name": "Natación de competición",
+        "category": "cardiovascular",
+        "kcal_per_minute": 11.5,  # 10-13 kcal/min
+        "kcal_per_hour": 690,
+        "intensity": "muy alta",
+        "notes": "Alta exigencia física"
+    },
+    "trekking": {
+        "name": "Trekking (moderado)",
+        "category": "cardiovascular",
+        "kcal_per_minute": 6,  # 5-7 kcal/min
         "kcal_per_hour": 360,
         "intensity": "moderada",
-        "met": 6.0
-    },
-    "natacion_moderado": {
-        "name": "Natación (ritmo moderado)",
-        "category": "cardiovascular",
-        "kcal_per_hour": 420,
-        "intensity": "moderada",
-        "met": 7.0
-    },
-    "natacion_intenso": {
-        "name": "Natación (ritmo intenso)",
-        "category": "cardiovascular",
-        "kcal_per_hour": 600,
-        "intensity": "alta",
-        "met": 10.0
+        "notes": "Caminatas en pendiente o terreno irregular"
     },
     "eliptica": {
         "name": "Elíptica",
@@ -110,40 +107,37 @@ ACTIVITIES_DATABASE = {
     },
     
     # Fuerza/Gimnasio
-    "pesas_ligero": {
-        "name": "Pesas (intensidad ligera)",
+    "pesas_aparatos": {
+        "name": "Pesas / Aparatos",
         "category": "fuerza",
-        "kcal_per_hour": 180,
-        "intensity": "baja",
-        "met": 3.0
-    },
-    "pesas_moderado": {
-        "name": "Pesas (intensidad moderada)",
-        "category": "fuerza",
-        "kcal_per_hour": 270,
+        "kcal_per_minute": 5.5,  # 5-6 kcal/min
+        "kcal_per_hour": 330,
         "intensity": "moderada",
-        "met": 4.5
-    },
-    "pesas_intenso": {
-        "name": "Pesas (intensidad alta)",
-        "category": "fuerza",
-        "kcal_per_hour": 360,
-        "intensity": "alta",
-        "met": 6.0
-    },
-    "crossfit": {
-        "name": "CrossFit",
-        "category": "fuerza",
-        "kcal_per_hour": 600,
-        "intensity": "muy alta",
-        "met": 10.0
+        "notes": "Intensidad moderada, sin pausas prolongadas"
     },
     "calistenia": {
         "name": "Calistenia",
         "category": "fuerza",
-        "kcal_per_hour": 400,
+        "kcal_per_minute": 6.5,  # 6-7 kcal/min
+        "kcal_per_hour": 390,
         "intensity": "moderada",
-        "met": 6.5
+        "notes": "Actividad con peso corporal"
+    },
+    "crossfit": {
+        "name": "CrossFit",
+        "category": "fuerza",
+        "kcal_per_minute": 11,  # 10-12 kcal/min
+        "kcal_per_hour": 660,
+        "intensity": "muy alta",
+        "notes": "Alta intensidad, ejercicios funcionales con poco descanso"
+    },
+    "funcional_hiit": {
+        "name": "Entrenamiento Funcional / HIIT",
+        "category": "fuerza",
+        "kcal_per_minute": 9,  # 8-10 kcal/min
+        "kcal_per_hour": 540,
+        "intensity": "alta",
+        "notes": "Circuitos activos"
     },
     
     # Clases grupales
@@ -271,6 +265,16 @@ ACTIVITIES_DATABASE = {
         "kcal_per_hour": 0,
         "intensity": "variable",
         "met": 0
+    },
+    
+    # Sedentarismo
+    "sedentario": {
+        "name": "Sedentario (trabajo en oficina)",
+        "category": "otros",
+        "kcal_per_hour": 0,
+        "intensity": "sedentario",
+        "notes": "TMB x 1.2 - Actividad física mínima",
+        "activity_factor": 1.2
     }
 }
 
@@ -283,6 +287,7 @@ def calculate_activity_calories(
 ) -> dict:
     """
     Calcula las calorías gastadas por actividad
+    Fórmula: (Kcal/min x peso paciente / 70) x duración en minutos x frecuencia semanal
     
     Args:
         activity_key: Clave de la actividad en el diccionario
@@ -295,14 +300,18 @@ def calculate_activity_calories(
         dict con información de gasto calórico
     """
     if activity_key == "custom" and custom_kcal > 0:
-        kcal_per_hour = custom_kcal
+        kcal_per_session = custom_kcal
     else:
-        activity = ACTIVITIES_DATABASE.get(activity_key, ACTIVITIES_DATABASE["caminar_moderado"])
-        # Ajustar por peso corporal (la base es 70kg)
-        kcal_per_hour = activity["kcal_per_hour"] * (body_weight / 70.0)
-    
-    # Calcular calorías por sesión
-    kcal_per_session = (kcal_per_hour / 60) * duration_minutes
+        activity = ACTIVITIES_DATABASE.get(activity_key, ACTIVITIES_DATABASE["caminar_rapido"])
+        
+        # Usar kcal_per_minute si está disponible, sino calcular desde kcal_per_hour
+        if "kcal_per_minute" in activity:
+            # Fórmula del contexto: (Kcal/min x peso paciente / 70) x duración
+            kcal_per_session = (activity["kcal_per_minute"] * body_weight / 70.0) * duration_minutes
+        else:
+            # Fallback para actividades sin kcal_per_minute
+            kcal_per_hour = activity.get("kcal_per_hour", 300) * (body_weight / 70.0)
+            kcal_per_session = (kcal_per_hour / 60) * duration_minutes
     
     # Calcular calorías semanales
     kcal_per_week = kcal_per_session * frequency_per_week

@@ -13,7 +13,7 @@ const SUPPLEMENTS_DATABASE = {
   proteinas: {
     name: "Proteínas",
     supplements: {
-      whey_protein: { name: "Proteína Whey", serving: "30g (1 scoop)", calories: 120, protein: 24, carbs: 3, fats: 1 },
+      whey_protein: { name: "Proteína Whey (Star Nutrition, ENA, UltraTech, Xtrenght)", serving: "30g (1 scoop)", calories: 120, protein: 24, carbs: 2, fats: 2 },
       casein_protein: { name: "Proteína Caseína", serving: "30g (1 scoop)", calories: 110, protein: 24, carbs: 3, fats: 0.5 },
       plant_protein: { name: "Proteína Vegetal", serving: "30g (1 scoop)", calories: 110, protein: 20, carbs: 4, fats: 2 },
       egg_protein: { name: "Proteína de Huevo", serving: "30g (1 scoop)", calories: 115, protein: 23, carbs: 2, fats: 1 }
@@ -22,15 +22,15 @@ const SUPPLEMENTS_DATABASE = {
   aminoacidos: {
     name: "Aminoácidos",
     supplements: {
-      bcaa: { name: "BCAA", serving: "10g", calories: 40, protein: 10, carbs: 0, fats: 0 },
-      glutamine: { name: "Glutamina", serving: "5g", calories: 20, protein: 5, carbs: 0, fats: 0 },
-      eaa: { name: "EAA", serving: "15g", calories: 60, protein: 15, carbs: 0, fats: 0 }
+      bcaa: { name: "BCAA (Aminoácidos de cadena ramificada)", serving: "5-10g", calories: 40, protein: 10, carbs: 0, fats: 0 },
+      glutamine: { name: "Glutamina", serving: "5-10g", calories: 30, protein: 7.5, carbs: 0, fats: 0 },
+      eaa: { name: "EAA (Aminoácidos esenciales)", serving: "15g", calories: 60, protein: 15, carbs: 0, fats: 0 }
     }
   },
   creatina: {
     name: "Creatina",
     supplements: {
-      creatine_mono: { name: "Creatina Monohidrato", serving: "5g", calories: 0, protein: 0, carbs: 0, fats: 0 },
+      creatine_mono: { name: "Creatina Monohidratada", serving: "3-5g", calories: 0, protein: 0, carbs: 0, fats: 0 },
       creatine_hcl: { name: "Creatina HCL", serving: "3g", calories: 0, protein: 0, carbs: 0, fats: 0 }
     }
   },
@@ -52,7 +52,7 @@ const SUPPLEMENTS_DATABASE = {
   ganadores: {
     name: "Ganadores de peso",
     supplements: {
-      mass_gainer: { name: "Ganador de peso", serving: "100g", calories: 380, protein: 30, carbs: 55, fats: 5 },
+      mass_gainer: { name: "Ganador de peso (Mutant Mass, Star Nutrition Gainer)", serving: "100g", calories: 400, protein: 20, carbs: 65, fats: 7 },
       lean_gainer: { name: "Ganador magro", serving: "100g", calories: 350, protein: 35, carbs: 45, fats: 3 }
     }
   },
@@ -77,7 +77,11 @@ const SUPPLEMENTS_DATABASE = {
   otros: {
     name: "Otros",
     supplements: {
-      collagen: { name: "Colágeno", serving: "10g", calories: 35, protein: 9, carbs: 0, fats: 0 },
+      collagen: { name: "Colágeno hidrolizado", serving: "10g", calories: 40, protein: 10, carbs: 0, fats: 0 },
+      cafeina: { name: "Cafeína (pastillas o polvo)", serving: "200mg", calories: 0, protein: 0, carbs: 0, fats: 0 },
+      beta_alanina: { name: "Beta-alanina", serving: "3.2-6g", calories: 0, protein: 0, carbs: 0, fats: 0 },
+      citrulina_malato: { name: "Citrulina Malato (2:1)", serving: "6-8g", calories: 0, protein: 0, carbs: 0, fats: 0 },
+      sales_hidratacion: { name: "Sales de hidratación (Hydrate UP, Total Magnesiano, Suero Mix)", serving: "1 sobre", calories: 0, protein: 0, carbs: 0, fats: 0 },
       spirulina: { name: "Espirulina", serving: "5g", calories: 20, protein: 3, carbs: 1, fats: 0.5 },
       mct_oil: { name: "Aceite MCT", serving: "15ml", calories: 130, protein: 0, carbs: 0, fats: 14 }
     }
@@ -209,7 +213,7 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
       {selectedSupplement && (() => {
         // Find and display serving size
         const category = SUPPLEMENTS_DATABASE[selectedCategory as keyof typeof SUPPLEMENTS_DATABASE]
-        const supplement = category.supplements[selectedSupplement as keyof typeof category.supplements]
+        const supplement = (category.supplements as any)[selectedSupplement]
         return supplement ? (
           <div className="text-sm text-muted-foreground">
             Porción: {supplement.serving}

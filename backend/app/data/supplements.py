@@ -1,17 +1,17 @@
-# Base de datos de suplementos con información nutricional
-# Valores por porción estándar
+# Base de datos de suplementos comunes en Argentina
+# IMPORTANTE: Ajustar cada suplemento a peso corporal, objetivo calórico y nivel de entrenamiento
 
 SUPPLEMENTS_DATABASE = {
     # Proteínas
     "whey_protein": {
-        "name": "Proteína Whey",
+        "name": "Proteína Whey (Star Nutrition, ENA, UltraTech, Xtrenght)",
         "category": "proteinas",
         "serving_size": "30g (1 scoop)",
         "calories": 120,
         "protein": 24,
-        "carbs": 3,
-        "fats": 1,
-        "notes": "Tomar post-entrenamiento o entre comidas"
+        "carbs": 2,
+        "fats": 2,
+        "notes": "Dosis recomendada: 1.5-2.2 g proteína/kg peso. Se utiliza para completar requerimientos diarios"
     },
     "casein_protein": {
         "name": "Proteína Caseína",
@@ -46,24 +46,24 @@ SUPPLEMENTS_DATABASE = {
     
     # Aminoácidos
     "bcaa": {
-        "name": "BCAA (Aminoácidos ramificados)",
+        "name": "BCAA (Aminoácidos de cadena ramificada)",
         "category": "aminoacidos",
-        "serving_size": "10g",
+        "serving_size": "5-10g",
         "calories": 40,
         "protein": 10,
         "carbs": 0,
         "fats": 0,
-        "notes": "Durante o post-entrenamiento"
+        "notes": "Dosis: 5-10 g/día (formulación 2:1:1). Puede sumarse a proteína total si reemplaza comidas"
     },
     "glutamine": {
         "name": "Glutamina",
         "category": "aminoacidos",
-        "serving_size": "5g",
-        "calories": 20,
-        "protein": 5,
+        "serving_size": "5-10g",
+        "calories": 30,  # Promedio entre 20-40 kcal
+        "protein": 7.5,  # Promedio
         "carbs": 0,
         "fats": 0,
-        "notes": "Post-entrenamiento o antes de dormir"
+        "notes": "Dosis: 5-10 g/día. No se contabiliza en macros; favorece recuperación y salud digestiva"
     },
     "eaa": {
         "name": "EAA (Aminoácidos esenciales)",
@@ -78,14 +78,14 @@ SUPPLEMENTS_DATABASE = {
     
     # Creatina
     "creatine_mono": {
-        "name": "Creatina Monohidrato",
+        "name": "Creatina Monohidratada",
         "category": "creatina",
-        "serving_size": "5g",
+        "serving_size": "3-5g",
         "calories": 0,
         "protein": 0,
         "carbs": 0,
         "fats": 0,
-        "notes": "5g diarios, cualquier momento"
+        "notes": "Dosis estándar: 3-5 g/día (independiente del peso). No influye en los macros, se usa para rendimiento"
     },
     "creatine_hcl": {
         "name": "Creatina HCL",
@@ -154,14 +154,14 @@ SUPPLEMENTS_DATABASE = {
     
     # Ganadores de peso
     "mass_gainer": {
-        "name": "Ganador de peso",
+        "name": "Ganador de peso (Mutant Mass, Star Nutrition Gainer)",
         "category": "ganadores",
         "serving_size": "100g",
-        "calories": 380,
-        "protein": 30,
-        "carbs": 55,
-        "fats": 5,
-        "notes": "Entre comidas o post-entreno"
+        "calories": 400,
+        "protein": 20,
+        "carbs": 65,
+        "fats": 7,
+        "notes": "Usado en dietas >3000 kcal o déficit de peso corporal. Evaluar tolerancia digestiva"
     },
     "lean_gainer": {
         "name": "Ganador magro",
@@ -292,14 +292,54 @@ SUPPLEMENTS_DATABASE = {
     
     # Otros
     "collagen": {
-        "name": "Colágeno",
+        "name": "Colágeno hidrolizado",
         "category": "otros",
         "serving_size": "10g",
-        "calories": 35,
-        "protein": 9,
+        "calories": 40,
+        "protein": 10,
         "carbs": 0,
         "fats": 0,
-        "notes": "En ayunas o antes de dormir"
+        "notes": "Dosis: 10 g/día. Sumar al total proteico si se consume habitualmente"
+    },
+    "cafeina": {
+        "name": "Cafeína (pastillas o polvo)",
+        "category": "otros",
+        "serving_size": "200mg",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "notes": "Dosis: 3-6 mg/kg peso corporal (ej: 70kg = 210-420mg). Útil como estimulante pre-entreno o ayuno"
+    },
+    "beta_alanina": {
+        "name": "Beta-alanina",
+        "category": "otros",
+        "serving_size": "3.2-6g",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "notes": "Dosis: 3.2-6 g/día. Mejora resistencia anaeróbica y muscular"
+    },
+    "citrulina_malato": {
+        "name": "Citrulina Malato (2:1)",
+        "category": "otros",
+        "serving_size": "6-8g",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "notes": "Dosis: 6-8 g pre-entreno. Vasodilatador, mejora el flujo y reduce fatiga"
+    },
+    "sales_hidratacion": {
+        "name": "Sales de hidratación (Hydrate UP, Total Magnesiano, Suero Mix)",
+        "category": "otros",
+        "serving_size": "1 sobre",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "notes": "No tienen calorías ni macros. Aportan sodio, potasio, cloruro, magnesio. Uso: deportes de resistencia, calor"
     },
     "spirulina": {
         "name": "Espirulina",

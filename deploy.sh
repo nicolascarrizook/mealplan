@@ -1,71 +1,50 @@
 #!/bin/bash
 
-# Script de deployment para Meal Planner Pro
+# Deployment script for Meal Planner Application
 
-echo "🚀 Iniciando deployment de Meal Planner Pro..."
+set -e
 
-# Colores para output
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+echo "🚀 Starting deployment process..."
 
-# Verificar que estamos en el directorio correcto
-if [ ! -f "docker-compose.yml" ]; then
-    echo -e "${RED}Error: No se encuentra docker-compose.yml${NC}"
-    echo "Asegúrate de ejecutar este script desde el directorio raíz del proyecto"
+# Check if .env file exists
+if [ ! -f .env ]; then
+    echo "❌ .env file not found!"
+    echo "📝 Please create a .env file based on .env.example"
     exit 1
 fi
 
-# Verificar que existe .env
-if [ ! -f ".env" ]; then
-    echo -e "${RED}Error: No se encuentra archivo .env${NC}"
-    echo "Copia .env.example a .env y configura las variables"
-    exit 1
+# Create necessary directories
+echo "📁 Creating necessary directories..."
+mkdir -p pdfs
+
+# Pull latest changes (if using git)
+if [ -d .git ]; then
+    echo "📥 Pulling latest changes from git..."
+    git pull origin main || true
 fi
 
-# Verificar que existe el archivo de recetas
-if [ ! -f "backend/data/recipes_structured.json" ]; then
-    echo -e "${RED}Error: No se encuentra archivo de recetas${NC}"
-    echo "Agrega backend/data/recipes_structured.json antes de continuar"
-    exit 1
-fi
+# Stop existing containers
+echo "🛑 Stopping existing containers..."
+docker-compose down
 
-# Pull últimos cambios
-echo "📥 Actualizando código desde Git..."
-git pull origin main
+# Build and start containers
+echo "🔨 Building Docker images..."
+docker-compose build
 
-# Detener servicios existentes
-echo "🛑 Deteniendo servicios anteriores..."
-docker-compose -f docker-compose.prod.yml down
+echo "🚀 Starting containers..."
+docker-compose up -d
 
-# Construir imágenes
-echo "🔨 Construyendo imágenes Docker..."
-docker-compose -f docker-compose.prod.yml build
+# Wait for services to be ready
+echo "⏳ Waiting for services to be ready..."
+sleep 10
 
-# Iniciar servicios
-echo "🚀 Iniciando servicios..."
-docker-compose -f docker-compose.prod.yml up -d
+# Check if services are running
+echo "✅ Checking service status..."
+docker-compose ps
 
-# Esperar a que ChromaDB esté listo
-echo "⏳ Esperando a que ChromaDB esté listo..."
-sleep 30
-
-# Cargar recetas en ChromaDB
-echo "📚 Cargando recetas en ChromaDB..."
-docker-compose -f docker-compose.prod.yml exec -T backend python scripts/load_recipes.py
-
-# Verificar estado de los servicios
-echo "✅ Verificando estado de los servicios..."
-docker-compose -f docker-compose.prod.yml ps
-
-echo -e "${GREEN}✨ Deployment completado!${NC}"
+echo "✨ Deployment completed successfully!"
+echo "📱 Frontend is available at http://localhost"
+echo "🔌 Backend API is available at http://localhost:8000"
 echo ""
-echo "📝 Próximos pasos:"
-echo "1. Configurar tu dominio apuntando a la IP del droplet"
-echo "2. Actualizar nginx.conf con tu dominio"
-echo "3. Configurar SSL con Let's Encrypt"
-echo ""
-echo "🌐 La aplicación está disponible en:"
-echo "   - Frontend: http://tu-ip-droplet"
-echo "   - Backend API: http://tu-ip-droplet/api"
-echo "   - ChromaDB: http://tu-ip-droplet:8001"
+echo "📊 To view logs: docker-compose logs -f"
+echo "🛑 To stop services: docker-compose down"
