@@ -14,6 +14,9 @@ import { RangeSlider } from "@/components/ui/range-slider"
 import { mealPlanService } from '@/services/api'
 import { MealPlanDisplay } from '@/components/MealPlanDisplay'
 import { CustomDistribution } from './CustomDistribution'
+import { ActivitySelector } from './ActivitySelector'
+import { SupplementSelector } from './SupplementSelector'
+import { MedicationSelector } from './MedicationSelector'
 import { Loader2 } from 'lucide-react'
 import { 
   Sexo,
@@ -35,7 +38,9 @@ const formSchema = z.object({
   objetivo: z.nativeEnum(Objetivo),
   tipo_actividad: z.string().min(2),
   frecuencia_semanal: z.number().min(0).max(7),
-  duracion_sesion: z.enum([30, 45, 60, 75, 90, 120]),
+  duracion_sesion: z.number().refine((val) => [30, 45, 60, 75, 90, 120].includes(val), {
+    message: "La duración debe ser 30, 45, 60, 75, 90 o 120 minutos"
+  }),
   suplementacion: z.string().optional(),
   patologias: z.string().optional(),
   no_consume: z.string().optional(),
@@ -51,6 +56,10 @@ const formSchema = z.object({
   fat_percentage: z.number().min(15).max(45).optional(),
   distribution_type: z.nativeEnum(DistributionType),
   custom_meal_distribution: z.any().optional(),
+  // Actividades, suplementos y medicamentos
+  activities: z.array(z.any()).optional(),
+  supplements: z.array(z.any()).optional(),
+  medications: z.array(z.any()).optional(),
 })
 
 export function NewPatientForm() {
@@ -76,6 +85,9 @@ export function NewPatientForm() {
       colaciones: TipoColacion.no,
       tipo_peso: TipoPeso.crudo,
       distribution_type: DistributionType.traditional,
+      activities: [],
+      supplements: [],
+      medications: [],
     },
   })
 
@@ -96,22 +108,21 @@ export function NewPatientForm() {
   // Función para calcular calorías diarias
   const calculateDailyCalories = () => {
     const bmr = calculateBMR()
-    const tipo_actividad = form.watch('tipo_actividad')
-    const frecuencia = form.watch('frecuencia_semanal')
-    const duracion = form.watch('duracion_sesion')
+    const activities = form.watch('activities') || []
     const objetivo = form.watch('objetivo')
     
-    // Factor de actividad
-    let activityFactor = 1.2 // sedentario por defecto
-    if (tipo_actividad && tipo_actividad.toLowerCase() !== 'sedentario') {
-      const horasSemanales = (frecuencia * duracion) / 60
-      if (horasSemanales < 3) activityFactor = 1.375
-      else if (horasSemanales < 5) activityFactor = 1.55
-      else if (horasSemanales < 7) activityFactor = 1.725
-      else activityFactor = 1.9
+    // Factor de actividad base (sedentario)
+    let activityFactor = 1.2
+    
+    // Calcular calorías adicionales por actividades
+    let additionalCalories = 0
+    if (activities.length > 0) {
+      additionalCalories = activities.reduce((sum, activity) => sum + (activity.calories || 0), 0)
+      // Si hay actividades, usar un factor de actividad ligeramente mayor
+      activityFactor = 1.3
     }
     
-    let tdee = bmr * activityFactor
+    let tdee = bmr * activityFactor + additionalCalories
     
     // Ajuste por objetivo
     const objetivoAdjustments: Record<string, number> = {
@@ -137,6 +148,18 @@ export function NewPatientForm() {
     const carbsPercentage = form.watch('carbs_percentage') || 40
     const fatsPercentage = form.watch('fat_percentage') || 30
     const peso = form.watch('peso') || 70
+    const supplements = form.watch('supplements') || []
+    
+    // Calcular macros de suplementos
+    const supplementMacros = supplements.reduce((acc, supp) => ({
+      calories: acc.calories + (supp.calories || 0),
+      protein: acc.protein + (supp.protein || 0),
+      carbs: acc.carbs + (supp.carbs || 0),
+      fats: acc.fats + (supp.fats || 0)
+    }), { calories: 0, protein: 0, carbs: 0, fats: 0 })
+    
+    // Ajustar calorías totales para incluir suplementos
+    const totalDailyCalories = dailyCalories + supplementMacros.calories
     
     // Calcular proteína
     let proteinGPerKg = 1.0 // default
@@ -152,19 +175,21 @@ export function NewPatientForm() {
       proteinGPerKg = proteinMap[proteinLevel] || 1.0
     }
     
-    const totalProteinG = peso * proteinGPerKg
-    const proteinCalories = totalProteinG * 4
-    const proteinPercentage = Math.min((proteinCalories / dailyCalories) * 100, 40)
+    const baseProteinG = peso * proteinGPerKg
+    const totalProteinG = baseProteinG + supplementMacros.protein
     
     // Calcular otros macros
-    const carbsG = Math.round((dailyCalories * (carbsPercentage / 100)) / 4)
-    const fatsG = Math.round((dailyCalories * (fatsPercentage / 100)) / 9)
+    const baseCarbsG = Math.round((dailyCalories * (carbsPercentage / 100)) / 4)
+    const baseFatsG = Math.round((dailyCalories * (fatsPercentage / 100)) / 9)
     
     return {
-      calories: dailyCalories,
+      calories: Math.round(totalDailyCalories),
       protein: Math.round(totalProteinG),
-      carbs: carbsG,
-      fats: fatsG
+      carbs: Math.round(baseCarbsG + supplementMacros.carbs),
+      fats: Math.round(baseFatsG + supplementMacros.fats),
+      // También retornar los valores base para referencia
+      baseCalories: dailyCalories,
+      supplementCalories: supplementMacros.calories
     }
   }
 
@@ -407,59 +432,21 @@ export function NewPatientForm() {
           <Card>
             <CardHeader>
               <CardTitle>Actividad Física</CardTitle>
-              <CardDescription>Información sobre la actividad física del paciente</CardDescription>
+              <CardDescription>Selecciona las actividades físicas que realiza el paciente</CardDescription>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CardContent>
               <FormField
                 control={form.control}
-                name="tipo_actividad"
-                render={({ field }) => (
-                  <FormItem className="md:col-span-2">
-                    <FormLabel>Tipo de actividad</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ej: Caminar, correr, gym, natación" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="frecuencia_semanal"
+                name="activities"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Frecuencia semanal</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0" max="7" {...field} onChange={e => field.onChange(parseInt(e.target.value))} />
+                      <ActivitySelector
+                        activities={field.value || []}
+                        onChange={field.onChange}
+                        bodyWeight={form.watch('peso')}
+                      />
                     </FormControl>
-                    <FormDescription>Veces por semana</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="duracion_sesion"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Duración por sesión</FormLabel>
-                    <Select onValueChange={(value) => field.onChange(parseInt(value))} defaultValue={field.value?.toString()}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar duración" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="30">30 minutos</SelectItem>
-                        <SelectItem value="45">45 minutos</SelectItem>
-                        <SelectItem value="60">60 minutos</SelectItem>
-                        <SelectItem value="75">75 minutos</SelectItem>
-                        <SelectItem value="90">90 minutos</SelectItem>
-                        <SelectItem value="120">120 minutos</SelectItem>
-                      </SelectContent>
-                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -469,45 +456,58 @@ export function NewPatientForm() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Especificaciones Médicas</CardTitle>
-              <CardDescription>Información médica y restricciones alimentarias</CardDescription>
+              <CardTitle>Suplementación</CardTitle>
+              <CardDescription>Selecciona los suplementos que toma el paciente</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <FormField
+                control={form.control}
+                name="supplements"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SupplementSelector
+                        supplements={field.value || []}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Medicación</CardTitle>
+              <CardDescription>Selecciona los medicamentos que toma el paciente</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <FormField
+                control={form.control}
+                name="medications"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <MedicationSelector
+                        medications={field.value || []}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Preferencias Alimentarias</CardTitle>
+              <CardDescription>Restricciones y preferencias del paciente</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="suplementacion"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Suplementación</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Indicar si toma algún suplemento (opcional)"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="patologias"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Patologías / Medicación</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Indicar patologías o medicación actual (opcional)"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               <FormField
                 control={form.control}

@@ -2,6 +2,7 @@ from typing import Dict, List, Optional
 from ..utils.calculations import NutritionalCalculator
 from ..utils.validators import InputValidator
 from ..schemas.meal_plan import NewPatientRequest, Objetivo
+import json
 
 class PromptGenerator:
     def __init__(self):
@@ -56,13 +57,11 @@ DATOS DEL PACIENTE:
 - Objetivo: {objetivo_text}
 
 ACTIVIDAD FÍSICA:
-- Tipo: {patient_data.tipo_actividad}
-- Frecuencia: {patient_data.frecuencia_semanal}x por semana
-- Duración: {patient_data.duracion_sesion} minutos
+{self._format_activities(patient_data.activities) if patient_data.activities else f"- Tipo: {patient_data.tipo_actividad}\\n- Frecuencia: {patient_data.frecuencia_semanal}x por semana\\n- Duración: {patient_data.duracion_sesion} minutos"}
 
 ESPECIFICACIONES MÉDICAS:
-- Suplementación: {patient_data.suplementacion or 'Ninguna'}
-- Patologías/Medicación: {patient_data.patologias or 'Sin patologías'}
+{self._format_supplements(patient_data.supplements) if patient_data.supplements else f"- Suplementación: {patient_data.suplementacion or 'Ninguna'}"}
+{self._format_medications(patient_data.medications) if patient_data.medications else f"- Patologías/Medicación: {patient_data.patologias or 'Sin patologías'}"}
 - NO consume: {patient_data.no_consume or 'Sin restricciones'}
 - Le gusta: {patient_data.le_gusta or 'Sin preferencias específicas'}
 - Nivel económico: {patient_data.nivel_economico.value}
@@ -301,5 +300,77 @@ Calorías: XXX | XXX
             formatted.append(f"  - Proteínas: {int(data.get('protein_g', 0))}g")
             formatted.append(f"  - Carbohidratos: {int(data.get('carbs_g', 0))}g")
             formatted.append(f"  - Grasas: {int(data.get('fats_g', 0))}g")
+        
+        return "\n".join(formatted)
+    
+    def _format_activities(self, activities: List[Dict]) -> str:
+        """Formatea las actividades físicas para el prompt"""
+        if not activities:
+            return ""
+        
+        formatted = []
+        total_calories = 0
+        
+        for activity in activities:
+            if activity.get('isManual'):
+                formatted.append(f"- {activity['name']}: {activity['calories']} kcal/día")
+            else:
+                formatted.append(f"- {activity['name']}: {activity['duration']} min, {activity['frequency']}x/semana = {activity['calories']} kcal/día")
+            total_calories += activity.get('calories', 0)
+        
+        formatted.append(f"- GASTO CALÓRICO TOTAL POR ACTIVIDAD: {total_calories} kcal/día")
+        formatted.append("- Nota: Este gasto calórico YA está incluido en el cálculo de calorías diarias")
+        
+        return "\n".join(formatted)
+    
+    def _format_supplements(self, supplements: List[Dict]) -> str:
+        """Formatea los suplementos para el prompt"""
+        if not supplements:
+            return ""
+        
+        formatted = ["SUPLEMENTACIÓN:"]
+        total_macros = {"calories": 0, "protein": 0, "carbs": 0, "fats": 0}
+        
+        for supp in supplements:
+            formatted.append(f"- {supp['name']}: {supp['servings']} porción(es) diarias ({supp['serving_size']})")
+            formatted.append(f"  Aporta: {supp['calories']} kcal, P: {supp['protein']}g, C: {supp['carbs']}g, G: {supp['fats']}g")
+            
+            total_macros['calories'] += supp.get('calories', 0)
+            total_macros['protein'] += supp.get('protein', 0)
+            total_macros['carbs'] += supp.get('carbs', 0)
+            total_macros['fats'] += supp.get('fats', 0)
+        
+        formatted.append(f"\nAPORTE TOTAL DE SUPLEMENTOS:")
+        formatted.append(f"- Calorías: {total_macros['calories']} kcal")
+        formatted.append(f"- Proteínas: {total_macros['protein']}g")
+        formatted.append(f"- Carbohidratos: {total_macros['carbs']}g")
+        formatted.append(f"- Grasas: {total_macros['fats']}g")
+        formatted.append("- Nota: Estos macros YA están incluidos en los totales diarios calculados")
+        
+        return "\n".join(formatted)
+    
+    def _format_medications(self, medications: List[Dict]) -> str:
+        """Formatea los medicamentos para el prompt"""
+        if not medications:
+            return ""
+        
+        formatted = ["MEDICACIÓN:"]
+        impacts = []
+        considerations = []
+        
+        for med in medications:
+            formatted.append(f"- {med['name']}")
+            if med.get('impact'):
+                impacts.append(f"  • {med['name']}: {med['impact']}")
+            if med.get('considerations'):
+                considerations.append(f"  • {med['name']}: {med['considerations']}")
+        
+        if impacts:
+            formatted.append("\nIMPACTOS NUTRICIONALES:")
+            formatted.extend(impacts)
+        
+        if considerations:
+            formatted.append("\nCONSIDERACIONES DIETÉTICAS:")
+            formatted.extend(considerations)
         
         return "\n".join(formatted)

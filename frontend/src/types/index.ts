@@ -93,6 +93,31 @@ export interface NewPatientData {
   fat_percentage?: number
   distribution_type: DistributionType
   custom_meal_distribution?: CustomMealDistribution
+  // Actividades, suplementos y medicamentos
+  activities?: Array<{
+    id: string
+    name: string
+    duration: number
+    frequency: number
+    calories: number
+    isManual?: boolean
+  }>
+  supplements?: Array<{
+    id: string
+    name: string
+    servings: number
+    calories: number
+    protein: number
+    carbs: number
+    fats: number
+    serving_size: string
+  }>
+  medications?: Array<{
+    id: string
+    name: string
+    impact: string
+    considerations: string
+  }>
 }
 
 export interface ControlPatientData {

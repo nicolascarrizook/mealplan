@@ -88,6 +88,20 @@ class NewPatientRequest(BaseModel):
         description="Distribución personalizada de calorías y macros por comida"
     )
     
+    # Nuevos campos para actividades, suplementos y medicamentos
+    activities: Optional[List[Dict[str, any]]] = Field(
+        None,
+        description="Lista de actividades físicas con duración, frecuencia y calorías"
+    )
+    supplements: Optional[List[Dict[str, any]]] = Field(
+        None,
+        description="Lista de suplementos con porciones y macros"
+    )
+    medications: Optional[List[Dict[str, any]]] = Field(
+        None,
+        description="Lista de medicamentos con impacto nutricional"
+    )
+    
     @validator('duracion_sesion')
     def validate_duration(cls, v):
         valid_durations = [30, 45, 60, 75, 90, 120]

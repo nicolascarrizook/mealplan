@@ -2,7 +2,7 @@
 Cálculos nutricionales y de macronutrientes
 """
 
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional, List
 from ..schemas.meal_plan import NewPatientRequest, Objetivo, ProteinLevel
 
 class NutritionalCalculator:
@@ -46,13 +46,27 @@ class NutritionalCalculator:
         Calcula las calorías diarias necesarias según el objetivo
         """
         bmr = NutritionalCalculator.calculate_bmr(patient)
-        activity_factor = NutritionalCalculator.get_activity_factor(
-            patient.tipo_actividad,
-            patient.frecuencia_semanal,
-            patient.duracion_sesion
-        )
         
-        tdee = bmr * activity_factor
+        # Factor de actividad base
+        activity_factor = 1.2  # Sedentario por defecto
+        
+        # Si hay actividades específicas, calcular calorías adicionales
+        additional_activity_calories = 0
+        if patient.activities and len(patient.activities) > 0:
+            # Sumar calorías de todas las actividades
+            for activity in patient.activities:
+                additional_activity_calories += activity.get('calories', 0)
+            # Si hay actividades, usar un factor de actividad ligeramente mayor
+            activity_factor = 1.3
+        else:
+            # Usar el cálculo tradicional si no hay actividades específicas
+            activity_factor = NutritionalCalculator.get_activity_factor(
+                patient.tipo_actividad,
+                patient.frecuencia_semanal,
+                patient.duracion_sesion
+            )
+        
+        tdee = bmr * activity_factor + additional_activity_calories
         
         # Ajustar según objetivo
         objetivo_adjustments = {
@@ -102,6 +116,15 @@ class NutritionalCalculator:
         Calcula la distribución de macronutrientes personalizada
         """
         daily_calories = NutritionalCalculator.calculate_daily_calories(patient)
+        
+        # Calcular calorías adicionales de suplementos
+        supplement_calories = 0
+        if patient.supplements and len(patient.supplements) > 0:
+            for supp in patient.supplements:
+                supplement_calories += supp.get('calories', 0)
+        
+        # Usar calorías totales incluyendo suplementos
+        total_calories = daily_calories + supplement_calories
         
         # Si hay personalización de macros, usarla
         if patient.protein_level or patient.carbs_percentage is not None or patient.fat_percentage:
