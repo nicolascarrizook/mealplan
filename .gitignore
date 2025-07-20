@@ -34,8 +34,10 @@ env/
 
 # Environment variables
 .env
+.env.*
 .env.local
 .env.production
+*.env
 
 # Node
 node_modules/
