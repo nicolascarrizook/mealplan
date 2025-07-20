@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Any
 from enum import Enum
 
 # Enums para mejor validación y consistencia
@@ -89,15 +89,15 @@ class NewPatientRequest(BaseModel):
     )
     
     # Nuevos campos para actividades, suplementos y medicamentos
-    activities: Optional[List[Dict[str, any]]] = Field(
+    activities: Optional[List[Dict[str, Any]]] = Field(
         None,
         description="Lista de actividades físicas con duración, frecuencia y calorías"
     )
-    supplements: Optional[List[Dict[str, any]]] = Field(
+    supplements: Optional[List[Dict[str, Any]]] = Field(
         None,
         description="Lista de suplementos con porciones y macros"
     )
-    medications: Optional[List[Dict[str, any]]] = Field(
+    medications: Optional[List[Dict[str, Any]]] = Field(
         None,
         description="Lista de medicamentos con impacto nutricional"
     )
