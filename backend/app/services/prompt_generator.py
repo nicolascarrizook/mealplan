@@ -66,7 +66,7 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
         activities_text = self._format_activities(patient_data.activities) if patient_data.activities else '- Tipo: ' + patient_data.tipo_actividad + '\n- Frecuencia: ' + str(patient_data.frecuencia_semanal) + 'x por semana\n- Duración: ' + str(patient_data.duracion_sesion) + ' minutos'
         supplements_text = self._format_supplements(patient_data.supplements, patient_data.medications) if patient_data.supplements else '- Suplementación: ' + (patient_data.suplementacion or 'Ninguna')
         medications_text = self._format_medications(patient_data.medications) if patient_data.medications else '- Patologías/Medicación: ' + (patient_data.patologias or 'Sin patologías')
-        meal_config_text = self._format_meal_configuration(patient_data.meal_configuration) if patient_data.meal_configuration else ''
+        meal_config_text = self._format_meal_configuration(patient_data.meal_configuration.dict()) if patient_data.meal_configuration else ''
         
         prompt = f"""
 {self.base_rules}
