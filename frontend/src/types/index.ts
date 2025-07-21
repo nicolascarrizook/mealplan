@@ -115,7 +115,6 @@ export interface NewPatientData {
   nivel_economico: NivelEconomico
   notas_personales?: string
   comidas_principales: number
-  colaciones: TipoColacion
   tipo_peso: TipoPeso
   recipe_complexity: RecipeComplexity
   // Nuevos campos de personalización de macros
