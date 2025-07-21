@@ -61,8 +61,6 @@ async def generate_new_patient_plan(request: NewPatientRequest):
     try:
         # Define meal types based on patient configuration
         meal_types = ["desayuno", "almuerzo", "merienda", "cena"]
-        if request.colaciones and request.colaciones != "No":
-            meal_types.append("colacion")
         
         # Calculate daily macros for recipe filtering
         from .utils.calculations import NutritionalCalculator

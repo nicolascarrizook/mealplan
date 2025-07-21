@@ -192,7 +192,7 @@ export function SupplementSelector({ supplements, onChange, bodyWeight = 70 }: S
       case 'creatine_hcl':
         // Creatina: 0.1g por kg de peso corporal
         const creatineDose = Math.round(bodyWeight * 0.1 * 10) / 10 // Redondear a 1 decimal
-        return { dose: `${creatineDose}g (0.1g × ${bodyWeight}kg)`, servings: creatineDose / 5 } // Asumiendo 5g por porción estándar
+        return { dose: `${creatineDose}g (0.1g × ${bodyWeight}kg)`, servings: Math.round((creatineDose / 5) * 100) / 100 } // Asumiendo 5g por porción estándar
       
       case 'whey_protein':
       case 'casein_protein':
