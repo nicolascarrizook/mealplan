@@ -27,6 +27,7 @@ class NivelEconomico(str, Enum):
 class TipoPeso(str, Enum):
     crudo = "crudo"
     cocido = "cocido"
+    ambas = "ambas"
 
 class TipoColacion(str, Enum):
     no = "No"
@@ -46,6 +47,33 @@ class DistributionType(str, Enum):
     traditional = "traditional"   # Distribución variable de calorías (más en almuerzo)
     equitable = "equitable"      # Distribución equitativa entre comidas
     custom = "custom"            # Distribución personalizada por el usuario
+
+class RecipeComplexity(str, Enum):
+    simple = "simple"            # Recetas rápidas y fáciles
+    elaborada = "elaborada"      # Recetas más complejas
+    mixta = "mixta"             # Combinación de ambas
+
+# Schema para configuración flexible de comidas
+class MealConfiguration(BaseModel):
+    # Comidas principales
+    desayuno: bool = True
+    almuerzo: bool = True
+    merienda: bool = True
+    cena: bool = True
+    brunch: bool = False  # Reemplaza desayuno y almuerzo
+    
+    # Comidas adicionales
+    media_manana: bool = False
+    media_tarde: bool = False
+    postre_almuerzo: bool = False
+    postre_cena: bool = False
+    dulce_siesta: bool = False
+    pre_entreno: bool = False
+    post_entreno: bool = False
+    
+    # Alternativas por comida
+    alternativas_dulces: bool = False
+    alternativas_saladas: bool = False
 
 # Schemas para suplementos con información clínica
 class SupplementInfo(BaseModel):
@@ -99,6 +127,7 @@ class NewPatientRequest(BaseModel):
     comidas_principales: int = Field(default=4, ge=3, le=4)
     colaciones: TipoColacion = TipoColacion.no
     tipo_peso: TipoPeso = TipoPeso.crudo
+    recipe_complexity: RecipeComplexity = RecipeComplexity.mixta
     
     # Personalización de macros (nuevos campos)
     carbs_percentage: Optional[int] = Field(None, ge=0, le=55, description="Porcentaje de carbohidratos (0-55%)")
@@ -110,6 +139,12 @@ class NewPatientRequest(BaseModel):
     custom_meal_distribution: Optional[Dict[str, Dict[str, float]]] = Field(
         None, 
         description="Distribución personalizada de calorías y macros por comida"
+    )
+    
+    # Configuración flexible de comidas
+    meal_configuration: Optional[MealConfiguration] = Field(
+        None,
+        description="Configuración detallada de comidas del día"
     )
     
     # Nuevos campos para actividades, suplementos y medicamentos

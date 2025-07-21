@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { T4TimingSelector, T4Timing } from './T4TimingSelector'
 
 // Medication database imported from backend structure
 const MEDICATIONS_DATABASE = {
@@ -113,6 +114,7 @@ interface Medication {
   name: string
   impact: string
   considerations: string
+  t4_timing?: T4Timing
 }
 
 interface MedicationSelectorProps {
@@ -124,6 +126,7 @@ export function MedicationSelector({ medications, onChange }: MedicationSelector
   const [selectedMedications, setSelectedMedications] = useState<Medication[]>(medications || [])
   const [selectedCategory, setSelectedCategory] = useState<string>('antidiabeticos')
   const [selectedMedication, setSelectedMedication] = useState<string>('')
+  const [t4Timing, setT4Timing] = useState<T4Timing | undefined>()
 
   useEffect(() => {
     onChange(selectedMedications)
@@ -147,13 +150,15 @@ export function MedicationSelector({ medications, onChange }: MedicationSelector
       id: `${selectedMedication}_${Date.now()}`,
       name: medicationData.name,
       impact: medicationData.impact,
-      considerations: medicationData.considerations
+      considerations: medicationData.considerations,
+      ...(selectedMedication === 'levotiroxina' && t4Timing ? { t4_timing: t4Timing } : {})
     }
 
     setSelectedMedications([...selectedMedications, newMedication])
     
     // Reset form
     setSelectedMedication('')
+    setT4Timing(undefined)
   }
 
   const removeMedication = (id: string) => {
@@ -220,6 +225,16 @@ export function MedicationSelector({ medications, onChange }: MedicationSelector
         </div>
       </div>
 
+      {/* T4 Timing selector when levotiroxina is selected */}
+      {selectedMedication === 'levotiroxina' && (
+        <div className="mt-4">
+          <T4TimingSelector
+            value={t4Timing}
+            onChange={setT4Timing}
+          />
+        </div>
+      )}
+
       {selectedMedications.length > 0 && (
         <Card>
           <CardContent className="pt-6">
@@ -229,7 +244,16 @@ export function MedicationSelector({ medications, onChange }: MedicationSelector
                 <div className="space-y-2">
                   {selectedMedications.map((medication) => (
                     <div key={medication.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <span className="font-medium text-sm">{medication.name}</span>
+                      <div className="flex-1">
+                        <span className="font-medium text-sm">{medication.name}</span>
+                        {medication.t4_timing && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {medication.t4_timing === T4Timing.sin_fibra_30min 
+                              ? "Desayuno sin fibra (30min-1h)" 
+                              : "Desayuno con fibra (2h)"}
+                          </p>
+                        )}
+                      </div>
                       <Button
                         variant="ghost"
                         size="sm"

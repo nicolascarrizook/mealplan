@@ -248,6 +248,71 @@ class ChromaDBService:
         
         return self._format_recipes_for_prompt(similar_recipes[:10])
     
+    def search_recipes_by_meal_type(
+        self,
+        meal_types: List[str],
+        patient_restrictions: Optional[str] = None,
+        preferences: Optional[str] = None,
+        economic_level: str = "Medio",
+        patologias: Optional[str] = None,
+        n_results_per_type: int = 15
+    ) -> Dict[str, List[Dict]]:
+        """Search recipes organized by meal type"""
+        
+        # If ChromaDB is not available, return empty dict
+        if not self.collection:
+            print("Warning: ChromaDB not available, returning empty recipe dict")
+            return {}
+        
+        result = {}
+        
+        for meal_type in meal_types:
+            # Build query for this meal type
+            query_text = f"Recetas para {meal_type}"
+            if preferences:
+                query_text += f" con {preferences}"
+            
+            # Search with meal type filter
+            try:
+                results = self.collection.query(
+                    query_texts=[query_text],
+                    n_results=n_results_per_type * 2,  # Get extra to account for filtering
+                    where={"tipo_comida": {"$contains": meal_type}}
+                )
+            except:
+                # Fallback if where clause not supported
+                results = self.collection.query(
+                    query_texts=[query_text],
+                    n_results=n_results_per_type * 2
+                )
+            
+            # Filter results
+            filtered_recipes = []
+            
+            for i, metadata in enumerate(results['metadatas'][0]):
+                recipe_json = json.loads(metadata['recipe_json'])
+                
+                # Check if recipe is actually for this meal type
+                if meal_type not in recipe_json.get('tipo_comida', []):
+                    continue
+                
+                # Skip if doesn't pass filters
+                if not self._passes_filters(recipe_json, patient_restrictions, 
+                                          economic_level, patologias):
+                    continue
+                
+                filtered_recipes.append(recipe_json)
+            
+            # Sort by relevance
+            filtered_recipes = self._sort_recipes_by_relevance(
+                filtered_recipes, preferences, economic_level
+            )
+            
+            # Take top N recipes for this meal type
+            result[meal_type] = filtered_recipes[:n_results_per_type]
+        
+        return result
+    
     def get_all_recipes(self) -> str:
         """Get all recipes formatted for prompt"""
         results = self.collection.get()

@@ -4,6 +4,7 @@ from ..utils.validators import InputValidator
 from ..schemas.meal_plan import NewPatientRequest, Objetivo
 from ..data.interactions import check_interactions, check_max_doses, get_synergies
 import json
+import re
 
 class PromptGenerator:
     def __init__(self):
@@ -18,6 +19,17 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
 7. No usar suplementos salvo indicación expresa
 8. Usar léxico argentino
 9. Adaptarse al nivel económico
+10. OBLIGATORIO: Usar ÚNICAMENTE recetas del catálogo proporcionado mediante sus IDs
+"""
+        
+        self.recipe_format_rules = """
+FORMATO OBLIGATORIO PARA CADA COMIDA:
+- Proporcionar 3 OPCIONES de recetas para cada comida
+- Cada opción debe incluir ID de receta: [REC_XXXX]
+- Ajustes de cantidades si es necesario
+- NO inventar recetas nuevas
+- NO combinar recetas sin que esté especificado
+- Las 3 opciones deben tener macros similares (±10%)
 """
 
     def generate_motor1_prompt(self, patient_data: NewPatientRequest, recipes_json: str):
@@ -98,33 +110,50 @@ CONFIGURACIÓN DEL PLAN:
 RECETAS DISPONIBLES:
 {recipes_json}
 
+{self.recipe_format_rules}
+
 INSTRUCCIONES PARA LA GENERACIÓN:
-1. USAR ÚNICAMENTE las recetas proporcionadas arriba
-2. Adaptar las cantidades según los objetivos
-3. Respetar las restricciones alimentarias
-4. Cada día debe tener exactamente las mismas comidas
-5. Incluir preparación detallada
-6. Calcular macros totales al final
+1. OBLIGATORIO: Usar ÚNICAMENTE los IDs de recetas proporcionados arriba [REC_XXXX]
+2. Para cada comida, proporcionar 3 OPCIONES de recetas diferentes
+3. Las 3 opciones deben tener macros similares (±10% de diferencia)
+4. Adaptar las cantidades de ingredientes según los objetivos nutricionales
+5. Respetar las restricciones alimentarias y nivel económico
+6. Cada día debe tener exactamente las mismas comidas
+7. Incluir macros específicos para cada opción
+8. Calcular macros totales al final (basados en la opción 1 de cada comida)
 
 FORMATO DE SALIDA ESPERADO:
 
 PLAN ALIMENTARIO - 3 DÍAS IGUALES
 
 DESAYUNO
-- [Nombre de la receta de la base de datos]
+OPCIÓN 1:
+- Receta: [REC_XXXX] - [Nombre de la receta]
 - Ingredientes con cantidades ajustadas:
   * Ingrediente 1: XXg
   * Ingrediente 2: XXg
-- Preparación: [de la receta]
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
+
+OPCIÓN 2:
+- Receta: [REC_XXXX] - [Nombre de la receta]
+- Ingredientes con cantidades ajustadas:
+  * [Lista de ingredientes]
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
+
+OPCIÓN 3:
+- Receta: [REC_XXXX] - [Nombre de la receta]
+- Ingredientes con cantidades ajustadas:
+  * [Lista de ingredientes]
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
 
 ALMUERZO
-[Mismo formato]
+[Mismo formato con 3 opciones]
 
 MERIENDA
-[Mismo formato]
+[Mismo formato con 3 opciones]
 
 CENA
-[Mismo formato]
+[Mismo formato con 3 opciones]
 
 COLACIÓN PRE/POST ENTRENO (si aplica)
 [Mismo formato]
@@ -422,3 +451,75 @@ Calorías: XXX | XXX
             formatted.extend(considerations)
         
         return "\n".join(formatted)
+    
+    def format_recipes_by_meal_type(self, recipes_dict: Dict[str, List[Dict]]) -> str:
+        """Format recipes organized by meal type for the prompt"""
+        formatted_sections = []
+        
+        for meal_type, recipes in recipes_dict.items():
+            if not recipes:
+                continue
+                
+            formatted_sections.append(f"\n=== RECETAS PARA {meal_type.upper()} ===")
+            
+            for recipe in recipes:
+                # Format as summary with ID prominent
+                summary = (
+                    f"[{recipe['id']}] {recipe['nombre']} | "
+                    f"{recipe.get('calorias_aprox', 0)} kcal | "
+                    f"P: {recipe.get('proteinas_aprox', 0)}g | "
+                    f"C: {recipe.get('carbohidratos_aprox', 0)}g | "
+                    f"G: {recipe.get('grasas_aprox', 0)}g"
+                )
+                formatted_sections.append(summary)
+        
+        return "\n".join(formatted_sections)
+    
+    def format_recipe_details(self, recipes_list: List[Dict]) -> str:
+        """Format full recipe details in a separate section"""
+        formatted_details = ["\n=== DETALLES DE RECETAS ==="]
+        
+        for recipe in recipes_list:
+            ingredients = " | ".join([
+                f"{ing['item']}: {ing['cantidad']}"
+                for ing in recipe.get('ingredientes', [])
+            ])
+            
+            detail = f"""
+[{recipe['id']}] {recipe['nombre']}
+Ingredientes: {ingredients}
+Preparación: {recipe.get('preparacion', '')}
+"""
+            formatted_details.append(detail)
+        
+        return "\n".join(formatted_details)
+    
+    def validate_recipe_usage(self, meal_plan_text: str, valid_recipe_ids: List[str]) -> bool:
+        """Validate that the meal plan uses only valid recipe IDs"""
+        # Find all recipe IDs in the meal plan
+        recipe_id_pattern = r'\[REC_\d{4}\]'
+        found_ids = re.findall(recipe_id_pattern, meal_plan_text)
+        
+        # Clean up IDs (remove brackets)
+        found_ids = [id.strip('[]') for id in found_ids]
+        
+        # Check if all found IDs are valid
+        invalid_ids = [id for id in found_ids if id not in valid_recipe_ids]
+        
+        if invalid_ids:
+            print(f"Warning: Invalid recipe IDs found: {invalid_ids}")
+            return False
+        
+        # Check if at least some recipes were used
+        if len(found_ids) < 3:  # At least 3 meals should have recipes
+            print("Warning: Too few recipes used in meal plan")
+            return False
+        
+        return True
+    
+    def extract_used_recipes(self, meal_plan_text: str) -> List[str]:
+        """Extract recipe IDs used in a meal plan"""
+        recipe_id_pattern = r'\[REC_\d{4}\]'
+        found_ids = re.findall(recipe_id_pattern, meal_plan_text)
+        # Clean up IDs (remove brackets) and remove duplicates
+        return list(set([id.strip('[]') for id in found_ids]))

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Plus } from 'lucide-react'
+import { X, Plus, Calculator } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -173,9 +173,10 @@ interface Supplement {
 interface SupplementSelectorProps {
   supplements: Supplement[]
   onChange: (supplements: Supplement[]) => void
+  bodyWeight?: number  // Para cálculos automáticos
 }
 
-export function SupplementSelector({ supplements, onChange }: SupplementSelectorProps) {
+export function SupplementSelector({ supplements, onChange, bodyWeight = 70 }: SupplementSelectorProps) {
   const [selectedSupplements, setSelectedSupplements] = useState<Supplement[]>(supplements || [])
   const [selectedCategory, setSelectedCategory] = useState<string>('proteinas')
   const [selectedSupplement, setSelectedSupplement] = useState<string>('')
@@ -183,6 +184,38 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
   const [customDose, setCustomDose] = useState<string>('')
   const [frequency, setFrequency] = useState<string>('')
   const [clinicalRelevance, setClinicalRelevance] = useState<boolean>(false)
+
+  // Función para calcular dosis automáticas
+  const calculateAutomaticDose = (supplementKey: string): { dose: string, servings: number } | null => {
+    switch (supplementKey) {
+      case 'creatine_mono':
+      case 'creatine_hcl':
+        // Creatina: 0.1g por kg de peso corporal
+        const creatineDose = Math.round(bodyWeight * 0.1 * 10) / 10 // Redondear a 1 decimal
+        return { dose: `${creatineDose}g (0.1g × ${bodyWeight}kg)`, servings: creatineDose / 5 } // Asumiendo 5g por porción estándar
+      
+      case 'whey_protein':
+      case 'casein_protein':
+      case 'plant_protein':
+      case 'egg_protein':
+        // Proteína: 1 scoop = 20-25g de proteína
+        // Calculamos basándonos en las necesidades típicas post-entreno
+        return { dose: '1 scoop (20-25g proteína)', servings: 1 }
+      
+      case 'magnesium':
+      case 'magnesium_supplement':
+        // Magnesio: 350-400mg
+        return { dose: '350-400mg', servings: 1 }
+      
+      case 'omega_3':
+      case 'omega3_epa_dha':
+        // Omega 3: dosis estándar recomendada
+        return { dose: '1000-2000mg EPA/DHA', servings: 2 }
+      
+      default:
+        return null
+    }
+  }
 
   useEffect(() => {
     onChange(selectedSupplements)
@@ -239,6 +272,12 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
 
   return (
     <div className="space-y-4">
+      {bodyWeight && (
+        <div className="text-sm text-muted-foreground bg-blue-50 p-3 rounded-lg">
+          <Calculator className="w-4 h-4 inline mr-2 text-blue-600" />
+          Los suplementos marcados con el ícono de calculadora tienen dosis automáticas basadas en tu peso ({bodyWeight}kg)
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <Label>Categoría</Label>
@@ -258,16 +297,35 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
 
         <div>
           <Label>Suplemento</Label>
-          <Select value={selectedSupplement} onValueChange={setSelectedSupplement}>
+          <Select 
+            value={selectedSupplement} 
+            onValueChange={(value) => {
+              setSelectedSupplement(value)
+              // Aplicar dosis automática si está disponible
+              const autoDose = calculateAutomaticDose(value)
+              if (autoDose) {
+                setCustomDose(autoDose.dose)
+                setServings(autoDose.servings)
+              }
+            }}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecciona un suplemento" />
             </SelectTrigger>
             <SelectContent>
-              {Object.entries(SUPPLEMENTS_DATABASE[selectedCategory as keyof typeof SUPPLEMENTS_DATABASE].supplements).map(([key, supplement]) => (
-                <SelectItem key={key} value={key}>
-                  {supplement.name}
-                </SelectItem>
-              ))}
+              {Object.entries(SUPPLEMENTS_DATABASE[selectedCategory as keyof typeof SUPPLEMENTS_DATABASE].supplements).map(([key, supplement]) => {
+                const hasAutoDose = calculateAutomaticDose(key) !== null
+                return (
+                  <SelectItem key={key} value={key}>
+                    <div className="flex items-center gap-2">
+                      {supplement.name}
+                      {hasAutoDose && (
+                        <Calculator className="w-3 h-3 text-blue-500" />
+                      )}
+                    </div>
+                  </SelectItem>
+                )
+              })}
             </SelectContent>
           </Select>
         </div>
@@ -294,9 +352,18 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
         // Find and display serving size
         const category = SUPPLEMENTS_DATABASE[selectedCategory as keyof typeof SUPPLEMENTS_DATABASE]
         const supplement = (category.supplements as any)[selectedSupplement]
+        const autoDose = calculateAutomaticDose(selectedSupplement)
+        
         return supplement ? (
-          <div className="text-sm text-muted-foreground">
-            Porción: {supplement.serving}
+          <div className="space-y-2">
+            <div className="text-sm text-muted-foreground">
+              Porción: {supplement.serving}
+            </div>
+            {autoDose && (
+              <div className="text-sm text-blue-600 font-medium">
+                ✨ Dosis calculada automáticamente basada en {bodyWeight}kg de peso corporal
+              </div>
+            )}
           </div>
         ) : null
       })()}
@@ -358,6 +425,9 @@ export function SupplementSelector({ supplements, onChange }: SupplementSelector
                       <p className="text-xs text-muted-foreground">
                         {supplement.custom_dose || `${supplement.servings} ${supplement.servings === 1 ? 'porción' : 'porciones'}`} • {supplement.serving_size}
                         {supplement.frequency && ` • ${supplement.frequency}`}
+                        {supplement.custom_dose && (supplement.custom_dose.includes('kg)') || supplement.custom_dose.includes('scoop')) && (
+                          <span className="text-blue-600"> • Calculado automáticamente</span>
+                        )}
                       </p>
                     </div>
                     <Button

@@ -25,7 +25,8 @@ export enum NivelEconomico {
 
 export enum TipoPeso {
   crudo = "crudo",
-  cocido = "cocido"
+  cocido = "cocido",
+  ambas = "ambas"
 }
 
 export enum TipoColacion {
@@ -50,6 +51,12 @@ export enum DistributionType {
   custom = "custom"
 }
 
+export enum RecipeComplexity {
+  simple = "simple",
+  elaborada = "elaborada",
+  mixta = "mixta"
+}
+
 export interface MealMacroDistribution {
   calories: number
   calories_percentage: number
@@ -66,6 +73,28 @@ export interface CustomMealDistribution {
   almuerzo?: MealMacroDistribution
   merienda?: MealMacroDistribution
   cena?: MealMacroDistribution
+}
+
+export interface MealConfiguration {
+  // Comidas principales
+  desayuno: boolean
+  almuerzo: boolean
+  merienda: boolean
+  cena: boolean
+  brunch: boolean
+  
+  // Comidas adicionales
+  media_manana: boolean
+  media_tarde: boolean
+  postre_almuerzo: boolean
+  postre_cena: boolean
+  dulce_siesta: boolean
+  pre_entreno: boolean
+  post_entreno: boolean
+  
+  // Alternativas
+  alternativas_dulces: boolean
+  alternativas_saladas: boolean
 }
 
 export interface NewPatientData {
@@ -87,12 +116,14 @@ export interface NewPatientData {
   comidas_principales: number
   colaciones: TipoColacion
   tipo_peso: TipoPeso
+  recipe_complexity: RecipeComplexity
   // Nuevos campos de personalización de macros
   carbs_percentage?: number
   protein_level?: ProteinLevel
   fat_percentage?: number
   distribution_type: DistributionType
   custom_meal_distribution?: CustomMealDistribution
+  meal_configuration?: MealConfiguration
   // Actividades, suplementos y medicamentos
   activities?: Array<{
     id: string

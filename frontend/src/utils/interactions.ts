@@ -144,7 +144,8 @@ export function checkSynergies(supplements: Supplement[]) {
           synergies.push({
             supplement1: suppKey,
             supplement2: synergySupp,
-            ...info
+            benefit: (info as any).benefit,
+            recommendation: (info as any).recommendation
           })
         }
       }

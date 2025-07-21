@@ -12,12 +12,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/components/ui/use-toast"
 import { RangeSlider } from "@/components/ui/range-slider"
 import { mealPlanService } from '@/services/api'
-import { MealPlanDisplay } from '@/components/MealPlanDisplay'
+import { MealPlanDisplayV2 } from '@/components/MealPlanDisplayV2'
 import { CustomDistribution } from './CustomDistribution'
 import { ActivitySelector } from './ActivitySelector'
 import { SupplementSelector } from './SupplementSelector'
 import { MedicationSelector } from './MedicationSelector'
 import { SupplementWarnings } from './SupplementWarnings'
+import { MealConfiguration } from './MealConfiguration'
 import { checkInteractions, checkDoseWarnings, checkSynergies } from '@/utils/interactions'
 import { Loader2 } from 'lucide-react'
 import { 
@@ -27,7 +28,8 @@ import {
   TipoPeso,
   TipoColacion,
   ProteinLevel,
-  DistributionType
+  DistributionType,
+  RecipeComplexity
 } from '@/types'
 import type { NewPatientData, MealPlanResponse } from '@/types'
 
@@ -52,6 +54,7 @@ const formSchema = z.object({
   comidas_principales: z.number().min(3).max(4),
   colaciones: z.nativeEnum(TipoColacion),
   tipo_peso: z.nativeEnum(TipoPeso),
+  recipe_complexity: z.nativeEnum(RecipeComplexity),
   // Nuevos campos
   carbs_percentage: z.number().min(0).max(55).optional(),
   protein_level: z.nativeEnum(ProteinLevel).optional(),
@@ -62,6 +65,8 @@ const formSchema = z.object({
   activities: z.array(z.any()).optional(),
   supplements: z.array(z.any()).optional(),
   medications: z.array(z.any()).optional(),
+  // Configuración de comidas
+  meal_configuration: z.any().optional(),
 })
 
 export function NewPatientForm() {
@@ -86,6 +91,7 @@ export function NewPatientForm() {
       comidas_principales: 4,
       colaciones: TipoColacion.no,
       tipo_peso: TipoPeso.crudo,
+      recipe_complexity: RecipeComplexity.mixta,
       distribution_type: DistributionType.traditional,
       activities: [],
       supplements: [],
@@ -502,6 +508,7 @@ export function NewPatientForm() {
                       <SupplementSelector
                         supplements={field.value || []}
                         onChange={field.onChange}
+                        bodyWeight={form.watch('peso')}
                       />
                     </FormControl>
                     <FormMessage />
@@ -604,6 +611,22 @@ export function NewPatientForm() {
             </CardContent>
           </Card>
 
+          <FormField
+            control={form.control}
+            name="meal_configuration"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <MealConfiguration
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <Card>
             <CardHeader>
               <CardTitle>Configuración del Plan</CardTitle>
@@ -695,10 +718,37 @@ export function NewPatientForm() {
                       <SelectContent>
                         <SelectItem value={TipoPeso.crudo}>Peso crudo</SelectItem>
                         <SelectItem value={TipoPeso.cocido}>Peso cocido</SelectItem>
+                        <SelectItem value={TipoPeso.ambas}>Ambas</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormDescription>
                       Las cantidades se mostrarán en gramos de alimento {field.value}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="recipe_complexity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preferencia de complejidad de recetas</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar complejidad" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={RecipeComplexity.simple}>Recetas simples</SelectItem>
+                        <SelectItem value={RecipeComplexity.elaborada}>Recetas elaboradas</SelectItem>
+                        <SelectItem value={RecipeComplexity.mixta}>Mixtas</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Elige el nivel de complejidad preferido para las recetas
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -884,7 +934,7 @@ export function NewPatientForm() {
       </Form>
 
       {mealPlanResult && (
-        <MealPlanDisplay 
+        <MealPlanDisplayV2 
           mealPlan={mealPlanResult.meal_plan} 
           pdfPath={mealPlanResult.pdf_path} 
         />
