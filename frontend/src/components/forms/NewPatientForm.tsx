@@ -26,7 +26,6 @@ import {
   Objetivo,
   NivelEconomico,
   TipoPeso,
-  TipoColacion,
   ProteinLevel,
   DistributionType,
   RecipeComplexity
@@ -52,7 +51,6 @@ const formSchema = z.object({
   nivel_economico: z.nativeEnum(NivelEconomico),
   notas_personales: z.string().optional(),
   comidas_principales: z.number().min(3).max(4),
-  colaciones: z.nativeEnum(TipoColacion),
   tipo_peso: z.nativeEnum(TipoPeso),
   recipe_complexity: z.nativeEnum(RecipeComplexity),
   // Nuevos campos
@@ -89,7 +87,6 @@ export function NewPatientForm() {
       nivel_economico: NivelEconomico.medio,
       notas_personales: '',
       comidas_principales: 4,
-      colaciones: TipoColacion.no,
       tipo_peso: TipoPeso.crudo,
       recipe_complexity: RecipeComplexity.mixta,
       distribution_type: DistributionType.traditional,
@@ -672,30 +669,6 @@ export function NewPatientForm() {
                       <SelectContent>
                         <SelectItem value="3">3 comidas</SelectItem>
                         <SelectItem value="4">4 comidas</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="colaciones"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Colaciones</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar tipo de colación" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={TipoColacion.no}>{TipoColacion.no}</SelectItem>
-                        <SelectItem value={TipoColacion.por_saciedad}>{TipoColacion.por_saciedad}</SelectItem>
-                        <SelectItem value={TipoColacion.pre_entreno}>{TipoColacion.pre_entreno}</SelectItem>
-                        <SelectItem value={TipoColacion.post_entreno}>{TipoColacion.post_entreno}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

@@ -61,6 +61,7 @@ class MealConfiguration(BaseModel):
     merienda: bool = True
     cena: bool = True
     brunch: bool = False  # Reemplaza desayuno y almuerzo
+    drunch: bool = False  # Reemplaza merienda y cena
     
     # Comidas adicionales
     media_manana: bool = False
@@ -125,7 +126,6 @@ class NewPatientRequest(BaseModel):
     nivel_economico: NivelEconomico = NivelEconomico.medio
     notas_personales: Optional[str] = None
     comidas_principales: int = Field(default=4, ge=3, le=4)
-    colaciones: TipoColacion = TipoColacion.no
     tipo_peso: TipoPeso = TipoPeso.crudo
     recipe_complexity: RecipeComplexity = RecipeComplexity.mixta
     

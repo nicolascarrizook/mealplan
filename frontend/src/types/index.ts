@@ -82,6 +82,7 @@ export interface MealConfiguration {
   merienda: boolean
   cena: boolean
   brunch: boolean
+  drunch: boolean  // Combinación de merienda y cena
   
   // Comidas adicionales
   media_manana: boolean

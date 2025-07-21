@@ -42,7 +42,7 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
             daily_calories,
             patient_data.comidas_principales,
             patient_data.distribution_type.value,
-            patient_data.colaciones != "No",
+            False,  # Ya no usamos colaciones, lo manejamos con meal_configuration
             patient_data.custom_meal_distribution
         )
         
@@ -50,6 +50,9 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
         protein_g = round((daily_calories * macro_distribution["proteinas"]) / 4)
         carbs_g = round((daily_calories * macro_distribution["carbohidratos"]) / 4)
         fat_g = round((daily_calories * macro_distribution["grasas"]) / 9)
+        
+        # Verificar si el objetivo de proteína es alcanzable
+        protein_warning_text = self._check_protein_feasibility(patient_data, protein_g)
         
         # Formatear objetivo para mostrar
         objetivo_text = self._format_objetivo(patient_data.objetivo)
@@ -63,6 +66,7 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
         activities_text = self._format_activities(patient_data.activities) if patient_data.activities else '- Tipo: ' + patient_data.tipo_actividad + '\n- Frecuencia: ' + str(patient_data.frecuencia_semanal) + 'x por semana\n- Duración: ' + str(patient_data.duracion_sesion) + ' minutos'
         supplements_text = self._format_supplements(patient_data.supplements, patient_data.medications) if patient_data.supplements else '- Suplementación: ' + (patient_data.suplementacion or 'Ninguna')
         medications_text = self._format_medications(patient_data.medications) if patient_data.medications else '- Patologías/Medicación: ' + (patient_data.patologias or 'Sin patologías')
+        meal_config_text = self._format_meal_configuration(patient_data.meal_configuration) if patient_data.meal_configuration else ''
         
         prompt = f"""
 {self.base_rules}
@@ -100,12 +104,15 @@ DISTRIBUCIÓN DE CALORÍAS POR COMIDA:
 
 {macro_note_text}
 
+{protein_warning_text}
+
 {custom_distribution_text}
 
 CONFIGURACIÓN DEL PLAN:
 - Comidas principales: {patient_data.comidas_principales}
-- Colaciones: {patient_data.colaciones}
 - Tipo de peso: Gramos en {patient_data.tipo_peso}
+
+{meal_config_text}
 
 RECETAS DISPONIBLES:
 {recipes_json}
@@ -120,13 +127,15 @@ INSTRUCCIONES PARA LA GENERACIÓN:
 5. Respetar las restricciones alimentarias y nivel económico
 6. Cada día debe tener exactamente las mismas comidas
 7. Incluir macros específicos para cada opción
-8. Calcular macros totales al final (basados en la opción 1 de cada comida)
+8. INCLUIR TODAS LAS COMIDAS CONFIGURADAS (principales + adicionales)
+9. Si hay suplementos configurados, incluirlos con las dosis especificadas
+10. Calcular macros totales al final (basados en la opción 1 de cada comida)
 
 FORMATO DE SALIDA ESPERADO:
 
 PLAN ALIMENTARIO - 3 DÍAS IGUALES
 
-DESAYUNO
+DESAYUNO [agregar "(2 hs post medicación)" si toma levotiroxina con fibra]
 OPCIÓN 1:
 - Receta: [REC_XXXX] - [Nombre de la receta]
 - Ingredientes con cantidades ajustadas:
@@ -155,8 +164,19 @@ MERIENDA
 CENA
 [Mismo formato con 3 opciones]
 
-COLACIÓN PRE/POST ENTRENO (si aplica)
-[Mismo formato]
+COMIDAS ADICIONALES (según configuración):
+- MEDIA MAÑANA (si aplica)
+- MEDIA TARDE (si aplica)
+- POSTRE ALMUERZO (si aplica)
+- POSTRE CENA (si aplica)
+- DULCE SIESTA (si aplica)
+- PRE-ENTRENO (si aplica)
+- POST-ENTRENO (si aplica)
+[Mismo formato con 3 opciones para cada una]
+
+SUPLEMENTACIÓN (si aplica):
+- Listar cada suplemento con su dosis específica
+- Incluir timing recomendado
 
 RESUMEN NUTRICIONAL DIARIO:
 - Proteínas: XXg
@@ -302,6 +322,29 @@ Calorías: XXX | XXX
             formatted.append(f"- {meal.capitalize()}: {int(calories)} kcal")
         return "\n".join(formatted)
     
+    def _check_protein_feasibility(self, patient_data: NewPatientRequest, target_protein_g: float) -> str:
+        """Verifica si el objetivo de proteína es alcanzable con los alimentos"""
+        if not patient_data.protein_level:
+            return ""
+        
+        # Calcular el objetivo real basado en el nivel de proteína
+        from ..utils.calculations import NutritionalCalculator
+        protein_g_per_kg = NutritionalCalculator.get_protein_grams_per_kg(patient_data.protein_level)
+        ideal_protein_g = patient_data.peso * protein_g_per_kg
+        
+        # Si hay una diferencia significativa (>10%), generar advertencia
+        difference_percentage = abs((target_protein_g - ideal_protein_g) / ideal_protein_g) * 100
+        
+        if difference_percentage > 10:
+            return f"""
+⚠️ ADVERTENCIA DE PROTEÍNA:
+- Objetivo ideal según nivel {patient_data.protein_level.value}: {ideal_protein_g:.0f}g ({protein_g_per_kg}g/kg)
+- Proteína calculada con las calorías disponibles: {target_protein_g:.0f}g
+- Diferencia: {difference_percentage:.0f}%
+- NOTA: No se pudo alcanzar el objetivo de proteína. Se requiere ajuste manual de porciones o agregar fuentes proteicas adicionales.
+"""
+        return ""
+    
     def _get_macro_customization_note(self, patient_data: NewPatientRequest) -> str:
         """Genera nota sobre personalización de macros si aplica"""
         notes = []
@@ -434,6 +477,7 @@ Calorías: XXX | XXX
         formatted = ["MEDICACIÓN:"]
         impacts = []
         considerations = []
+        has_t4_with_fiber = False
         
         for med in medications:
             formatted.append(f"- {med['name']}")
@@ -441,6 +485,10 @@ Calorías: XXX | XXX
                 impacts.append(f"  • {med['name']}: {med['impact']}")
             if med.get('considerations'):
                 considerations.append(f"  • {med['name']}: {med['considerations']}")
+            
+            # Detectar si es levotiroxina con timing de fibra
+            if med['name'].lower() == 'levotiroxina' and med.get('t4_timing') == 'con_fibra_2h':
+                has_t4_with_fiber = True
         
         if impacts:
             formatted.append("\nIMPACTOS NUTRICIONALES:")
@@ -449,6 +497,71 @@ Calorías: XXX | XXX
         if considerations:
             formatted.append("\nCONSIDERACIONES DIETÉTICAS:")
             formatted.extend(considerations)
+        
+        if has_t4_with_fiber:
+            formatted.append("\n⚠️ IMPORTANTE - LEVOTIROXINA:")
+            formatted.append("- El desayuno debe tomarse 2 HORAS después de la medicación")
+            formatted.append("- Agregar esta nota en el DESAYUNO: '(2 hs post medicación)'")
+        
+        return "\n".join(formatted)
+    
+    def _format_meal_configuration(self, meal_config: Optional[Dict]) -> str:
+        """Formatea la configuración de comidas para el prompt"""
+        if not meal_config:
+            return ""
+        
+        formatted = ["CONFIGURACIÓN DE COMIDAS:"]
+        
+        # Comidas principales
+        principales = []
+        if meal_config.get('brunch'):
+            principales.append("Brunch (reemplaza desayuno y almuerzo)")
+        else:
+            if meal_config.get('desayuno'):
+                principales.append("Desayuno")
+            if meal_config.get('almuerzo'):
+                principales.append("Almuerzo")
+        
+        if meal_config.get('drunch'):
+            principales.append("Drunch (reemplaza merienda y cena)")
+        else:
+            if meal_config.get('merienda'):
+                principales.append("Merienda")
+            if meal_config.get('cena'):
+                principales.append("Cena")
+        
+        if principales:
+            formatted.append(f"- Comidas principales: {', '.join(principales)}")
+        
+        # Comidas adicionales
+        adicionales = []
+        if meal_config.get('media_manana'):
+            adicionales.append("Media mañana")
+        if meal_config.get('media_tarde'):
+            adicionales.append("Media tarde")
+        if meal_config.get('postre_almuerzo'):
+            adicionales.append("Postre almuerzo")
+        if meal_config.get('postre_cena'):
+            adicionales.append("Postre cena")
+        if meal_config.get('dulce_siesta'):
+            adicionales.append("Dulce siesta")
+        if meal_config.get('pre_entreno'):
+            adicionales.append("Pre-entreno")
+        if meal_config.get('post_entreno'):
+            adicionales.append("Post-entreno")
+        
+        if adicionales:
+            formatted.append(f"- Comidas adicionales: {', '.join(adicionales)}")
+        
+        # Alternativas
+        alternativas = []
+        if meal_config.get('alternativas_dulces'):
+            alternativas.append("dulces")
+        if meal_config.get('alternativas_saladas'):
+            alternativas.append("saladas")
+        
+        if alternativas:
+            formatted.append(f"- Incluir alternativas {' y '.join(alternativas)} para cada comida")
         
         return "\n".join(formatted)
     

@@ -19,6 +19,7 @@ export function MealConfiguration({ value, onChange }: MealConfigurationProps) {
     merienda: true,
     cena: true,
     brunch: false,
+    drunch: false,
     media_manana: false,
     media_tarde: false,
     postre_almuerzo: false,
@@ -43,9 +44,20 @@ export function MealConfiguration({ value, onChange }: MealConfigurationProps) {
       newConfig.almuerzo = false
     }
     
+    // Si se selecciona drunch, desactivar merienda y cena
+    if (meal === 'drunch' && checked) {
+      newConfig.merienda = false
+      newConfig.cena = false
+    }
+    
     // Si se selecciona desayuno o almuerzo, desactivar brunch
     if ((meal === 'desayuno' || meal === 'almuerzo') && checked) {
       newConfig.brunch = false
+    }
+    
+    // Si se selecciona merienda o cena, desactivar drunch
+    if ((meal === 'merienda' || meal === 'cena') && checked) {
+      newConfig.drunch = false
     }
     
     setConfig(newConfig)
@@ -92,7 +104,8 @@ export function MealConfiguration({ value, onChange }: MealConfigurationProps) {
               <Checkbox
                 id="merienda"
                 checked={config.merienda}
-                onCheckedChange={(checked: boolean) => setConfig({ ...config, merienda: checked })}
+                onCheckedChange={(checked: boolean) => handleMainMealChange('merienda', checked)}
+                disabled={config.drunch}
               />
               <Label htmlFor="merienda" className="cursor-pointer">
                 Merienda
@@ -103,7 +116,8 @@ export function MealConfiguration({ value, onChange }: MealConfigurationProps) {
               <Checkbox
                 id="cena"
                 checked={config.cena}
-                onCheckedChange={(checked: boolean) => setConfig({ ...config, cena: checked })}
+                onCheckedChange={(checked: boolean) => handleMainMealChange('cena', checked)}
+                disabled={config.drunch}
               />
               <Label htmlFor="cena" className="cursor-pointer">
                 Cena
@@ -120,6 +134,17 @@ export function MealConfiguration({ value, onChange }: MealConfigurationProps) {
                 Brunch
               </Label>
             </div>
+            
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="drunch"
+                checked={config.drunch}
+                onCheckedChange={(checked: boolean) => handleMainMealChange('drunch', checked)}
+              />
+              <Label htmlFor="drunch" className="cursor-pointer">
+                Drunch
+              </Label>
+            </div>
           </div>
           
           {config.brunch && (
@@ -127,6 +152,15 @@ export function MealConfiguration({ value, onChange }: MealConfigurationProps) {
               <Info className="h-4 w-4" />
               <AlertDescription>
                 El brunch reemplaza al desayuno y almuerzo combinándolos en una sola comida
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {config.drunch && (
+            <Alert className="mt-3">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                El drunch reemplaza a la merienda y cena combinándolos en una sola comida
               </AlertDescription>
             </Alert>
           )}
@@ -261,10 +295,11 @@ export function MealConfiguration({ value, onChange }: MealConfigurationProps) {
               <span className="font-medium">Principales:</span>{' '}
               {[
                 config.brunch ? 'Brunch' : null,
+                config.drunch ? 'Drunch' : null,
                 config.desayuno && !config.brunch ? 'Desayuno' : null,
                 config.almuerzo && !config.brunch ? 'Almuerzo' : null,
-                config.merienda ? 'Merienda' : null,
-                config.cena ? 'Cena' : null,
+                config.merienda && !config.drunch ? 'Merienda' : null,
+                config.cena && !config.drunch ? 'Cena' : null,
               ].filter(Boolean).join(', ') || 'Ninguna'}
             </p>
             <p>

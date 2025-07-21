@@ -297,7 +297,7 @@ export function ActivitySelector({ activities, onChange, bodyWeight = 70 }: Acti
                 <div key={activity.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex-1">
                     <p className="font-medium text-sm">{activity.name}</p>
-                    {!activity.isManual && (
+                    {!activity.isManual && activity.duration && activity.frequency && (
                       <p className="text-xs text-muted-foreground">
                         {activity.duration} min • {activity.frequency}x/semana
                       </p>
