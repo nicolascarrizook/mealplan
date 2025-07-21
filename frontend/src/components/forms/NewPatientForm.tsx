@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
 import { RangeSlider } from "@/components/ui/range-slider"
+import { LoadingOverlay } from "@/components/ui/loading-overlay"
 import { mealPlanService } from '@/services/api'
 import { MealPlanDisplayV2 } from '@/components/MealPlanDisplayV2'
 import { CustomDistribution } from './CustomDistribution'
@@ -277,6 +278,7 @@ export function NewPatientForm() {
 
   return (
     <>
+      <LoadingOverlay isOpen={isLoading} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <Card>
