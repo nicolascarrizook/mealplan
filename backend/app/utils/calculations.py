@@ -2,7 +2,7 @@
 Cálculos nutricionales y de macronutrientes
 """
 
-from typing import Dict, Tuple, Optional, List
+from typing import Dict, Tuple, Optional, List, Any
 from ..schemas.meal_plan import NewPatientRequest, Objetivo, ProteinLevel
 from ..data.pathologies import (
     PathologyType,
