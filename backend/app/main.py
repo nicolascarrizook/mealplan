@@ -1,8 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import os
 import logging
+import aiofiles
+from typing import Dict
 from .config import settings
 from .schemas.meal_plan import (
     NewPatientRequest, 
@@ -16,6 +18,7 @@ from .services.openai_service import OpenAIService
 from .services.pdf_generator import PDFGenerator
 from .services.recipe_manager import RecipeManager
 from .services.meal_plan_processor import MealPlanProcessor
+from .services.file_parser import FileParser
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +44,7 @@ openai_service = OpenAIService()
 pdf_generator = PDFGenerator()
 recipe_manager = RecipeManager()
 meal_plan_processor = MealPlanProcessor(recipe_manager)
+file_parser = FileParser()
 
 @app.on_event("startup")
 async def startup_event():
@@ -231,6 +235,123 @@ async def download_pdf(filename: str):
         media_type="application/pdf",
         filename=filename
     )
+
+@app.post("/api/meal-plans/control/upload")
+async def upload_control_file(file: UploadFile = File(...)):
+    """Upload and extract data from control file (PDF, Excel, CSV, or Image)"""
+    try:
+        # Validate file type
+        allowed_types = ['pdf', 'xlsx', 'xls', 'csv', 'jpg', 'jpeg', 'png']
+        file_extension = file.filename.split('.')[-1].lower()
+        
+        if file_extension not in allowed_types:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Tipo de archivo no soportado. Formatos permitidos: {', '.join(allowed_types)}"
+            )
+        
+        # Create temp directory if it doesn't exist
+        temp_dir = "./temp_uploads"
+        os.makedirs(temp_dir, exist_ok=True)
+        
+        # Save uploaded file temporarily
+        temp_path = os.path.join(temp_dir, file.filename)
+        
+        async with aiofiles.open(temp_path, 'wb') as f:
+            content = await file.read()
+            await f.write(content)
+        
+        try:
+            # Parse file and extract data
+            extracted_data = file_parser.parse_file(temp_path, file_extension)
+            
+            # Clean up temp file
+            os.remove(temp_path)
+            
+            return {
+                "success": True,
+                "data": extracted_data,
+                "message": "Archivo procesado exitosamente"
+            }
+            
+        except Exception as e:
+            # Clean up temp file on error
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise e
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error processing uploaded file: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al procesar el archivo: {str(e)}"
+        )
+
+@app.get("/api/meal-plans/control/template")
+async def download_control_template():
+    """Download Excel template for control data"""
+    try:
+        # Generate template
+        template_path = "./generated_pdfs/control_template.xlsx"
+        file_parser.generate_excel_template(template_path)
+        
+        return FileResponse(
+            template_path,
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            filename="plantilla_control_pacientes.xlsx"
+        )
+        
+    except Exception as e:
+        logger.error(f"Error generating template: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al generar la plantilla: {str(e)}"
+        )
+
+@app.post("/api/meal-plans/control/extract-text")
+async def extract_text_from_file(file: UploadFile = File(...)):
+    """Extract raw text from uploaded file (for debugging/preview)"""
+    try:
+        # Validate file type
+        allowed_types = ['pdf', 'jpg', 'jpeg', 'png']
+        file_extension = file.filename.split('.')[-1].lower()
+        
+        if file_extension not in allowed_types:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Solo se permite extraer texto de: {', '.join(allowed_types)}"
+            )
+        
+        content = await file.read()
+        
+        if file_extension == 'pdf':
+            # Save temporarily and extract
+            temp_path = f"./temp_uploads/{file.filename}"
+            os.makedirs("./temp_uploads", exist_ok=True)
+            
+            with open(temp_path, 'wb') as f:
+                f.write(content)
+            
+            text = file_parser.pdf_extractor.extract_text_from_pdf(temp_path)
+            os.remove(temp_path)
+            
+        else:  # Image
+            text = file_parser.image_extractor.extract_text_from_bytes(content)
+        
+        return {
+            "success": True,
+            "text": text,
+            "length": len(text)
+        }
+        
+    except Exception as e:
+        logger.error(f"Error extracting text: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al extraer texto: {str(e)}"
+        )
 
 if __name__ == "__main__":
     import uvicorn

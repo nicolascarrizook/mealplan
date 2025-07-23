@@ -8,6 +8,18 @@ const api = axios.create({
   },
 })
 
+export interface UploadResponse {
+  success: boolean
+  data: ControlPatientData
+  message: string
+}
+
+export interface ExtractTextResponse {
+  success: boolean
+  text: string
+  length: number
+}
+
 export const mealPlanService = {
   generateNewPatientPlan: async (data: NewPatientData): Promise<MealPlanResponse> => {
     const response = await api.post('/meal-plans/new-patient', data)
@@ -26,6 +38,34 @@ export const mealPlanService = {
 
   downloadPdf: (filename: string) => {
     window.open(`/api/meal-plans/download/${filename}`, '_blank')
+  },
+
+  uploadControlFile: async (file: File): Promise<UploadResponse> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    const response = await api.post('/meal-plans/control/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  },
+
+  extractTextFromFile: async (file: File): Promise<ExtractTextResponse> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    const response = await api.post('/meal-plans/control/extract-text', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  },
+
+  downloadControlTemplate: () => {
+    window.open(`/api/meal-plans/control/template`, '_blank')
   },
 }
 

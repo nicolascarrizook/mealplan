@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/components/ui/use-toast"
 import { mealPlanService } from '@/services/api'
 import { MealPlanDisplay } from '@/components/MealPlanDisplay'
+import { FileUpload } from '@/components/FileUpload'
 import { Loader2 } from 'lucide-react'
 import type { ControlPatientData, MealPlanResponse } from '@/types'
 
@@ -78,10 +79,34 @@ export function ControlForm() {
 
   const pesoDiff = form.watch('peso_actual') - form.watch('peso_anterior')
 
+  const handleDataExtracted = (data: Partial<ControlPatientData>) => {
+    // Update form with extracted data
+    if (data.nombre) form.setValue('nombre', data.nombre)
+    if (data.fecha_control) form.setValue('fecha_control', data.fecha_control)
+    if (data.peso_anterior) form.setValue('peso_anterior', data.peso_anterior)
+    if (data.peso_actual) form.setValue('peso_actual', data.peso_actual)
+    if (data.objetivo_actualizado) form.setValue('objetivo_actualizado', data.objetivo_actualizado)
+    if (data.tipo_actividad_actual) form.setValue('tipo_actividad_actual', data.tipo_actividad_actual)
+    if (data.frecuencia_actual) form.setValue('frecuencia_actual', data.frecuencia_actual)
+    if (data.duracion_actual) form.setValue('duracion_actual', data.duracion_actual)
+    if (data.agregar) form.setValue('agregar', data.agregar)
+    if (data.sacar) form.setValue('sacar', data.sacar)
+    if (data.dejar) form.setValue('dejar', data.dejar)
+    if (data.plan_anterior) form.setValue('plan_anterior', data.plan_anterior)
+    
+    toast({
+      title: "Datos cargados",
+      description: "Se han pre-llenado los campos con los datos extraídos. Por favor, revisa y completa la información faltante.",
+    })
+  }
+
   return (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* File Upload Section */}
+          <FileUpload onDataExtracted={handleDataExtracted} />
+
           <Card>
             <CardHeader>
               <CardTitle>Datos del Control</CardTitle>
