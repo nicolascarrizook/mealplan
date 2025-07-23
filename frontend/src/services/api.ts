@@ -12,6 +12,7 @@ export interface UploadResponse {
   success: boolean
   data: ControlPatientData
   message: string
+  method_used?: string
 }
 
 export interface ExtractTextResponse {
@@ -40,11 +41,11 @@ export const mealPlanService = {
     window.open(`/api/meal-plans/download/${filename}`, '_blank')
   },
 
-  uploadControlFile: async (file: File): Promise<UploadResponse> => {
+  uploadControlFile: async (file: File, method: 'ocr' | 'vision' | 'auto' = 'auto'): Promise<UploadResponse> => {
     const formData = new FormData()
     formData.append('file', file)
     
-    const response = await api.post('/meal-plans/control/upload', formData, {
+    const response = await api.post(`/meal-plans/control/upload?method=${method}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

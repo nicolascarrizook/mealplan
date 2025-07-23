@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react'
-import { Upload, FileText, Image, Table, X, Download } from 'lucide-react'
+import { Upload, FileText, Image, Table, X, Download, Eye, Cpu } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import { mealPlanService } from '@/services/api'
 import type { ControlPatientData } from '@/types'
@@ -14,6 +16,7 @@ export function FileUpload({ onDataExtracted }: FileUploadProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const [extractionMethod, setExtractionMethod] = useState<'ocr' | 'vision' | 'auto'>('auto')
   const { toast } = useToast()
 
   const acceptedTypes = {
@@ -60,12 +63,17 @@ export function FileUpload({ onDataExtracted }: FileUploadProps) {
     setIsUploading(true)
 
     try {
-      const response = await mealPlanService.uploadControlFile(file)
+      // Only use selected method for images
+      const method = file.type.startsWith('image/') ? extractionMethod : 'auto'
+      const response = await mealPlanService.uploadControlFile(file, method)
       
       if (response.success) {
+        const methodUsed = response.method_used === 'vision' ? 'Visión AI' : 
+                          response.method_used === 'ocr' ? 'OCR' : 'Estándar'
+        
         toast({
           title: "Archivo procesado exitosamente",
-          description: response.message,
+          description: `${response.message} (Método: ${methodUsed})`,
         })
         
         // Pass extracted data to parent component
@@ -159,7 +167,7 @@ export function FileUpload({ onDataExtracted }: FileUploadProps) {
               </p>
             </div>
           ) : (
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-lg p-4 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   {getFileIcon()}
@@ -181,12 +189,47 @@ export function FileUpload({ onDataExtracted }: FileUploadProps) {
                 )}
               </div>
               
+              {/* Show extraction method options for images */}
+              {uploadedFile.type.startsWith('image/') && !isUploading && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Método de extracción:</Label>
+                  <RadioGroup
+                    value={extractionMethod}
+                    onValueChange={(value) => setExtractionMethod(value as 'ocr' | 'vision' | 'auto')}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="auto" id="auto" />
+                      <Label htmlFor="auto" className="flex items-center gap-2 cursor-pointer">
+                        <span className="text-purple-600">⚡</span>
+                        Automático (Recomendado)
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="vision" id="vision" />
+                      <Label htmlFor="vision" className="flex items-center gap-2 cursor-pointer">
+                        <Eye className="h-4 w-4 text-blue-600" />
+                        Visión AI (Más preciso)
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="ocr" id="ocr" />
+                      <Label htmlFor="ocr" className="flex items-center gap-2 cursor-pointer">
+                        <Cpu className="h-4 w-4 text-green-600" />
+                        OCR (Más rápido)
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+              
               {isUploading && (
                 <div className="mt-4">
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div className="bg-primary h-2 rounded-full animate-pulse" style={{ width: '70%' }} />
                   </div>
-                  <p className="text-sm text-gray-500 mt-2">Procesando archivo...</p>
+                  <p className="text-sm text-gray-500 mt-2">
+                    {extractionMethod === 'vision' ? 'Analizando imagen con AI...' : 'Procesando archivo...'}
+                  </p>
                 </div>
               )}
             </div>
@@ -197,7 +240,9 @@ export function FileUpload({ onDataExtracted }: FileUploadProps) {
             <ul className="text-sm text-blue-800 space-y-1">
               <li>• <strong>PDF</strong>: Sube el plan anterior generado por el sistema</li>
               <li>• <strong>Excel/CSV</strong>: Usa nuestra plantilla para múltiples pacientes</li>
-              <li>• <strong>Imagen</strong>: Toma una foto del plan anterior (se extraerá el texto)</li>
+              <li>• <strong>Imagen</strong>: Toma una foto del plan anterior</li>
+              <li className="ml-4">- <strong>Visión AI</strong>: Usa GPT-4 Vision para mejor precisión</li>
+              <li className="ml-4">- <strong>OCR</strong>: Extracción rápida de texto tradicional</li>
             </ul>
           </div>
         </div>

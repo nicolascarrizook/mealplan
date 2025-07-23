@@ -4,16 +4,17 @@ import re
 from typing import Dict, Optional
 import logging
 import io
+import asyncio
 
 logger = logging.getLogger(__name__)
 
 class ImageExtractor:
-    """Extract text from images using OCR"""
+    """Extract text from images using OCR or AI Vision"""
     
-    def __init__(self):
+    def __init__(self, openai_service=None):
         # Configure pytesseract if needed
         # pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'  # Adjust path if needed
-        pass
+        self.openai_service = openai_service
     
     def extract_text_from_image(self, image_path: str) -> str:
         """Extract text from image using OCR"""
@@ -209,3 +210,85 @@ class ImageExtractor:
         # This is a simplified approach - in production you'd want more sophisticated error correction
         
         return text
+    
+    async def extract_with_vision(self, image_bytes: bytes) -> Dict:
+        """Extract meal plan data using GPT-4 Vision"""
+        if not self.openai_service:
+            raise ValueError("OpenAI service not configured for Vision extraction")
+        
+        try:
+            # Use GPT-4 Vision to analyze the image
+            vision_data = await self.openai_service.analyze_meal_plan_image(image_bytes)
+            
+            # Convert Vision response to our standard format
+            return self._convert_vision_to_standard_format(vision_data)
+            
+        except Exception as e:
+            logger.error(f"Error using GPT-4 Vision: {e}")
+            raise ValueError(f"No se pudo analizar la imagen con Vision AI: {str(e)}")
+    
+    def extract_with_vision_sync(self, image_bytes: bytes) -> Dict:
+        """Synchronous wrapper for Vision extraction"""
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            return loop.run_until_complete(self.extract_with_vision(image_bytes))
+        finally:
+            loop.close()
+    
+    def _convert_vision_to_standard_format(self, vision_data: Dict) -> Dict:
+        """Convert GPT-4 Vision response to standard format"""
+        data = {
+            "nombre": vision_data.get("nombre"),
+            "peso_anterior": None,
+            "plan_anterior": "",
+            "fecha": vision_data.get("fecha"),
+            "calorias_totales": vision_data.get("calorias_totales"),
+            "macros": vision_data.get("macros", {}),
+            "comidas": vision_data.get("comidas", {}),
+            "actividad": vision_data.get("actividad_fisica"),
+            "observaciones": vision_data.get("observaciones")
+        }
+        
+        # Try to extract weight from observations or other fields
+        if vision_data.get("peso_anterior"):
+            try:
+                data["peso_anterior"] = float(str(vision_data["peso_anterior"]).replace(",", "."))
+            except:
+                pass
+        
+        # Build plan_anterior from all available data
+        plan_parts = []
+        
+        if data["nombre"]:
+            plan_parts.append(f"Paciente: {data['nombre']}")
+        
+        if data["fecha"]:
+            plan_parts.append(f"Fecha: {data['fecha']}")
+        
+        if data["calorias_totales"]:
+            plan_parts.append(f"Calorías totales: {data['calorias_totales']} kcal")
+        
+        if data["macros"]:
+            macros = data["macros"]
+            if macros.get("proteinas"):
+                plan_parts.append(f"Proteínas: {macros['proteinas']}g")
+            if macros.get("carbohidratos"):
+                plan_parts.append(f"Carbohidratos: {macros['carbohidratos']}g")
+            if macros.get("grasas"):
+                plan_parts.append(f"Grasas: {macros['grasas']}g")
+        
+        # Add meals
+        for meal_type, meal_desc in data["comidas"].items():
+            if meal_desc:
+                plan_parts.append(f"\n{meal_type.upper()}:\n{meal_desc}")
+        
+        if data["actividad"]:
+            plan_parts.append(f"\nActividad física: {data['actividad']}")
+        
+        if data["observaciones"]:
+            plan_parts.append(f"\nObservaciones: {data['observaciones']}")
+        
+        data["plan_anterior"] = "\n".join(plan_parts)
+        
+        return data

@@ -4,7 +4,7 @@ from fastapi.responses import FileResponse
 import os
 import logging
 import aiofiles
-from typing import Dict
+from typing import Dict, Optional
 from .config import settings
 from .schemas.meal_plan import (
     NewPatientRequest, 
@@ -44,7 +44,7 @@ openai_service = OpenAIService()
 pdf_generator = PDFGenerator()
 recipe_manager = RecipeManager()
 meal_plan_processor = MealPlanProcessor(recipe_manager)
-file_parser = FileParser()
+file_parser = FileParser(openai_service=openai_service)
 
 @app.on_event("startup")
 async def startup_event():
@@ -237,8 +237,16 @@ async def download_pdf(filename: str):
     )
 
 @app.post("/api/meal-plans/control/upload")
-async def upload_control_file(file: UploadFile = File(...)):
-    """Upload and extract data from control file (PDF, Excel, CSV, or Image)"""
+async def upload_control_file(
+    file: UploadFile = File(...),
+    method: Optional[str] = "auto"
+):
+    """Upload and extract data from control file (PDF, Excel, CSV, or Image)
+    
+    Args:
+        file: The uploaded file
+        method: Extraction method for images - 'ocr', 'vision', or 'auto' (default)
+    """
     try:
         # Validate file type
         allowed_types = ['pdf', 'xlsx', 'xls', 'csv', 'jpg', 'jpeg', 'png']
@@ -248,6 +256,13 @@ async def upload_control_file(file: UploadFile = File(...)):
             raise HTTPException(
                 status_code=400, 
                 detail=f"Tipo de archivo no soportado. Formatos permitidos: {', '.join(allowed_types)}"
+            )
+        
+        # Validate method parameter
+        if method not in ['ocr', 'vision', 'auto']:
+            raise HTTPException(
+                status_code=400,
+                detail="Método inválido. Use 'ocr', 'vision', o 'auto'"
             )
         
         # Create temp directory if it doesn't exist
@@ -262,8 +277,13 @@ async def upload_control_file(file: UploadFile = File(...)):
             await f.write(content)
         
         try:
-            # Parse file and extract data
-            extracted_data = file_parser.parse_file(temp_path, file_extension)
+            # Parse file and extract data with specified method
+            if file_extension in ['jpg', 'jpeg', 'png']:
+                extracted_data = file_parser.parse_file_with_method(temp_path, file_extension, method)
+                extraction_method = "vision" if method == "vision" or (method == "auto" and file_parser.openai_service) else "ocr"
+            else:
+                extracted_data = file_parser.parse_file(temp_path, file_extension)
+                extraction_method = "standard"
             
             # Clean up temp file
             os.remove(temp_path)
@@ -271,7 +291,8 @@ async def upload_control_file(file: UploadFile = File(...)):
             return {
                 "success": True,
                 "data": extracted_data,
-                "message": "Archivo procesado exitosamente"
+                "message": f"Archivo procesado exitosamente usando {extraction_method}",
+                "method_used": extraction_method
             }
             
         except Exception as e:

@@ -6,16 +6,18 @@ import logging
 from .pdf_extractor import PDFExtractor
 from .excel_extractor import ExcelExtractor
 from .image_extractor import ImageExtractor
+from .openai_service import OpenAIService
 
 logger = logging.getLogger(__name__)
 
 class FileParser:
     """Main parser to handle different file types and extract control data"""
     
-    def __init__(self):
+    def __init__(self, openai_service: Optional[OpenAIService] = None):
         self.pdf_extractor = PDFExtractor()
         self.excel_extractor = ExcelExtractor()
-        self.image_extractor = ImageExtractor()
+        self.openai_service = openai_service
+        self.image_extractor = ImageExtractor(openai_service=openai_service)
     
     def parse_file(self, file_path: str, file_type: str) -> Dict:
         """Parse file based on its type and return structured data"""
@@ -107,10 +109,24 @@ class FileParser:
         
         return control_data
     
-    def _parse_image(self, file_path: str) -> Dict:
-        """Parse image file using OCR"""
+    def _parse_image(self, file_path: str, use_vision: bool = False) -> Dict:
+        """Parse image file using OCR or Vision AI"""
         
-        # Extract text using OCR
+        if use_vision and self.openai_service:
+            # Use GPT-4 Vision
+            try:
+                with open(file_path, 'rb') as f:
+                    image_bytes = f.read()
+                
+                image_data = self.image_extractor.extract_with_vision_sync(image_bytes)
+                control_data = self._convert_to_control_format(image_data)
+                return control_data
+                
+            except Exception as e:
+                logger.warning(f"Vision extraction failed, falling back to OCR: {e}")
+                # Fall back to OCR if Vision fails
+        
+        # Use traditional OCR
         ocr_text = self.image_extractor.extract_text_from_image(file_path)
         
         # Extract structured data
@@ -120,6 +136,25 @@ class FileParser:
         control_data = self._convert_to_control_format(image_data)
         
         return control_data
+    
+    def parse_file_with_method(self, file_path: str, file_type: str, method: str = "auto") -> Dict:
+        """Parse file with specified extraction method
+        
+        Args:
+            file_path: Path to the file
+            file_type: Type of file
+            method: Extraction method - 'ocr', 'vision', or 'auto'
+        """
+        
+        file_type = file_type.lower()
+        
+        # For images, check if we should use vision
+        if file_type in ['image', 'jpg', 'jpeg', 'png'] or file_path.lower().endswith(('.jpg', '.jpeg', '.png')):
+            use_vision = method == 'vision' or (method == 'auto' and self.openai_service is not None)
+            return self._parse_image(file_path, use_vision=use_vision)
+        
+        # For other file types, use standard parsing
+        return self.parse_file(file_path, file_type)
     
     def _convert_to_control_format(self, data: Dict) -> Dict:
         """Convert extracted data to control form format"""
