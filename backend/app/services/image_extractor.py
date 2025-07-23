@@ -177,14 +177,16 @@ class ImageExtractor:
             line = line.strip()
             
             # Check if line is a meal header
+            is_meal_header = False
             for meal, keywords in meal_keywords.items():
                 if any(keyword in line for keyword in keywords):
                     current_meal = meal
                     data["comidas"][meal] = ""
+                    is_meal_header = True
                     break
             
-            # Add content to current meal
-            elif current_meal and line and not any(k in line for keywords in meal_keywords.values() for k in keywords):
+            # Add content to current meal if it's not a meal header
+            if not is_meal_header and current_meal and line:
                 data["comidas"][current_meal] += line + " "
         
         # Clean up meal descriptions
