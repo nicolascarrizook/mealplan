@@ -4,6 +4,13 @@ Cálculos nutricionales y de macronutrientes
 
 from typing import Dict, Tuple, Optional, List
 from ..schemas.meal_plan import NewPatientRequest, Objetivo, ProteinLevel
+from ..data.pathologies import (
+    PathologyType,
+    detect_pathologies_from_text,
+    get_nutritional_adjustments,
+    get_pregnancy_info
+)
+from .pregnancy import PregnancyManager
 
 class NutritionalCalculator:
     """Calculadora de requerimientos nutricionales"""
@@ -83,15 +90,21 @@ class NutritionalCalculator:
         
         adjustment = objetivo_adjustments.get(patient.objetivo, 0)
         
-        # Ajustes adicionales por patologías
+        # Detectar patologías usando la nueva estructura
         if patient.patologias:
-            pathologies_lower = patient.patologias.lower()
-            if "diabetes" in pathologies_lower or "resistencia a la insulina" in pathologies_lower:
-                # Reducir ligeramente las calorías para mejorar sensibilidad a insulina
-                adjustment -= 100
-            elif "hipotiroidismo" in pathologies_lower:
-                # Reducir calorías por metabolismo más lento
-                adjustment -= 150
+            detected_pathologies = detect_pathologies_from_text(patient.patologias)
+            
+            # Obtener ajustes nutricionales combinados
+            nutritional_adjustments = get_nutritional_adjustments(detected_pathologies)
+            calories_adjustment = nutritional_adjustments.get("calories_adjustment", 0)
+            adjustment += calories_adjustment
+            
+            # Verificar si hay embarazo
+            pregnancy_info = get_pregnancy_info(detected_pathologies)
+            if pregnancy_info:
+                # Los ajustes de embarazo ya están incluidos en nutritional_adjustments
+                # pero podemos hacer ajustes adicionales si es necesario
+                pass
         
         return round(tdee + adjustment)
     
@@ -153,14 +166,24 @@ class NutritionalCalculator:
                 "grasas": 0.30
             }
         
-        # Ajustes por patologías
+        # Detectar patologías y ajustar distribución
         if patient.patologias:
-            pathologies_lower = patient.patologias.lower()
-            if any(cond in pathologies_lower for cond in ["diabetes", "resistencia a la insulina", "hígado graso"]):
-                # Reducir carbohidratos, aumentar proteína
-                distribution["carbohidratos"] = 0.35
-                distribution["proteinas"] = 0.35
-                distribution["grasas"] = 0.30
+            detected_pathologies = detect_pathologies_from_text(patient.patologias)
+            
+            # Obtener ajustes nutricionales combinados
+            nutritional_adjustments = get_nutritional_adjustments(detected_pathologies)
+            
+            # Si hay porcentajes específicos de macros por patología, usarlos
+            if nutritional_adjustments.get("carbs_percentage") is not None:
+                distribution["carbohidratos"] = nutritional_adjustments["carbs_percentage"] / 100
+                distribution["proteinas"] = nutritional_adjustments.get("protein_percentage", 30) / 100
+                distribution["grasas"] = nutritional_adjustments.get("fat_percentage", 30) / 100
+                
+                # Asegurar que sumen 100%
+                total = sum(distribution.values())
+                if abs(total - 1.0) > 0.02:
+                    # Ajustar grasas para que sume 100%
+                    distribution["grasas"] = 1.0 - distribution["carbohidratos"] - distribution["proteinas"]
         
         return distribution
     
@@ -272,3 +295,40 @@ class NutritionalCalculator:
         
         # Redondear valores
         return {meal: round(calories) for meal, calories in distribution.items()}
+    
+    @staticmethod
+    def calculate_pregnancy_adjusted_requirements(patient: NewPatientRequest) -> Optional[Dict[str, Any]]:
+        """
+        Calcula requerimientos ajustados para embarazo si aplica
+        Retorna None si no hay embarazo
+        """
+        pregnancy_manager = PregnancyManager()
+        
+        # Crear un diccionario con los datos del paciente
+        patient_data = {
+            "patologias": patient.patologias or "",
+            "prom": getattr(patient, "prom", "")  # Por si se agrega este campo en el futuro
+        }
+        
+        # Detectar embarazo
+        pregnancy_info = pregnancy_manager.detect_pregnancy(patient_data)
+        if not pregnancy_info:
+            return None
+        
+        # Calcular calorías base
+        base_calories = NutritionalCalculator.calculate_daily_calories(patient)
+        
+        # Calcular requerimientos ajustados para embarazo
+        pregestational_weight = getattr(patient, "peso_pregestacional", None)
+        requirements = pregnancy_manager.calculate_pregnancy_requirements(
+            base_calories=base_calories,
+            weight=patient.peso,
+            pregestational_weight=pregestational_weight,
+            trimester=pregnancy_info["trimester"],
+            additional_conditions=pregnancy_info.get("additional_conditions", [])
+        )
+        
+        # Agregar información del embarazo
+        requirements["pregnancy_info"] = pregnancy_info
+        
+        return requirements

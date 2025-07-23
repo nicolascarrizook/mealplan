@@ -1,7 +1,10 @@
 import json
 import os
+import logging
 from typing import Dict, List, Optional, Tuple
 from ..schemas.meal_plan import NivelEconomico
+
+logger = logging.getLogger(__name__)
 
 class RecipeManager:
     def __init__(self):
@@ -20,7 +23,7 @@ class RecipeManager:
         json_path = os.path.join(os.path.dirname(__file__), "../../data/recipes_structured.json")
         
         if not os.path.exists(json_path):
-            print(f"Warning: recipes file not found at {json_path}")
+            logger.warning(f"Recipes file not found at {json_path}")
             return
             
         with open(json_path, 'r', encoding='utf-8') as f:

@@ -21,7 +21,7 @@ import { MedicationSelector } from './MedicationSelector'
 import { SupplementWarnings } from './SupplementWarnings'
 import { MealConfiguration } from './MealConfiguration'
 import { checkInteractions, checkDoseWarnings, checkSynergies } from '@/utils/interactions'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Info } from 'lucide-react'
 import { 
   Sexo,
   Objetivo,
@@ -603,6 +603,51 @@ export function NewPatientForm() {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Sección de Condiciones Médicas */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Condiciones Médicas</CardTitle>
+              <CardDescription>Patologías o condiciones de salud relevantes para el plan nutricional</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <FormField
+                control={form.control}
+                name="patologias"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center gap-2">
+                      <FormLabel>Patologías o condiciones médicas</FormLabel>
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ej: diabetes tipo 2, hipertensión, hipotiroidismo, celiaquía, embarazo segundo trimestre..."
+                        {...field}
+                        value={field.value || ''}
+                        className="min-h-[100px]"
+                      />
+                    </FormControl>
+                    <FormDescription className="space-y-2">
+                      <p>Ingrese las condiciones médicas del paciente. El sistema ajustará automáticamente:</p>
+                      <ul className="text-xs list-disc list-inside text-muted-foreground space-y-1">
+                        <li>Calorías y distribución de macronutrientes</li>
+                        <li>Restricciones alimentarias específicas</li>
+                        <li>Selección de recetas apropiadas</li>
+                        <li>Requerimientos especiales (embarazo, diabetes gestacional, etc.)</li>
+                      </ul>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        <strong>Patologías soportadas:</strong> Diabetes tipo 1 y 2, hipotiroidismo, hipertensión, celiaquía, 
+                        resistencia a la insulina, hígado graso, SOP, embarazo (todos los trimestres), 
+                        diabetes gestacional, anemia, gota, osteoporosis, entre otras.
+                      </p>
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

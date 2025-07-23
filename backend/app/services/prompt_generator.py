@@ -3,8 +3,20 @@ from ..utils.calculations import NutritionalCalculator
 from ..utils.validators import InputValidator
 from ..schemas.meal_plan import NewPatientRequest, Objetivo
 from ..data.interactions import check_interactions, check_max_doses, get_synergies
+from ..data.pathologies import (
+    detect_pathologies_from_text,
+    get_pathology_info,
+    get_all_dietary_restrictions,
+    get_recipe_tags_to_avoid,
+    get_recipe_tags_to_prefer,
+    get_pregnancy_info
+)
+from ..utils.pregnancy import PregnancyManager
 import json
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 class PromptGenerator:
     def __init__(self):
@@ -35,21 +47,53 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
     def generate_motor1_prompt(self, patient_data: NewPatientRequest, recipes_json: str):
         """Motor 1: Paciente Nuevo con cálculos nutricionales integrados"""
         
-        # Calcular requerimientos nutricionales
-        daily_calories = NutritionalCalculator.calculate_daily_calories(patient_data)
-        macro_distribution = NutritionalCalculator.calculate_macro_distribution(patient_data)
-        meal_distribution = NutritionalCalculator.calculate_meal_distribution(
-            daily_calories,
-            patient_data.comidas_principales,
-            patient_data.distribution_type.value,
-            False,  # Ya no usamos colaciones, lo manejamos con meal_configuration
-            patient_data.custom_meal_distribution
-        )
+        # Verificar si hay embarazo
+        pregnancy_requirements = NutritionalCalculator.calculate_pregnancy_adjusted_requirements(patient_data)
         
-        # Calcular gramos de macros
-        protein_g = round((daily_calories * macro_distribution["proteinas"]) / 4)
-        carbs_g = round((daily_calories * macro_distribution["carbohidratos"]) / 4)
-        fat_g = round((daily_calories * macro_distribution["grasas"]) / 9)
+        if pregnancy_requirements:
+            # Usar requerimientos ajustados para embarazo
+            daily_calories = pregnancy_requirements['adjusted_calories']
+            macro_distribution = {
+                "proteinas": pregnancy_requirements['macros']['protein_percentage'] / 100,
+                "carbohidratos": pregnancy_requirements['macros']['carbs_percentage'] / 100,
+                "grasas": pregnancy_requirements['macros']['fat_percentage'] / 100
+            }
+            protein_g = pregnancy_requirements['macros']['protein_g']
+            carbs_g = pregnancy_requirements['macros']['carbs_g']
+            fat_g = pregnancy_requirements['macros']['fat_g']
+            
+            # Usar distribución de comidas especial para embarazo
+            meal_distribution = pregnancy_requirements.get('meal_distribution', {})
+            if meal_distribution:
+                # Convertir porcentajes a calorías
+                meal_distribution = {
+                    meal: round(daily_calories * (percentage / 100))
+                    for meal, percentage in meal_distribution.items()
+                }
+            else:
+                meal_distribution = NutritionalCalculator.calculate_meal_distribution(
+                    daily_calories,
+                    patient_data.comidas_principales,
+                    patient_data.distribution_type.value,
+                    False,
+                    patient_data.custom_meal_distribution
+                )
+        else:
+            # Cálculos normales si no hay embarazo
+            daily_calories = NutritionalCalculator.calculate_daily_calories(patient_data)
+            macro_distribution = NutritionalCalculator.calculate_macro_distribution(patient_data)
+            meal_distribution = NutritionalCalculator.calculate_meal_distribution(
+                daily_calories,
+                patient_data.comidas_principales,
+                patient_data.distribution_type.value,
+                False,
+                patient_data.custom_meal_distribution
+            )
+            
+            # Calcular gramos de macros
+            protein_g = round((daily_calories * macro_distribution["proteinas"]) / 4)
+            carbs_g = round((daily_calories * macro_distribution["carbohidratos"]) / 4)
+            fat_g = round((daily_calories * macro_distribution["grasas"]) / 9)
         
         # Verificar si el objetivo de proteína es alcanzable
         protein_warning_text = self._check_protein_feasibility(patient_data, protein_g)
@@ -65,8 +109,20 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
         # Formatear actividades, suplementos y medicamentos
         activities_text = self._format_activities(patient_data.activities) if patient_data.activities else '- Tipo: ' + patient_data.tipo_actividad + '\n- Frecuencia: ' + str(patient_data.frecuencia_semanal) + 'x por semana\n- Duración: ' + str(patient_data.duracion_sesion) + ' minutos'
         supplements_text = self._format_supplements(patient_data.supplements, patient_data.medications) if patient_data.supplements else '- Suplementación: ' + (patient_data.suplementacion or 'Ninguna')
-        medications_text = self._format_medications(patient_data.medications) if patient_data.medications else '- Patologías/Medicación: ' + (patient_data.patologias or 'Sin patologías')
+        
+        # Procesar patologías y medicamentos
+        pathologies_section = self._format_pathologies_and_medications(patient_data)
+        
         meal_config_text = self._format_meal_configuration(patient_data.meal_configuration.dict()) if patient_data.meal_configuration else ''
+        
+        # Sección de embarazo si aplica
+        pregnancy_section = ""
+        if pregnancy_requirements:
+            pregnancy_manager = PregnancyManager()
+            pregnancy_section = pregnancy_manager.get_pregnancy_prompt_section(
+                pregnancy_requirements['pregnancy_info'],
+                pregnancy_requirements
+            )
         
         prompt = f"""
 {self.base_rules}
@@ -88,10 +144,12 @@ ACTIVIDAD FÍSICA:
 
 ESPECIFICACIONES MÉDICAS:
 {supplements_text}
-{medications_text}
+{pathologies_section}
 - NO consume: {patient_data.no_consume or 'Sin restricciones'}
 - Le gusta: {patient_data.le_gusta or 'Sin preferencias específicas'}
 - Nivel económico: {patient_data.nivel_economico.value}
+
+{pregnancy_section}
 
 REQUERIMIENTOS NUTRICIONALES CALCULADOS:
 - Calorías diarias: {daily_calories} kcal
@@ -607,6 +665,74 @@ Preparación: {recipe.get('preparacion', '')}
         
         return "\n".join(formatted_details)
     
+    def _format_pathologies_and_medications(self, patient_data: NewPatientRequest) -> str:
+        """Formatea las patologías y medicamentos de manera integrada"""
+        formatted = []
+        
+        # Detectar patologías
+        detected_pathologies = []
+        if patient_data.patologias:
+            detected_pathologies = detect_pathologies_from_text(patient_data.patologias)
+        
+        # Si hay patologías detectadas
+        if detected_pathologies:
+            formatted.append("\nPATOLOGÍAS DETECTADAS:")
+            
+            for pathology in detected_pathologies:
+                info = get_pathology_info(pathology)
+                if info:
+                    formatted.append(f"- {info['name']}")
+                    
+                    # Agregar ajustes nutricionales
+                    if 'nutritional_adjustments' in info:
+                        adjustments = info['nutritional_adjustments']
+                        if adjustments.get('calories_adjustment', 0) != 0:
+                            formatted.append(f"  • Ajuste calórico: {adjustments['calories_adjustment']} kcal")
+                        if 'carbs_percentage' in adjustments:
+                            formatted.append(f"  • Distribución de macros ajustada")
+                        if 'min_carbs_grams' in adjustments and adjustments['min_carbs_grams'] > 130:
+                            formatted.append(f"  • Carbohidratos mínimos: {adjustments['min_carbs_grams']}g/día")
+                        if 'sodium_max' in adjustments:
+                            formatted.append(f"  • Sodio máximo: {adjustments['sodium_max']}mg/día")
+            
+            # Restricciones dietéticas combinadas
+            all_restrictions = get_all_dietary_restrictions(detected_pathologies)
+            if all_restrictions:
+                formatted.append("\nRESTRICCIONES ALIMENTARIAS:")
+                for restriction in all_restrictions:
+                    formatted.append(f"- EVITAR: {restriction}")
+            
+            # Tags de recetas
+            avoid_tags = get_recipe_tags_to_avoid(detected_pathologies)
+            prefer_tags = get_recipe_tags_to_prefer(detected_pathologies)
+            
+            if avoid_tags:
+                formatted.append("\nTIPOS DE RECETAS A EVITAR:")
+                formatted.append(f"- {', '.join(avoid_tags)}")
+            
+            if prefer_tags:
+                formatted.append("\nTIPOS DE RECETAS PREFERIDAS:")
+                formatted.append(f"- {', '.join(prefer_tags)}")
+            
+            # Consideraciones especiales
+            formatted.append("\nCONSIDERACIONES ESPECIALES:")
+            for pathology in detected_pathologies:
+                info = get_pathology_info(pathology)
+                if info and 'special_considerations' in info:
+                    for consideration in info['special_considerations']:
+                        formatted.append(f"- {consideration}")
+        
+        # Medicamentos
+        if patient_data.medications:
+            formatted.append("\n")
+            formatted.append(self._format_medications(patient_data.medications))
+        
+        # Si no hay patologías ni medicamentos
+        if not detected_pathologies and not patient_data.medications:
+            formatted.append("- Patologías/Medicación: Sin patologías ni medicación")
+        
+        return "\n".join(formatted)
+    
     def validate_recipe_usage(self, meal_plan_text: str, valid_recipe_ids: List[str]) -> bool:
         """Validate that the meal plan uses only valid recipe IDs"""
         # Find all recipe IDs in the meal plan
@@ -620,12 +746,12 @@ Preparación: {recipe.get('preparacion', '')}
         invalid_ids = [id for id in found_ids if id not in valid_recipe_ids]
         
         if invalid_ids:
-            print(f"Warning: Invalid recipe IDs found: {invalid_ids}")
+            logger.warning(f"Invalid recipe IDs found: {invalid_ids}")
             return False
         
         # Check if at least some recipes were used
         if len(found_ids) < 3:  # At least 3 meals should have recipes
-            print("Warning: Too few recipes used in meal plan")
+            logger.warning("Too few recipes used in meal plan")
             return False
         
         return True

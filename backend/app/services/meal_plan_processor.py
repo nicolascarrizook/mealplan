@@ -1,6 +1,9 @@
 import re
+import logging
 from typing import Dict, List, Optional
 from .recipe_manager import RecipeManager
+
+logger = logging.getLogger(__name__)
 
 class MealPlanProcessor:
     def __init__(self, recipe_manager: RecipeManager):
@@ -112,7 +115,7 @@ Tags: {', '.join(recipe.get('tags', []))}
                 similar_recipe = self._find_similar_recipe(clean_id, valid_recipe_ids)
                 if similar_recipe:
                     fixed_plan = fixed_plan.replace(found_id, f'[{similar_recipe}]')
-                    print(f"Fixed invalid recipe ID {clean_id} -> {similar_recipe}")
+                    logger.info(f"Fixed invalid recipe ID {clean_id} -> {similar_recipe}")
         
         return fixed_plan, has_errors
     

@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import os
+import logging
 from .config import settings
 from .schemas.meal_plan import (
     NewPatientRequest, 
@@ -15,6 +16,8 @@ from .services.openai_service import OpenAIService
 from .services.pdf_generator import PDFGenerator
 from .services.recipe_manager import RecipeManager
 from .services.meal_plan_processor import MealPlanProcessor
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title=settings.app_name,
@@ -45,7 +48,7 @@ async def startup_event():
     try:
         chromadb_service.initialize()
     except Exception as e:
-        print(f"Warning: Could not initialize ChromaDB: {e}")
+        logger.warning(f"Could not initialize ChromaDB: {e}")
 
 @app.get("/")
 async def root():
