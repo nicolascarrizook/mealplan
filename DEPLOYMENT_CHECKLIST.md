@@ -24,7 +24,16 @@
 2. **Actualizar `docker-compose.prod.yml`**:
    - Línea 22: Cambiar `VITE_API_URL=http://tu-dominio.com` por tu IP/dominio real
 
-3. **Verificar localmente**:
+3. **⚠️ IMPORTANTE - Configurar BACKEND_CORS_ORIGINS correctamente**:
+   ```bash
+   # En el archivo .env, asegúrate de usar el formato JSON correcto:
+   BACKEND_CORS_ORIGINS=["http://localhost:3000","http://TU-IP-AQUI"]
+   
+   # O usa formato separado por comas:
+   BACKEND_CORS_ORIGINS=http://localhost:3000,http://TU-IP-AQUI
+   ```
+
+4. **Verificar localmente**:
    ```bash
    ./verify_deployment.sh
    ```
@@ -115,9 +124,23 @@ Una vez que tengas un dominio:
 - Revisar logs: `docker-compose logs chromadb`
 - Asegurar que el puerto interno sea 8000 (no 8001)
 
-### CORS errors
-- Verificar que la IP/dominio esté en BACKEND_CORS_ORIGINS
-- Reiniciar backend después de cambios en .env
+### CORS errors / Backend no inicia
+- **Error más común**: `BACKEND_CORS_ORIGINS` vacío o mal formateado
+- Solución rápida:
+  ```bash
+  # Verificar el formato actual
+  grep BACKEND_CORS_ORIGINS .env
+  
+  # Corregir con formato JSON
+  echo 'BACKEND_CORS_ORIGINS=["http://localhost:3000","http://YOUR-IP"]' >> .env
+  
+  # O con formato separado por comas
+  echo 'BACKEND_CORS_ORIGINS=http://localhost:3000,http://YOUR-IP' >> .env
+  ```
+- Reiniciar backend después de cambios en .env:
+  ```bash
+  docker-compose -f docker-compose.prod.yml restart backend
+  ```
 
 ### PDF generation fails
 - Verificar que el directorio `/app/pdfs` exista en el container

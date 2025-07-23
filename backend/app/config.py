@@ -27,11 +27,16 @@ class Settings(BaseSettings):
         super().__init__(**values)
         # Parse BACKEND_CORS_ORIGINS if it's a string
         cors_origins = os.getenv("BACKEND_CORS_ORIGINS")
-        if cors_origins:
+        if cors_origins and cors_origins.strip():  # Check if not empty
             try:
+                # Try to parse as JSON
                 self.backend_cors_origins = json.loads(cors_origins)
             except json.JSONDecodeError:
                 # If it's not valid JSON, treat it as a comma-separated list
-                self.backend_cors_origins = [origin.strip() for origin in cors_origins.split(",")]
+                self.backend_cors_origins = [origin.strip() for origin in cors_origins.split(",") if origin.strip()]
+        else:
+            # If BACKEND_CORS_ORIGINS is not set or empty, use defaults
+            print("Warning: BACKEND_CORS_ORIGINS not set, using default values")
+            self.backend_cors_origins = ["http://localhost:3000", "http://localhost:5173", "http://localhost:80"]
 
 settings = Settings()
