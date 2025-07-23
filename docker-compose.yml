@@ -28,6 +28,8 @@ services:
     volumes:
       - ./backend/data:/app/data
       - ./pdfs:/app/pdfs
+      - ./backend/temp_uploads:/app/temp_uploads
+      - ./backend/generated_pdfs:/app/generated_pdfs
     depends_on:
       - chromadb
     restart: unless-stopped

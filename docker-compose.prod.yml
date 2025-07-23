@@ -11,6 +11,10 @@ services:
       - CHROMADB_PORT=8001
       - DEBUG=False
       - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/temp_uploads:/app/temp_uploads
+      - ./backend/generated_pdfs:/app/generated_pdfs
     depends_on:
       - chromadb
     restart: always
