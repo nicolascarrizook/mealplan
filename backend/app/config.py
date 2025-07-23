@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     
     # ChromaDB
     chromadb_host: str = "chromadb"  # Docker service name
-    chromadb_port: int = 8000
+    chromadb_port: int = 8001
     
     # CORS - will be loaded from environment
     backend_cors_origins: List[str] = ["http://localhost:3000", "http://localhost:5173"]

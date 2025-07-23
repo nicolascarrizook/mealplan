@@ -8,7 +8,7 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - CHROMADB_HOST=chromadb
-      - CHROMADB_PORT=8000
+      - CHROMADB_PORT=8001
       - DEBUG=False
       - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
     depends_on:
@@ -34,11 +34,12 @@ services:
   chromadb:
     image: chromadb/chroma:latest
     expose:
-      - "8000"
+      - "8001"
     volumes:
       - chromadb_data:/chroma/chroma
     environment:
       - IS_PERSISTENT=TRUE
+      - CHROMA_SERVER_HTTP_PORT=8001
     restart: always
     networks:
       - app-network

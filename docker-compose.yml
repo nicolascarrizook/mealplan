@@ -5,11 +5,12 @@ services:
     image: chromadb/chroma:latest
     container_name: meal_planner_chromadb
     ports:
-      - "8001:8000"
+      - "8001:8001"
     volumes:
       - ./chroma_data:/chroma/chroma
     environment:
       - IS_PERSISTENT=TRUE
+      - CHROMA_SERVER_HTTP_PORT=8001
     restart: unless-stopped
     networks:
       - meal_planner_network
@@ -23,7 +24,7 @@ services:
       - .env
     environment:
       - CHROMADB_HOST=chromadb
-      - CHROMADB_PORT=8000
+      - CHROMADB_PORT=8001
     volumes:
       - ./backend/data:/app/data
       - ./pdfs:/app/pdfs
