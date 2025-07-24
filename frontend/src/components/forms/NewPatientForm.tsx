@@ -36,6 +36,7 @@ import type { NewPatientData, MealPlanResponse } from '@/types'
 const formSchema = z.object({
   nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   edad: z.number().min(1).max(120),
+  fecha_nacimiento: z.string().optional(),
   sexo: z.nativeEnum(Sexo),
   estatura: z.number().min(50).max(250),
   peso: z.number().min(20).max(300),
@@ -49,11 +50,18 @@ const formSchema = z.object({
   patologias: z.string().optional(),
   no_consume: z.string().optional(),
   le_gusta: z.string().optional(),
+  antecedentes_personales: z.string().optional(),
+  antecedentes_familiares: z.string().optional(),
+  medicacion_detallada: z.string().optional(),
   nivel_economico: z.nativeEnum(NivelEconomico),
   notas_personales: z.string().optional(),
   comidas_principales: z.number().min(3).max(4),
   tipo_peso: z.nativeEnum(TipoPeso),
   recipe_complexity: z.nativeEnum(RecipeComplexity),
+  // Características del menú
+  caracteristicas_menu: z.string().optional(),
+  almuerzo_transportable: z.boolean().optional(),
+  timing_desayuno: z.string().optional(),
   // Nuevos campos
   carbs_percentage: z.number().min(0).max(55).optional(),
   protein_level: z.nativeEnum(ProteinLevel).optional(),
@@ -78,6 +86,7 @@ export function NewPatientForm() {
     defaultValues: {
       nombre: '',
       edad: 30,
+      fecha_nacimiento: undefined,
       sexo: Sexo.masculino,
       estatura: 170,
       peso: 70,
@@ -90,6 +99,12 @@ export function NewPatientForm() {
       comidas_principales: 4,
       tipo_peso: TipoPeso.crudo,
       recipe_complexity: RecipeComplexity.mixta,
+      caracteristicas_menu: '',
+      almuerzo_transportable: false,
+      timing_desayuno: '',
+      antecedentes_personales: '',
+      antecedentes_familiares: '',
+      medicacion_detallada: '',
       distribution_type: DistributionType.traditional,
       activities: [],
       supplements: [],
@@ -310,6 +325,21 @@ export function NewPatientForm() {
                     <FormControl>
                       <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value))} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="fecha_nacimiento"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fecha de Nacimiento</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormDescription>Opcional - Se usa para calcular edad automáticamente</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -607,6 +637,72 @@ export function NewPatientForm() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="caracteristicas_menu"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Características especiales del menú</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Ej: menú simple blandogástrico + fibra soluble, bajo en residuos..."
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Especificaciones adicionales para el tipo de menú
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="almuerzo_transportable"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <input
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={field.onChange}
+                        className="mt-1"
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Almuerzo transportable
+                      </FormLabel>
+                      <FormDescription>
+                        Marcar si el paciente necesita llevar el almuerzo (tiene heladera disponible)
+                      </FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="timing_desayuno"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Timing del desayuno</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="Ej: desayuno con fibra posterior a 2 hs"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Indicaciones especiales sobre horarios o características del desayuno
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
           </Card>
 
@@ -645,8 +741,75 @@ export function NewPatientForm() {
                       <p className="text-xs text-muted-foreground mt-2">
                         <strong>Patologías soportadas:</strong> Diabetes tipo 1 y 2, hipotiroidismo, hipertensión, celiaquía, 
                         resistencia a la insulina, hígado graso, SOP, embarazo (todos los trimestres), 
-                        diabetes gestacional, anemia, gota, osteoporosis, entre otras.
+                        diabetes gestacional, anemia, gota, osteoporosis, osteopenia, esofagitis por reflujo, 
+                        menopausia, entre otras.
                       </p>
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="antecedentes_personales"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Antecedentes Personales</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ej: anemia, cirugías previas, alergias..."
+                        {...field}
+                        value={field.value || ''}
+                        className="min-h-[80px]"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Historial médico personal relevante
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="antecedentes_familiares"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Antecedentes Familiares</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ej: diabetes en padres, hipertensión familiar..."
+                        {...field}
+                        value={field.value || ''}
+                        className="min-h-[80px]"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Historial médico familiar relevante
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="medicacion_detallada"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Medicación Detallada</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ej: T4 75mg en ayunas, estatinas por la noche, metformina con comidas..."
+                        {...field}
+                        value={field.value || ''}
+                        className="min-h-[80px]"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Medicamentos con dosis y horarios específicos
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

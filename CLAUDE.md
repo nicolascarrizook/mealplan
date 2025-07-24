@@ -11,6 +11,7 @@ This is the **Meal Planner Pro** application - a web application for generating 
 - **Backend**: FastAPI (Python 3.11+), OpenAI GPT-4, ChromaDB for recipes, ReportLab for PDFs
 - **Frontend**: React 18, TypeScript, Vite, shadcn/ui components, Tailwind CSS
 - **Infrastructure**: Docker, Docker Compose, Nginx, DigitalOcean deployment
+- **File Processing**: pdfplumber, pandas, pytesseract, Pillow, GPT-4 Vision
 
 ## Key Architecture
 
@@ -28,6 +29,10 @@ Located in `backend/app/services/`:
 - **pdf_generator.py**: Creates professional PDF reports using ReportLab
 - **meal_plan_processor.py**: Post-processes and validates meal plans
 - **recipe_manager.py**: In-memory recipe management and filtering
+- **file_parser.py**: Coordinates file upload and extraction
+- **pdf_extractor.py**: PDF text extraction using pdfplumber
+- **excel_extractor.py**: Excel/CSV parsing with template generation
+- **image_extractor.py**: OCR and GPT-4 Vision for image processing
 
 ### Recipe Management System
 - 100+ recipes in `backend/data/recipes_structured.json` with unique IDs (REC_XXXX format)
@@ -35,6 +40,16 @@ Located in `backend/app/services/`:
 - Automatic filtering based on dietary restrictions and pathologies
 - Optimized prompts using recipe IDs (40% token reduction)
 - ChromaDB runs on port 8001 to avoid conflicts
+
+### File Upload System
+- **Supported formats**: PDF, Excel (.xlsx, .xls), CSV, Images (JPG, PNG)
+- **Extraction methods**:
+  - PDF: Text extraction with pdfplumber
+  - Excel/CSV: Structured data parsing with pandas
+  - Images: OCR (pytesseract) or GPT-4 Vision API
+- **API endpoint**: `POST /api/meal-plans/control/upload`
+- **Frontend component**: `FileUpload.tsx` with drag & drop
+- **Excel template**: Available at `/api/meal-plans/control/template`
 
 ## Common Development Tasks
 
@@ -87,6 +102,11 @@ npm test
 cd backend
 python test_recipe_system.py
 python test_recipe_format.py
+
+# Test file upload extraction
+curl -X POST http://localhost:8000/api/meal-plans/control/extract-text \
+  -F "file=@test.pdf" \
+  -F "extraction_method=auto"
 ```
 
 ### Deployment
@@ -174,6 +194,9 @@ docker-compose restart backend
 3. **PDF generation fails**: Check ReportLab dependencies
 4. **Recipe search empty**: Verify ChromaDB initialization
 5. **Import errors**: Check PYTHONPATH and directory context
+6. **File upload fails**: Check file size limits in nginx.conf (100MB default)
+7. **OCR not working**: Install tesseract-ocr system package
+8. **Vision AI fails**: Verify OpenAI API key has GPT-4V access
 
 ### Debug Commands
 ```bash
@@ -187,6 +210,21 @@ docker-compose exec backend python -c "import chromadb; client = chromadb.HttpCl
 docker-compose exec backend python scripts/test_recipe_system.py
 ```
 
+## API Endpoints Reference
+
+### Meal Plan Generation
+- `POST /api/meal-plans/new-patient` - Motor 1: New patient plans
+- `POST /api/meal-plans/control` - Motor 2: Control patient plans
+- `POST /api/meal-plans/replace-meal` - Motor 3: Meal replacement
+
+### File Upload & Processing
+- `POST /api/meal-plans/control/upload` - Upload and extract data
+- `GET /api/meal-plans/control/template` - Download Excel template
+- `POST /api/meal-plans/control/extract-text` - Debug text extraction
+
+### Health Check
+- `GET /` - API health check and version
+
 ## Important Notes
 
 - The "Tres Días y Carga" method is core - all 3 days MUST be identical
@@ -195,3 +233,5 @@ docker-compose exec backend python scripts/test_recipe_system.py
 - No patient data persistence in current MVP
 - API keys must use environment variables
 - Production requires proper CORS configuration
+- File uploads are processed in memory only (not stored)
+- Vision AI extraction requires OpenAI API key with GPT-4V access

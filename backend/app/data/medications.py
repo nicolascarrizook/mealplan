@@ -60,6 +60,12 @@ MEDICATIONS_DATABASE = {
         "nutritional_impact": "Puede reducir CoQ10",
         "considerations": "Se puede tomar a cualquier hora"
     },
+    "estatinas": {
+        "name": "Estatinas (genérico)",
+        "category": "estatinas",
+        "nutritional_impact": "Puede reducir CoQ10, control del colesterol",
+        "considerations": "Evitar pomelo, considerar suplementación con CoQ10"
+    },
     
     # Tiroides
     "levotiroxina": {
@@ -67,6 +73,18 @@ MEDICATIONS_DATABASE = {
         "category": "tiroides",
         "nutritional_impact": "Mejora metabolismo",
         "considerations": "Tomar en ayunas, evitar soja y calcio 4h"
+    },
+    "t4": {
+        "name": "T4 (Levotiroxina)",
+        "category": "tiroides",
+        "nutritional_impact": "Mejora metabolismo, puede afectar peso",
+        "considerations": "Tomar en ayunas 30-60 min antes del desayuno, evitar café, soja y calcio por 4h"
+    },
+    "levotiroxina_75": {
+        "name": "Levotiroxina T4 75mg",
+        "category": "tiroides",
+        "nutritional_impact": "Mejora metabolismo, normaliza función tiroidea",
+        "considerations": "Tomar en ayunas, separar de suplementos de calcio y hierro"
     },
     "metimazol": {
         "name": "Metimazol",

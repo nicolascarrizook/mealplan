@@ -32,6 +32,15 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
 8. Usar léxico argentino
 9. Adaptarse al nivel económico
 10. OBLIGATORIO: Usar ÚNICAMENTE recetas del catálogo proporcionado mediante sus IDs
+11. Respetar características especiales del menú (blandogástrico, fibra soluble, etc.)
+12. Si el almuerzo es transportable, elegir opciones que se conserven bien
+13. Respetar timing especial del desayuno si está indicado
+
+CONSIDERACIONES PARA PATOLOGÍAS ONCOLÓGICAS:
+- Prequimio: Énfasis en optimizar estado nutricional, alta proteína (2g/kg)
+- Posquimio: Texturas suaves, fraccionamiento 6-8 comidas, evitar olores fuertes
+- Durante tratamiento: Adaptar según síntomas (náuseas, mucositis, diarrea)
+- Priorizar densidad nutricional en volúmenes pequeños
 """
         
         self.recipe_format_rules = """
@@ -42,6 +51,29 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
 - NO inventar recetas nuevas
 - NO combinar recetas sin que esté especificado
 - Las 3 opciones deben tener macros similares (±10%)
+"""
+
+        self.supplementation_guidelines = """
+GUÍA DE SUPLEMENTACIÓN (según patología):
+
+PACIENTES ONCOLÓGICOS:
+- Proteína en polvo: 30g/día fraccionado
+- BCAA: 5-10g antes/después de entrenar o entre comidas
+- Multivitamínico con minerales de alta biodisponibilidad
+- Sales de rehidratación oral si hay vómitos/diarrea
+
+HIPOTIROIDISMO:
+- Separar suplementos 4h de levotiroxina: fibra, magnesio, calcio, hierro
+- Separar 1h: omega 3
+- Considerar déficit frecuente de vitamina D y magnesio
+
+DOSIS GENERALES RECOMENDADAS:
+- Omega 3: 1-2g EPA+DHA/día
+- Magnesio: 300-400mg/día (citrato o bisglicinato)
+- Vitamina D3: 2000-4000 UI/día
+- Vitamina C: 500-1000mg/día
+- Colágeno: 10g/día con vitamina C
+- Fibra: 25-30g/día (no exceder 10g en una toma)
 """
 
     def generate_motor1_prompt(self, patient_data: NewPatientRequest, recipes_json: str):
@@ -124,6 +156,9 @@ FORMATO OBLIGATORIO PARA CADA COMIDA:
                 pregnancy_requirements
             )
         
+        # Generate supplementation section based on pathologies
+        supplementation_section = self._generate_supplementation_section(patient_data)
+        
         prompt = f"""
 {self.base_rules}
 
@@ -147,7 +182,15 @@ ESPECIFICACIONES MÉDICAS:
 {pathologies_section}
 - NO consume: {patient_data.no_consume or 'Sin restricciones'}
 - Le gusta: {patient_data.le_gusta or 'Sin preferencias específicas'}
+- Antecedentes personales: {patient_data.antecedentes_personales or 'Sin antecedentes relevantes'}
+- Antecedentes familiares: {patient_data.antecedentes_familiares or 'Sin antecedentes relevantes'}
+- Medicación detallada: {patient_data.medicacion_detallada or 'Sin medicación específica'}
 - Nivel económico: {patient_data.nivel_economico.value}
+
+CARACTERÍSTICAS DEL MENÚ:
+- Características especiales: {patient_data.caracteristicas_menu or 'Sin especificaciones'}
+- Almuerzo transportable: {'Sí (tiene heladera)' if patient_data.almuerzo_transportable else 'No'}
+- Timing desayuno: {patient_data.timing_desayuno or 'Sin indicaciones especiales'}
 
 {pregnancy_section}
 
@@ -171,6 +214,8 @@ CONFIGURACIÓN DEL PLAN:
 - Tipo de peso: Gramos en {patient_data.tipo_peso}
 
 {meal_config_text}
+
+{supplementation_section}
 
 RECETAS DISPONIBLES:
 {recipes_json}
@@ -762,3 +807,81 @@ Preparación: {recipe.get('preparacion', '')}
         found_ids = re.findall(recipe_id_pattern, meal_plan_text)
         # Clean up IDs (remove brackets) and remove duplicates
         return list(set([id.strip('[]') for id in found_ids]))
+    
+    def _generate_supplementation_section(self, patient_data: NewPatientRequest) -> str:
+        """Generate supplementation recommendations based on pathologies"""
+        # Detect pathologies
+        detected_pathologies = []
+        if patient_data.patologias:
+            detected_pathologies = detect_pathologies_from_text(patient_data.patologias)
+        
+        # Check if patient has cancer pathologies
+        cancer_pathologies = [
+            'CANCER_PREQUIMIO', 'CANCER_POSQUIMIO', 'CANCER_RADIOTERAPIA',
+            'DESNUTRICION', 'SARCOPENIA', 'HIPOREXIA'
+        ]
+        has_cancer = any(p in detected_pathologies for p in cancer_pathologies)
+        
+        # Check for other relevant pathologies
+        has_hipotiroidismo = 'HIPOTIROIDISMO' in detected_pathologies
+        has_osteopenia = 'OSTEOPENIA' in detected_pathologies
+        has_menopausia = 'MENOPAUSIA' in detected_pathologies
+        
+        # Check medications
+        takes_levothyroxine = False
+        if patient_data.medications:
+            for med in patient_data.medications:
+                if 't4' in med['name'].lower() or 'levotiroxina' in med['name'].lower():
+                    takes_levothyroxine = True
+        
+        # Build supplementation recommendations
+        recommendations = []
+        
+        if has_cancer:
+            recommendations.append("""
+SUPLEMENTACIÓN RECOMENDADA PARA PACIENTES ONCOLÓGICOS:
+- Proteína en polvo: 30g/día fraccionado en 2-3 tomas
+- BCAA: 5-10g antes/después de actividad física o entre comidas
+- Multivitamínico con minerales de alta biodisponibilidad: 1 comprimido/día con comida principal
+- Omega 3: 2g EPA+DHA/día con comidas principales
+- Sales de rehidratación oral: según necesidad si hay vómitos/diarrea
+- Vitamina D3: 2000-4000 UI/día si hay déficit confirmado""")
+        
+        if has_hipotiroidismo or takes_levothyroxine:
+            recommendations.append("""
+CONSIDERACIONES PARA HIPOTIROIDISMO:
+- Separar de levotiroxina 4 horas: suplementos con fibra, magnesio, calcio, hierro
+- Separar de levotiroxina 1 hora: omega 3
+- Considerar suplementación con:
+  • Vitamina D3: 2000 UI/día (déficit frecuente en hipotiroidismo)
+  • Magnesio bisglicinato: 300mg/día (alejado de medicación)
+  • Selenio: 100-200mcg/día (importante para función tiroidea)""")
+        
+        if has_osteopenia or has_menopausia:
+            recommendations.append("""
+SUPLEMENTACIÓN PARA SALUD ÓSEA:
+- Calcio citrato: 500-600mg/día (dividido en 2 tomas con comidas)
+- Vitamina D3: 2000-4000 UI/día
+- Magnesio bisglicinato: 300-400mg/día
+- Vitamina K2 (MK7): 100-200mcg/día
+- Colágeno hidrolizado: 10g/día con vitamina C""")
+        
+        if not recommendations:
+            # General recommendations if no specific pathology
+            recommendations.append("""
+SUPLEMENTACIÓN GENERAL (EVALUAR SEGÚN NECESIDAD):
+- Omega 3: 1-2g EPA+DHA/día con comidas
+- Vitamina D3: 2000 UI/día (ajustar según laboratorio)
+- Magnesio bisglicinato: 300mg/día antes de dormir
+- Multivitamínico: según calidad de la dieta""")
+        
+        # Add timing recommendations
+        timing_section = """
+TIMING DE SUPLEMENTACIÓN:
+- Con desayuno: multivitamínico, vitamina D, vitamina K2
+- Con almuerzo/cena: omega 3, calcio (si aplica)
+- Entre comidas: proteína en polvo, BCAA, colágeno
+- Antes de dormir: magnesio
+- IMPORTANTE: Respetar separaciones con medicación si aplica"""
+        
+        return "\n".join(recommendations) + "\n" + timing_section

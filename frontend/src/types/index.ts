@@ -101,6 +101,7 @@ export interface MealConfiguration {
 export interface NewPatientData {
   nombre: string
   edad: number
+  fecha_nacimiento?: string  // ISO date string
   sexo: Sexo
   estatura: number
   peso: number
@@ -112,11 +113,18 @@ export interface NewPatientData {
   patologias?: string
   no_consume?: string
   le_gusta?: string
+  antecedentes_personales?: string
+  antecedentes_familiares?: string
+  medicacion_detallada?: string
   nivel_economico: NivelEconomico
   notas_personales?: string
   comidas_principales: number
   tipo_peso: TipoPeso
   recipe_complexity: RecipeComplexity
+  // Características específicas del menú
+  caracteristicas_menu?: string
+  almuerzo_transportable?: boolean
+  timing_desayuno?: string
   // Nuevos campos de personalización de macros
   carbs_percentage?: number
   protein_level?: ProteinLevel

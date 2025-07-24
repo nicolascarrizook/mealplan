@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, validator
 from typing import Dict, Optional, List, Any
 from enum import Enum
+from datetime import date
 
 # Enums para mejor validación y consistencia
 class Sexo(str, Enum):
@@ -104,6 +105,7 @@ class NewPatientRequest(BaseModel):
     # Datos personales
     nombre: str = Field(..., min_length=2, max_length=100)
     edad: int = Field(..., ge=1, le=120)
+    fecha_nacimiento: Optional[str] = Field(None, description="Fecha de nacimiento del paciente en formato ISO")
     sexo: Sexo
     estatura: float = Field(..., gt=50, le=250, description="Altura en cm")
     peso: float = Field(..., gt=20, le=300, description="Peso en kg")
@@ -121,6 +123,9 @@ class NewPatientRequest(BaseModel):
     patologias: Optional[str] = None
     no_consume: Optional[str] = None
     le_gusta: Optional[str] = None
+    antecedentes_personales: Optional[str] = Field(None, description="Antecedentes médicos personales")
+    antecedentes_familiares: Optional[str] = Field(None, description="Antecedentes médicos familiares")
+    medicacion_detallada: Optional[str] = Field(None, description="Medicación con dosis específicas")
     
     # Configuración del plan
     nivel_economico: NivelEconomico = NivelEconomico.medio
@@ -128,6 +133,11 @@ class NewPatientRequest(BaseModel):
     comidas_principales: int = Field(default=4, ge=3, le=4)
     tipo_peso: TipoPeso = TipoPeso.crudo
     recipe_complexity: RecipeComplexity = RecipeComplexity.mixta
+    
+    # Características específicas del menú
+    caracteristicas_menu: Optional[str] = Field(None, description="Ej: menu simple blandogastrico + fibra soluble")
+    almuerzo_transportable: bool = Field(False, description="Si el almuerzo debe ser transportable")
+    timing_desayuno: Optional[str] = Field(None, description="Ej: desayuno con fibra posterior a 2 hs")
     
     # Personalización de macros (nuevos campos)
     carbs_percentage: Optional[int] = Field(None, ge=0, le=55, description="Porcentaje de carbohidratos (0-55%)")

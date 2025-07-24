@@ -22,6 +22,15 @@ class PathologyType(str, Enum):
     GOTA = "gota"
     ANEMIA = "anemia"
     OSTEOPOROSIS = "osteoporosis"
+    OSTEOPENIA = "osteopenia"
+    ESOFAGITIS_REFLUJO = "esofagitis_reflujo"
+    MENOPAUSIA = "menopausia"
+    CANCER_PREQUIMIO = "cancer_prequimio"
+    CANCER_POSQUIMIO = "cancer_posquimio"
+    CANCER_RADIOTERAPIA = "cancer_radioterapia"
+    DESNUTRICION = "desnutricion"
+    SARCOPENIA = "sarcopenia"
+    HIPOREXIA = "hiporexia"
     EMBARAZO_PRIMER_TRIMESTRE = "embarazo_primer_trimestre"
     EMBARAZO_SEGUNDO_TRIMESTRE = "embarazo_segundo_trimestre"
     EMBARAZO_TERCER_TRIMESTRE = "embarazo_tercer_trimestre"
@@ -429,6 +438,302 @@ PATHOLOGIES_DATABASE: Dict[str, Dict[str, Any]] = {
             "Alimentos antiinflamatorios",
             "Ejercicio regular"
         ]
+    },
+    
+    PathologyType.OSTEOPENIA: {
+        "name": "Osteopenia",
+        "description": "Disminución de la densidad mineral ósea",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "calcium_min": 1200,  # mg por día
+            "vitamin_d_min": 800,  # UI por día
+            "protein_percentage": 25,
+            "carbs_percentage": 50,
+            "fat_percentage": 25
+        },
+        "dietary_restrictions": [
+            "exceso de sodio", "exceso de cafeína", 
+            "alcohol en exceso", "bebidas carbonatadas en exceso"
+        ],
+        "recipe_tags_avoid": ["alto_sodio", "cafeina_alta"],
+        "recipe_tags_prefer": ["calcio", "vitamina_d", "magnesio", "vitamina_k"],
+        "meal_distribution": {
+            "breakfast": 25,
+            "lunch": 35,
+            "dinner": 30,
+            "snacks": 10
+        },
+        "special_considerations": [
+            "Incluir lácteos o alternativas fortificadas",
+            "Exposición solar moderada para vitamina D",
+            "Ejercicios de fuerza para fortalecer huesos",
+            "Evitar dietas muy restrictivas en calorías"
+        ]
+    },
+    
+    PathologyType.ESOFAGITIS_REFLUJO: {
+        "name": "Esofagitis por Reflujo",
+        "description": "Inflamación del esófago por reflujo ácido",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "fat_percentage": 25,  # Reducir grasas
+            "protein_percentage": 25,
+            "carbs_percentage": 50,
+            "fiber_min": 20  # Fibra soluble preferentemente
+        },
+        "dietary_restrictions": [
+            "alimentos ácidos", "tomate", "cítricos", "chocolate",
+            "menta", "café", "té negro", "alcohol", "frituras",
+            "alimentos muy condimentados", "cebolla", "ajo"
+        ],
+        "recipe_tags_avoid": ["acido", "picante", "frito", "graso", "cafeina"],
+        "recipe_tags_prefer": ["suave", "hervido", "vapor", "bajo_grasa", "fibra_soluble"],
+        "meal_distribution": {
+            "breakfast": 20,
+            "mid_morning": 10,
+            "lunch": 30,
+            "afternoon_snack": 10,
+            "dinner": 20,
+            "evening_snack": 10
+        },
+        "special_considerations": [
+            "Comidas pequeñas y frecuentes",
+            "No acostarse hasta 2-3 horas después de comer",
+            "Elevar cabecera de la cama",
+            "Masticar bien los alimentos",
+            "Preferir preparaciones blandas y suaves"
+        ]
+    },
+    
+    PathologyType.MENOPAUSIA: {
+        "name": "Menopausia",
+        "description": "Cese de la menstruación y cambios hormonales",
+        "nutritional_adjustments": {
+            "calories_adjustment": -100,  # Metabolismo más lento
+            "calcium_min": 1200,  # mg por día
+            "vitamin_d_min": 800,  # UI por día
+            "protein_percentage": 25,
+            "carbs_percentage": 45,
+            "fat_percentage": 30,
+            "fiber_min": 25
+        },
+        "dietary_restrictions": [
+            "alimentos muy procesados", "exceso de azúcares",
+            "grasas trans", "exceso de sal"
+        ],
+        "recipe_tags_avoid": ["procesado", "azucarado", "alto_sodio"],
+        "recipe_tags_prefer": ["calcio", "vitamina_d", "fitoestrogenos", "omega3", "antioxidante"],
+        "meal_distribution": {
+            "breakfast": 25,
+            "lunch": 35,
+            "dinner": 25,
+            "snacks": 15
+        },
+        "special_considerations": [
+            "Incluir alimentos con fitoestrógenos (soja, linaza)",
+            "Mantener peso saludable",
+            "Hidratación adecuada",
+            "Ejercicio regular para masa ósea y muscular",
+            "Control de síntomas con alimentación"
+        ]
+    },
+    
+    # PATOLOGÍAS ONCOLÓGICAS
+    PathologyType.CANCER_PREQUIMIO: {
+        "name": "Cáncer - Pre Quimioterapia",
+        "description": "Preparación nutricional para tratamiento oncológico",
+        "nutritional_adjustments": {
+            "calories_adjustment": 200,  # 35-40 kcal/kg
+            "protein_g_per_kg": 2.0,  # Alta proteína preventiva
+            "carbs_percentage": 45,
+            "protein_percentage": 30,
+            "fat_percentage": 25,
+            "fiber_min": 20  # Moderada para evitar molestias
+        },
+        "dietary_restrictions": [
+            "alcohol", "alimentos crudos", "carnes poco cocidas",
+            "lácteos no pasteurizados", "alimentos muy condimentados"
+        ],
+        "recipe_tags_avoid": ["crudo", "alcohol", "muy_condimentado"],
+        "recipe_tags_prefer": ["anticancer", "anticancer_prequimio", "alta_proteina", "digestiva"],
+        "meal_distribution": {
+            "breakfast": 20,
+            "mid_morning": 10,
+            "lunch": 30,
+            "afternoon_snack": 10,
+            "dinner": 20,
+            "evening_snack": 10
+        },
+        "special_considerations": [
+            "Optimizar estado nutricional antes del tratamiento",
+            "Énfasis en proteínas de alto valor biológico",
+            "Suplementar con proteína en polvo si es necesario",
+            "Hidratación óptima (2-3L/día)",
+            "Considerar multivitamínico con minerales"
+        ]
+    },
+    
+    PathologyType.CANCER_POSQUIMIO: {
+        "name": "Cáncer - Post Quimioterapia",
+        "description": "Recuperación nutricional post tratamiento",
+        "nutritional_adjustments": {
+            "calories_adjustment": 100,  # 30-35 kcal/kg inicial
+            "protein_g_per_kg": 1.8,  # Alta proteína para recuperación
+            "carbs_percentage": 50,
+            "protein_percentage": 25,
+            "fat_percentage": 25,
+            "fiber_min": 15  # Baja inicialmente
+        },
+        "dietary_restrictions": [
+            "cítricos", "alimentos ácidos", "condimentos fuertes",
+            "grasas cocidas", "café", "alcohol", "olores penetrantes"
+        ],
+        "recipe_tags_avoid": ["acido", "picante", "graso", "cafeina", "olor_fuerte"],
+        "recipe_tags_prefer": ["anticancer_posquimio", "bajo_residuo", "digestiva", "bland", "suave"],
+        "meal_distribution": {
+            "breakfast": 15,
+            "mid_morning": 10,
+            "lunch": 25,
+            "afternoon_snack": 15,
+            "dinner": 20,
+            "evening_snack": 15
+        },
+        "special_considerations": [
+            "Texturas suaves y temperaturas tibias/frías",
+            "Fraccionamiento en 6-8 comidas pequeñas",
+            "Evitar líquidos con las comidas principales",
+            "Sales de rehidratación si hay vómitos/diarrea",
+            "BCAA 5-10g/día para preservar masa muscular"
+        ],
+        "symptom_management": {
+            "nausea": ["jengibre", "comidas frías", "galletas secas"],
+            "mucositis": ["texturas líquidas", "evitar ácidos", "temperatura ambiente"],
+            "diarrea": ["arroz blanco", "banana", "manzana rallada", "probióticos"]
+        }
+    },
+    
+    PathologyType.CANCER_RADIOTERAPIA: {
+        "name": "Cáncer - Durante Radioterapia",
+        "description": "Soporte nutricional durante radiación",
+        "nutritional_adjustments": {
+            "calories_adjustment": 150,
+            "protein_g_per_kg": 1.8,
+            "carbs_percentage": 50,
+            "protein_percentage": 25,
+            "fat_percentage": 25,
+            "selenium_adequate": True,
+            "zinc_adequate": True
+        },
+        "dietary_restrictions": [
+            "irritantes locales según zona irradiada",
+            "fibra insoluble si radiación abdominal"
+        ],
+        "recipe_tags_avoid": ["irritante", "alto_residuo"],
+        "recipe_tags_prefer": ["anticancer", "antioxidante", "suave"],
+        "meal_distribution": {
+            "breakfast": 20,
+            "mid_morning": 10,
+            "lunch": 30,
+            "afternoon_snack": 10,
+            "dinner": 25,
+            "evening_snack": 5
+        },
+        "special_considerations": [
+            "Adaptar según zona irradiada",
+            "Hidratación extra importante",
+            "Antioxidantes naturales (no megadosis)",
+            "Zinc y selenio para cicatrización"
+        ]
+    },
+    
+    PathologyType.DESNUTRICION: {
+        "name": "Desnutrición",
+        "description": "Estado de déficit nutricional severo",
+        "nutritional_adjustments": {
+            "calories_adjustment": 300,  # Iniciar gradual
+            "protein_g_per_kg": 1.5,  # Mínimo, aumentar progresivamente
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30,
+            "progression": "gradual"  # 20-25 kcal/kg inicial
+        },
+        "dietary_restrictions": [
+            "volúmenes grandes", "fibra excesiva inicialmente"
+        ],
+        "recipe_tags_avoid": ["voluminoso", "muy_fibroso"],
+        "recipe_tags_prefer": ["desnutricion", "alta_densidad", "facil_digestion"],
+        "meal_distribution": {
+            "breakfast": 15,
+            "mid_morning": 15,
+            "lunch": 25,
+            "afternoon_snack": 15,
+            "dinner": 20,
+            "evening_snack": 10
+        },
+        "special_considerations": [
+            "Progresión calórica gradual",
+            "Suplementación proteica obligatoria",
+            "Multivitamínico con minerales",
+            "Monitoreo de síndrome de realimentación"
+        ]
+    },
+    
+    PathologyType.SARCOPENIA: {
+        "name": "Sarcopenia",
+        "description": "Pérdida de masa muscular",
+        "nutritional_adjustments": {
+            "calories_adjustment": 200,
+            "protein_g_per_kg": 2.2,  # Muy alta proteína
+            "leucine_min": 3,  # g por comida principal
+            "carbs_percentage": 40,
+            "protein_percentage": 35,
+            "fat_percentage": 25
+        },
+        "dietary_restrictions": [],
+        "recipe_tags_avoid": [],
+        "recipe_tags_prefer": ["sarcopenia", "alta_proteina", "leucina"],
+        "meal_distribution": {
+            "breakfast": 25,
+            "lunch": 35,
+            "dinner": 30,
+            "snacks": 10
+        },
+        "special_considerations": [
+            "Proteína distribuida uniformemente",
+            "BCAA 10g/día, especialmente leucina",
+            "Ejercicio de resistencia obligatorio",
+            "Vitamina D 2000-4000 UI/día"
+        ]
+    },
+    
+    PathologyType.HIPOREXIA: {
+        "name": "Hiporexia",
+        "description": "Pérdida severa del apetito",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,  # Mantener requerimientos
+            "texture_preference": "variable",
+            "temperature_preference": "fría o tibia",
+            "volume": "pequeño"
+        },
+        "dietary_restrictions": [
+            "olores fuertes", "platos muy elaborados"
+        ],
+        "recipe_tags_avoid": ["olor_fuerte", "voluminoso"],
+        "recipe_tags_prefer": ["hiporexia", "apetitoso", "pequeña_porcion"],
+        "meal_distribution": {
+            "breakfast": 10,
+            "mid_morning": 15,
+            "lunch": 25,
+            "afternoon_snack": 15,
+            "dinner": 20,
+            "evening_snack": 15
+        },
+        "special_considerations": [
+            "Respetar preferencias del paciente",
+            "Presentación atractiva fundamental",
+            "Enriquecer preparaciones sin aumentar volumen",
+            "Considerar estimulantes del apetito naturales"
+        ]
     }
 }
 
@@ -590,7 +895,19 @@ def detect_pathologies_from_text(text: str) -> List[PathologyType]:
         
         # Otros
         ("anemia", "ferropenia", "déficit hierro"): PathologyType.ANEMIA,
-        ("osteoporosis", "osteopenia", "densidad ósea"): PathologyType.OSTEOPOROSIS,
+        ("osteoporosis", "densidad ósea baja"): PathologyType.OSTEOPOROSIS,
+        ("osteopenia", "densidad osea disminuida", "densitometria no salio bien"): PathologyType.OSTEOPENIA,
+        ("esofagitis", "reflujo", "erge", "reflujo gastroesofágico"): PathologyType.ESOFAGITIS_REFLUJO,
+        ("menopausia", "climaterio"): PathologyType.MENOPAUSIA,
+        
+        # Oncológicas
+        ("cáncer", "cancer", "oncológico", "tumor"): None,  # Procesamiento especial
+        ("prequimio", "pre quimio", "antes de quimioterapia"): PathologyType.CANCER_PREQUIMIO,
+        ("posquimio", "post quimio", "después de quimioterapia"): PathologyType.CANCER_POSQUIMIO,
+        ("radioterapia", "radiación", "rayos"): PathologyType.CANCER_RADIOTERAPIA,
+        ("desnutrición", "desnutrido", "bajo peso severo"): PathologyType.DESNUTRICION,
+        ("sarcopenia", "pérdida muscular", "pérdida de masa muscular"): PathologyType.SARCOPENIA,
+        ("hiporexia", "falta de apetito", "pérdida de apetito", "inapetencia"): PathologyType.HIPOREXIA,
         
         # Embarazo
         ("embarazada", "gestación", "gestante", "embarazo"): None,  # Procesamiento especial
@@ -603,18 +920,33 @@ def detect_pathologies_from_text(text: str) -> List[PathologyType]:
     
     # Detectar patologías por palabras clave
     for keywords, pathology in keyword_mapping.items():
-        if pathology is None:  # Caso especial para embarazo
+        if pathology is None:  # Casos especiales
             if any(keyword in text_lower for keyword in keywords):
-                # Buscar trimestre específico
-                if "primer" in text_lower or "1er" in text_lower or "1°" in text_lower:
-                    detected.append(PathologyType.EMBARAZO_PRIMER_TRIMESTRE)
-                elif "segundo" in text_lower or "2do" in text_lower or "2°" in text_lower:
-                    detected.append(PathologyType.EMBARAZO_SEGUNDO_TRIMESTRE)
-                elif "tercer" in text_lower or "3er" in text_lower or "3°" in text_lower:
-                    detected.append(PathologyType.EMBARAZO_TERCER_TRIMESTRE)
-                else:
-                    # Si no se especifica trimestre, asumir segundo
-                    detected.append(PathologyType.EMBARAZO_SEGUNDO_TRIMESTRE)
+                # Caso especial para embarazo
+                if keywords[0] in ["embarazada", "gestación", "gestante", "embarazo"]:
+                    # Buscar trimestre específico
+                    if "primer" in text_lower or "1er" in text_lower or "1°" in text_lower:
+                        detected.append(PathologyType.EMBARAZO_PRIMER_TRIMESTRE)
+                    elif "segundo" in text_lower or "2do" in text_lower or "2°" in text_lower:
+                        detected.append(PathologyType.EMBARAZO_SEGUNDO_TRIMESTRE)
+                    elif "tercer" in text_lower or "3er" in text_lower or "3°" in text_lower:
+                        detected.append(PathologyType.EMBARAZO_TERCER_TRIMESTRE)
+                    else:
+                        # Si no se especifica trimestre, asumir segundo
+                        detected.append(PathologyType.EMBARAZO_SEGUNDO_TRIMESTRE)
+                
+                # Caso especial para cáncer
+                elif keywords[0] in ["cáncer", "cancer", "oncológico", "tumor"]:
+                    # Buscar fase específica
+                    if "prequimio" in text_lower or "pre quimio" in text_lower or "antes de quimio" in text_lower:
+                        detected.append(PathologyType.CANCER_PREQUIMIO)
+                    elif "posquimio" in text_lower or "post quimio" in text_lower or "después de quimio" in text_lower:
+                        detected.append(PathologyType.CANCER_POSQUIMIO)
+                    elif "radioterapia" in text_lower or "radiación" in text_lower:
+                        detected.append(PathologyType.CANCER_RADIOTERAPIA)
+                    else:
+                        # Si no se especifica fase, asumir prequimio
+                        detected.append(PathologyType.CANCER_PREQUIMIO)
         else:
             if any(keyword in text_lower for keyword in keywords):
                 detected.append(pathology)
