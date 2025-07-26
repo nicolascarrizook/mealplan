@@ -44,6 +44,11 @@ class PathologyType(str, Enum):
     MALA_ABSORCION = "mala_absorcion"
     COLONOSCOPIA = "colonoscopia"
     HIPOGLUCEMIA = "hipoglucemia"
+    CONSTIPACION = "constipacion"
+    GASTRITIS = "gastritis"
+    DEFICIT_CALCIO = "deficit_calcio"
+    SINDROME_INTESTINO_CORTO = "sindrome_intestino_corto"
+    OVOLACTOVEGETARIANO = "ovolactovegetariano"
     EMBARAZO_PRIMER_TRIMESTRE = "embarazo_primer_trimestre"
     EMBARAZO_SEGUNDO_TRIMESTRE = "embarazo_segundo_trimestre"
     EMBARAZO_TERCER_TRIMESTRE = "embarazo_tercer_trimestre"
@@ -1022,6 +1027,157 @@ PATHOLOGIES_DATABASE: Dict[str, Dict[str, Any]] = {
             "Índice glucémico bajo",
             "Evitar ayunos"
         ]
+    },
+    
+    PathologyType.CONSTIPACION: {
+        "name": "Constipación",
+        "description": "Tránsito intestinal lento, dificultad evacuatoria",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30,
+            "fiber_min": 30,
+            "water_min": 2000
+        },
+        "dietary_restrictions": [
+            "arroz blanco", "pan blanco", "quesos duros", "alimentos astringentes"
+        ],
+        "recipe_tags_avoid": ["astringente", "bajo_fibra", "refinado"],
+        "recipe_tags_prefer": ["rica_en_fibra", "digestiva", "integral", "vegetariano", "apto_constipacion"],
+        "meal_distribution": {
+            "breakfast": 25,
+            "lunch": 35,
+            "dinner": 30,
+            "snacks": 10
+        },
+        "special_considerations": [
+            "Aumentar fibra gradualmente",
+            "Hidratación abundante",
+            "Incluir frutas con piel",
+            "Actividad física regular"
+        ]
+    },
+    
+    PathologyType.GASTRITIS: {
+        "name": "Gastritis",
+        "description": "Inflamación de la mucosa gástrica",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30,
+            "fiber_max": 20
+        },
+        "dietary_restrictions": [
+            "picantes", "ácidos", "café", "alcohol", "frituras", "condimentos fuertes"
+        ],
+        "recipe_tags_avoid": ["picante", "acido", "frito", "irritante", "alto_fibra"],
+        "recipe_tags_prefer": ["blanda", "digestiva", "cocido", "suave", "apto_gastritis"],
+        "meal_distribution": {
+            "breakfast": 20,
+            "mid_morning": 10,
+            "lunch": 25,
+            "afternoon": 10,
+            "dinner": 25,
+            "evening": 10
+        },
+        "special_considerations": [
+            "Comidas fraccionadas",
+            "Evitar temperaturas extremas",
+            "Masticar bien",
+            "Evitar acostarse después de comer"
+        ]
+    },
+    
+    PathologyType.DEFICIT_CALCIO: {
+        "name": "Déficit de Calcio",
+        "description": "Deficiencia de calcio, riesgo de osteoporosis",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30,
+            "calcium_min": 1200
+        },
+        "dietary_restrictions": [
+            "exceso de sodio", "exceso de cafeína", "exceso de proteína animal"
+        ],
+        "recipe_tags_avoid": ["alto_sodio", "alto_fosforo"],
+        "recipe_tags_prefer": ["rica_en_calcio", "con_lactosa", "fortificado", "apto_calcio"],
+        "meal_distribution": {
+            "breakfast": 25,
+            "lunch": 35,
+            "dinner": 30,
+            "snacks": 10
+        },
+        "special_considerations": [
+            "Incluir lácteos o alternativas fortificadas",
+            "Vitamina D para absorción",
+            "Evitar fitatos con calcio",
+            "Fraccionar aporte de calcio"
+        ]
+    },
+    
+    PathologyType.SINDROME_INTESTINO_CORTO: {
+        "name": "Síndrome de Intestino Corto",
+        "description": "Malabsorción por resección intestinal",
+        "nutritional_adjustments": {
+            "calories_adjustment": 500,
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30,
+            "use_mct_oil": True,
+            "max_volume_per_meal": 250
+        },
+        "dietary_restrictions": [
+            "fibra insoluble", "lactosa", "azúcares simples", "grasas de cadena larga"
+        ],
+        "recipe_tags_avoid": ["alto_fibra", "lactosa", "crudo", "integral"],
+        "recipe_tags_prefer": ["bajo_residuo", "digestiva", "blanda", "malaabsorcion", "apto_SIC"],
+        "meal_distribution": {
+            "breakfast": 15,
+            "mid_morning": 15,
+            "lunch": 20,
+            "afternoon": 15,
+            "dinner": 20,
+            "evening": 15
+        },
+        "special_considerations": [
+            "Comidas pequeñas y frecuentes",
+            "Suplementación parenteral si necesario",
+            "Monitorear hidratación",
+            "Evitar bebidas con comidas"
+        ]
+    },
+    
+    PathologyType.OVOLACTOVEGETARIANO: {
+        "name": "Ovolactovegetariano",
+        "description": "Patrón alimentario sin carnes pero con huevo y lácteos",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "carbs_percentage": 55,
+            "protein_percentage": 15,
+            "fat_percentage": 30,
+            "protein_per_kg": 1.2
+        },
+        "dietary_restrictions": [
+            "carne", "pollo", "pescado", "mariscos", "embutidos", "gelatina"
+        ],
+        "recipe_tags_avoid": ["carne", "pescado", "embutido"],
+        "recipe_tags_prefer": ["ovolacto", "vegetariano", "alta_proteina", "rico_hierro"],
+        "meal_distribution": {
+            "breakfast": 25,
+            "lunch": 35,
+            "dinner": 30,
+            "snacks": 10
+        },
+        "special_considerations": [
+            "Combinar proteínas vegetales",
+            "Suplementar B12 si necesario",
+            "Incluir fuentes de hierro con vitamina C",
+            "Variedad de legumbres y cereales"
+        ]
     }
 }
 
@@ -1210,6 +1366,13 @@ def detect_pathologies_from_text(text: str) -> List[PathologyType]:
         ("malabsorción", "mala absorción", "síndrome malabsorción"): PathologyType.MALA_ABSORCION,
         ("colonoscopía", "colonoscopia", "preparación colonoscopía"): PathologyType.COLONOSCOPIA,
         ("hipoglucemia", "hipoglicemia", "glucemia baja"): PathologyType.HIPOGLUCEMIA,
+        
+        # Nuevas condiciones
+        ("constipación", "estreñimiento", "tránsito lento"): PathologyType.CONSTIPACION,
+        ("gastritis", "dolor estomacal", "acidez"): PathologyType.GASTRITIS,
+        ("déficit calcio", "osteoporosis", "densidad ósea baja", "falta de calcio"): PathologyType.DEFICIT_CALCIO,
+        ("intestino corto", "síndrome intestino corto", "malabsorción severa"): PathologyType.SINDROME_INTESTINO_CORTO,
+        ("ovolactovegetariano", "ovo lacto vegetariano", "vegetariano con huevo y lácteos"): PathologyType.OVOLACTOVEGETARIANO,
         
         # Embarazo
         ("embarazada", "gestación", "gestante", "embarazo"): None,  # Procesamiento especial

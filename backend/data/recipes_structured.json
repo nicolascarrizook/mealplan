@@ -1097,24 +1097,6 @@
       "tags": ["post_entreno", "nutritivo", "bebible"]
     },
     {
-      "id": "REC_0001",
-      "nombre": "Huevos revueltos",
-      "tipo_comida": ["desayuno"],
-      "ingredientes": [
-        { "item": "huevos", "cantidad": "1 unidad" },
-        { "item": "aceite", "cantidad": "1 cdita" },
-        { "item": "sal", "cantidad": "a gusto" }
-      ],
-      "preparacion": "Batir los huevos, cocinar en sartén con aceite a fuego medio-bajo, revolviendo constantemente hasta obtener la consistencia deseada.",
-      "calorias_aprox": 180,
-      "proteinas_aprox": 12,
-      "carbohidratos_aprox": 2,
-      "grasas_aprox": 14,
-      "tiempo_preparacion": 5,
-      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
-      "tags": ["proteico", "rapido", "basico", "saludable"]
-    },
-    {
       "id": "REC_0002",
       "nombre": "Huevos revueltos",
       "tipo_comida": ["desayuno", "almuerzo", "cena"],
@@ -1697,26 +1679,6 @@
     },
     {
       "id": "REC_0032",
-      "nombre": "Pasta con pesto de espinacas",
-      "tipo_comida": ["almuerzo", "cena"],
-      "ingredientes": [
-        { "item": "espinacas", "cantidad": "200gr" },
-        { "item": "pesto de espinacas", "cantidad": "100ml" },
-        { "item": "pasta", "cantidad": "200gr" },
-        { "item": "aceite de oliva", "cantidad": "1 cda" },
-        { "item": "limón", "cantidad": "1/2 unidad" }
-      ],
-      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
-      "calorias_aprox": 320,
-      "proteinas_aprox": 12,
-      "carbohidratos_aprox": 58,
-      "grasas_aprox": 4,
-      "tiempo_preparacion": 25,
-      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
-      "tags": ["saludable", "fresco", "nutritivo"]
-    },
-    {
-      "id": "REC_0033",
       "nombre": "Pasta con pesto de espinacas",
       "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [

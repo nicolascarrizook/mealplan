@@ -1,13 +1,15 @@
 import re
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 from .recipe_manager import RecipeManager
+from ..utils.meal_plan_validator import MealPlanValidator
 
 logger = logging.getLogger(__name__)
 
 class MealPlanProcessor:
     def __init__(self, recipe_manager: RecipeManager):
         self.recipe_manager = recipe_manager
+        self.validator = MealPlanValidator()
     
     def process_meal_plan(self, meal_plan_text: str) -> str:
         """Process a meal plan to ensure recipe details are complete"""
@@ -118,6 +120,86 @@ Tags: {', '.join(recipe.get('tags', []))}
                     logger.info(f"Fixed invalid recipe ID {clean_id} -> {similar_recipe}")
         
         return fixed_plan, has_errors
+    
+    def validate_meal_plan_structure(
+        self, 
+        meal_plan_text: str, 
+        distribution_type: str = "standard"
+    ) -> Tuple[bool, str]:
+        """
+        Valida la estructura del plan según las reglas del sistema
+        
+        Args:
+            meal_plan_text: Texto del plan generado
+            distribution_type: "equitable" o "standard"
+            
+        Returns:
+            (is_valid, validation_report)
+        """
+        # Extraer las opciones y macros del plan
+        meal_structure = self._extract_meal_structure(meal_plan_text)
+        
+        if not meal_structure:
+            return False, "❌ No se pudo extraer la estructura del plan para validación"
+        
+        # Generar reporte de validación
+        validation_report = self.validator.generate_validation_report(
+            meal_structure, 
+            distribution_type
+        )
+        
+        # Determinar si es válido
+        is_valid = "✅ PLAN VÁLIDO" in validation_report
+        
+        return is_valid, validation_report
+    
+    def _extract_meal_structure(self, meal_plan_text: str) -> Dict[str, List[Dict[str, float]]]:
+        """
+        Extrae la estructura de comidas y macros del texto del plan
+        
+        Returns:
+            {'desayuno': [opt1, opt2, opt3], 'almuerzo': [...], ...}
+        """
+        # Patrones para encontrar comidas y sus macros
+        meal_pattern = r'(DESAYUNO|ALMUERZO|MERIENDA|CENA|COLACIÓN[^:]*)'
+        option_pattern = r'OPCIÓN \d+:'
+        macros_pattern = r'Macros:\s*P:\s*([\d.]+)g?\s*\|\s*C:\s*([\d.]+)g?\s*\|\s*G:\s*([\d.]+)g?\s*\|\s*Cal:\s*([\d.]+)'
+        
+        meal_structure = {}
+        current_meal = None
+        current_options = []
+        
+        lines = meal_plan_text.split('\n')
+        
+        for line in lines:
+            # Detectar nueva comida
+            meal_match = re.match(meal_pattern, line)
+            if meal_match:
+                # Guardar comida anterior si existe
+                if current_meal and current_options:
+                    meal_structure[current_meal.lower()] = current_options
+                
+                # Iniciar nueva comida
+                current_meal = meal_match.group(1).strip()
+                current_options = []
+                continue
+            
+            # Detectar macros
+            macros_match = re.search(macros_pattern, line)
+            if macros_match and current_meal:
+                macros = {
+                    'protein': float(macros_match.group(1)),
+                    'carbs': float(macros_match.group(2)),
+                    'fat': float(macros_match.group(3)),
+                    'calories': float(macros_match.group(4))
+                }
+                current_options.append(macros)
+        
+        # Guardar última comida
+        if current_meal and current_options:
+            meal_structure[current_meal.lower()] = current_options
+        
+        return meal_structure
     
     def _find_similar_recipe(self, invalid_id: str, valid_ids: List[str]) -> Optional[str]:
         """Try to find a similar valid recipe ID"""

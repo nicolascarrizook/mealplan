@@ -21,56 +21,110 @@ logger = logging.getLogger(__name__)
 class PromptGenerator:
     def __init__(self):
         self.base_rules = """
-REGLAS FUNDAMENTALES DEL MÉTODO:
-1. Plan de 3 días iguales
-2. Todas las cantidades en GRAMOS
-3. Verduras tipo C (papa, batata, choclo) en gramos específicos
-4. Otras verduras: porción libre pero coherente
-5. Frutas siempre en gramos
-6. Incluir forma de preparación para cada comida
-7. No usar suplementos salvo indicación expresa
-8. Usar léxico argentino
-9. Adaptarse al nivel económico
+🔁 ANTES DE COMENZAR:
+⚠️ Esta tarea depende de que revises exhaustivamente el catálogo de recetas cargado
+📌 Solo podés usar recetas incluidas en el sistema
+⛔ Está terminantemente prohibido inventar preparaciones, modificar ingredientes o mezclar recetas no autorizadas
+❌ No hagas cálculos, análisis previos ni comentarios clínicos si no se te solicitaron explícitamente
+✅ Si no hay recetas adecuadas para cumplir los requerimientos, DETENER y reportar el problema
 
-🚨 REGLA CRÍTICA #10: USAR ÚNICAMENTE LAS RECETAS DEL CATÁLOGO PROPORCIONADO 🚨
-- NO inventar recetas nuevas bajo ninguna circunstancia
-- NO modificar nombres de recetas existentes
-- NO combinar recetas a menos que esté especificado
-- Usar SIEMPRE el ID exacto de la receta [REC_XXXX]
-- Si no hay recetas adecuadas para una comida, indicar "No hay recetas disponibles"
+⚠️ INSTRUCCIONES OBLIGATORIAS:
 
-11. Respetar características especiales del menú (blandogástrico, fibra soluble, etc.)
-12. Si el almuerzo es transportable, elegir opciones que se conserven bien
-13. Respetar timing especial del desayuno si está indicado
+1. EQUIVALENCIA INTERNA ENTRE OPCIONES DEL MISMO BLOQUE
+- Todas las comidas principales deben tener 3 opciones diferentes pero equivalentes
+- Margen permitido: ±5% en energía total (kcal), proteínas (g), carbohidratos (g) y grasas (g)
 
-CONSIDERACIONES PARA PATOLOGÍAS ONCOLÓGICAS:
-- Prequimio: Énfasis en optimizar estado nutricional, alta proteína (2g/kg)
-- Posquimio: Texturas suaves, fraccionamiento 6-8 comidas, evitar olores fuertes
-- Durante tratamiento: Adaptar según síntomas (náuseas, mucositis, diarrea)
-- Priorizar densidad nutricional en volúmenes pequeños
+2. DISTRIBUCIÓN DEL REQUERIMIENTO DIARIO
+📌 Si se indica distribución "equitativa":
+✅ Las comidas principales (desayuno, almuerzo, merienda, cena) deben tener:
+- El mismo aporte calórico (±5%)
+- El mismo contenido de proteínas, carbohidratos y grasas (±5%)
+- La misma estructura nutricional, sin excepción
+
+⛔ Bajo ninguna circunstancia una comida principal puede tener más calorías, más proteínas ni más volumen que otra
+⚠️ Si se genera una diferencia estructural entre comidas principales, el plan queda invalidado automáticamente
+🟠 Este criterio se mantiene incluso si el paciente omite una comida
+
+3. COLACIONES
+- Solo usar recetas etiquetadas como "colación"
+- Las 3 opciones deben ser equivalentes (±5%) en calorías y densidad digestiva
+- Estructura más liviana que comidas principales
+
+4. GRAMAJES CRUDOS
+- Todos los ingredientes en gramos crudos
+- Verduras tipo C (papa, batata, choclo): gramos exactos crudos
+- Resto de verduras: "volumen libre coherente" (sin pesar)
+
+5. SUPLEMENTACIÓN
+⛔ Nunca incluir suplementos si no están explícitamente indicados
+
+6. LÉXICO Y ESTILO
+- Usar léxico argentino profesional
+- Evitar recetas complejas si el paciente prefiere comidas simples
+
+7. VALIDACIÓN ESTRUCTURAL
+🛑 Si durante la generación:
+- Las opciones no son equivalentes
+- Las comidas principales no son iguales entre sí
+- No puede cumplirse alguna regla
+DETENER LA TAREA INMEDIATAMENTE. No entregar el plan y reportar el problema.
+
+8. FORMATO DE ENTREGA
+- Formato texto profesional, no tabla
+- Cada bloque claramente separado
+
+9. DATOS OBLIGATORIOS DEBAJO DE CADA RECETA
+🔸 Calorías totales (kcal)
+🔸 Proteínas (g)
+🔸 Carbohidratos (g)
+🔸 Grasas (g)
+
+10. FORMA DE PREPARACIÓN
+- Debajo de cada receta debe figurar la forma de preparación
 """
         
         self.recipe_format_rules = """
-⚠️ FORMATO OBLIGATORIO PARA CADA COMIDA ⚠️:
+✅ INSTRUCCIÓN FINAL:
+Generar un plan completo según el sistema, usando únicamente recetas del catálogo, con:
+✔️ Ingredientes en gramos crudos
+✔️ Forma de preparación
+✔️ Macronutrientes por comida (P, CH, G)
+✔️ Aporte calórico total
+✔️ 3 opciones equivalentes por bloque
 
-📋 INSTRUCCIONES CRÍTICAS:
-1. Proporcionar 3 OPCIONES de recetas para cada comida
-2. Cada opción DEBE incluir el ID exacto de la receta: [REC_XXXX]
-3. Usar EXCLUSIVAMENTE recetas del catálogo proporcionado
-4. Si necesitas ajustar cantidades, especificar claramente
-5. Las 3 opciones deben tener macros similares (±10%)
+FORMATO OBLIGATORIO PARA CADA COMIDA:
 
-❌ PROHIBIDO:
-- Inventar recetas nuevas
-- Modificar nombres de recetas
-- Combinar recetas (salvo indicación expresa)
-- Usar recetas sin su ID correspondiente
-- Crear variaciones de recetas existentes
+DESAYUNO [agregar "(2 hs post medicación)" si toma levotiroxina]
+OPCIÓN 1:
+- Receta: [REC_XXXX] - [Nombre de la receta]
+- Ingredientes con cantidades ajustadas:
+  * Ingrediente 1: XXg
+  * Ingrediente 2: XXg
+- Forma de preparación: [método de cocción]
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
 
-✅ FORMATO CORRECTO:
-Opción 1: [REC_0032] Muffins de banana y avena (ajustar a 2 unidades)
-Opción 2: [REC_0001] Pancakes de banana, avena y miel (120g)
-Opción 3: [REC_0045] Budín de avena y banana (150g)
+OPCIÓN 2:
+[Mismo formato - debe ser equivalente ±5%]
+
+OPCIÓN 3:
+[Mismo formato - debe ser equivalente ±5%]
+
+ALMUERZO
+[Mismo formato con 3 opciones equivalentes]
+
+MERIENDA
+[Mismo formato con 3 opciones equivalentes]
+
+CENA
+[Mismo formato con 3 opciones equivalentes]
+
+COLACIONES (si aplica)
+[Formato similar pero con estructura más liviana]
+
+⚠️ VALIDACIÓN OBLIGATORIA:
+- Verificar que las 3 opciones de cada comida tengan macros equivalentes (±5%)
+- Si la distribución es equitativa, TODAS las comidas principales deben ser iguales
+- Si no se puede cumplir, DETENER y reportar
 """
 
         self.supplementation_guidelines = """
