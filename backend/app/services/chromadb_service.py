@@ -348,6 +348,11 @@ class ChromaDBService:
     
     def get_all_recipes(self) -> str:
         """Get all recipes formatted for prompt"""
+        # If ChromaDB is not available, return empty string
+        if not self.collection:
+            logger.warning("ChromaDB not available, returning empty recipes")
+            return "No hay recetas disponibles en ChromaDB"
+        
         results = self.collection.get()
         
         recipes = []

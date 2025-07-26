@@ -31,7 +31,14 @@ REGLAS FUNDAMENTALES DEL MÉTODO:
 7. No usar suplementos salvo indicación expresa
 8. Usar léxico argentino
 9. Adaptarse al nivel económico
-10. OBLIGATORIO: Usar ÚNICAMENTE recetas del catálogo proporcionado mediante sus IDs
+
+🚨 REGLA CRÍTICA #10: USAR ÚNICAMENTE LAS RECETAS DEL CATÁLOGO PROPORCIONADO 🚨
+- NO inventar recetas nuevas bajo ninguna circunstancia
+- NO modificar nombres de recetas existentes
+- NO combinar recetas a menos que esté especificado
+- Usar SIEMPRE el ID exacto de la receta [REC_XXXX]
+- Si no hay recetas adecuadas para una comida, indicar "No hay recetas disponibles"
+
 11. Respetar características especiales del menú (blandogástrico, fibra soluble, etc.)
 12. Si el almuerzo es transportable, elegir opciones que se conserven bien
 13. Respetar timing especial del desayuno si está indicado
@@ -44,13 +51,26 @@ CONSIDERACIONES PARA PATOLOGÍAS ONCOLÓGICAS:
 """
         
         self.recipe_format_rules = """
-FORMATO OBLIGATORIO PARA CADA COMIDA:
-- Proporcionar 3 OPCIONES de recetas para cada comida
-- Cada opción debe incluir ID de receta: [REC_XXXX]
-- Ajustes de cantidades si es necesario
-- NO inventar recetas nuevas
-- NO combinar recetas sin que esté especificado
-- Las 3 opciones deben tener macros similares (±10%)
+⚠️ FORMATO OBLIGATORIO PARA CADA COMIDA ⚠️:
+
+📋 INSTRUCCIONES CRÍTICAS:
+1. Proporcionar 3 OPCIONES de recetas para cada comida
+2. Cada opción DEBE incluir el ID exacto de la receta: [REC_XXXX]
+3. Usar EXCLUSIVAMENTE recetas del catálogo proporcionado
+4. Si necesitas ajustar cantidades, especificar claramente
+5. Las 3 opciones deben tener macros similares (±10%)
+
+❌ PROHIBIDO:
+- Inventar recetas nuevas
+- Modificar nombres de recetas
+- Combinar recetas (salvo indicación expresa)
+- Usar recetas sin su ID correspondiente
+- Crear variaciones de recetas existentes
+
+✅ FORMATO CORRECTO:
+Opción 1: [REC_0032] Muffins de banana y avena (ajustar a 2 unidades)
+Opción 2: [REC_0001] Pancakes de banana, avena y miel (120g)
+Opción 3: [REC_0045] Budín de avena y banana (150g)
 """
 
         self.supplementation_guidelines = """

@@ -1874,6 +1874,26 @@
       "tiempo_preparacion": 25,
       "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
       "tags": ["saludable", "fresco", "nutritivo"]
+    },
+    {
+      "id": "REC_0041",
+      "nombre": "Pesto de espinacas",
+      "tipo_comida": ["almuerzo", "cena"],
+      "ingredientes": [
+        { "item": "espinacas", "cantidad": "200gr" },
+        { "item": "pesto de espinacas", "cantidad": "100ml" },
+        { "item": "pasta", "cantidad": "200gr" },
+        { "item": "aceite de oliva", "cantidad": "1 cda" },
+        { "item": "limón", "cantidad": "1/2 unidad" }
+      ],
+      "preparacion": "Hervir pasta. Saltear espinacas con pesto. Mezclar pasta con espinacas, aderezar con aceite y limón.",
+      "calorias_aprox": 320,
+      "proteinas_aprox": 12,
+      "carbohidratos_aprox": 58,
+      "grasas_aprox": 4,
+      "tiempo_preparacion": 25,
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
     }
   ]
 }

@@ -46,13 +46,57 @@ class RecipeManager:
         """Get all recipes for a specific meal type"""
         return self.recipes_by_meal_type.get(meal_type, [])
     
+    def get_all_recipes(self) -> List[Dict]:
+        """Get all recipes from all meal types"""
+        all_recipes = []
+        for meal_type_recipes in self.recipes_by_meal_type.values():
+            all_recipes.extend(meal_type_recipes)
+        return all_recipes
+    
+    def filter_recipes_by_pathology_tags(
+        self,
+        recipes: List[Dict],
+        tags_to_prefer: List[str],
+        tags_to_avoid: List[str]
+    ) -> List[Dict]:
+        """Filter recipes based on pathology tags (new format)"""
+        filtered = []
+        
+        for recipe in recipes:
+            recipe_tags = recipe.get('tags', [])
+            recipe_apto_para = recipe.get('apto_para', [])
+            
+            # Combine all tags for checking
+            all_recipe_tags = set(recipe_tags + recipe_apto_para)
+            
+            # Check if recipe has any tags to avoid
+            if tags_to_avoid and any(tag in all_recipe_tags for tag in tags_to_avoid):
+                continue
+            
+            # Calculate preference score based on preferred tags
+            preference_score = 0
+            if tags_to_prefer:
+                for tag in tags_to_prefer:
+                    if tag in all_recipe_tags:
+                        preference_score += 10
+            
+            recipe['pathology_score'] = preference_score
+            filtered.append(recipe)
+        
+        # Sort by pathology score
+        filtered.sort(key=lambda x: x.get('pathology_score', 0), reverse=True)
+        
+        return filtered
+
     def filter_recipes_by_requirements(
         self,
         recipes: List[Dict],
         restrictions: Optional[str] = None,
         preferences: Optional[str] = None,
         economic_level: str = "Medio",
-        target_macros: Optional[Dict[str, float]] = None
+        target_macros: Optional[Dict[str, float]] = None,
+        tags_to_prefer: Optional[List[str]] = None,
+        tags_to_avoid: Optional[List[str]] = None
     ) -> List[Dict]:
         """Filter recipes based on patient requirements"""
         filtered = []
@@ -68,6 +112,12 @@ class RecipeManager:
             if restrictions and self._contains_restricted_ingredients(recipe, restrictions):
                 continue
             
+            # Check pathology tags to avoid
+            if tags_to_avoid:
+                recipe_tags = recipe.get('tags', []) + recipe.get('apto_para', [])
+                if any(tag in recipe_tags for tag in tags_to_avoid):
+                    continue
+            
             # Check economic level
             if economic_level in [NivelEconomico.bajo_recursos.value, NivelEconomico.limitado.value]:
                 if self._contains_expensive_ingredients(recipe, expensive_ingredients):
@@ -77,15 +127,26 @@ class RecipeManager:
             score = self._calculate_preference_score(recipe, preferences)
             recipe['preference_score'] = score
             
+            # Score by pathology tags
+            if tags_to_prefer:
+                pathology_score = 0
+                recipe_tags = recipe.get('tags', []) + recipe.get('apto_para', [])
+                for tag in tags_to_prefer:
+                    if tag in recipe_tags:
+                        pathology_score += 10
+                recipe['pathology_score'] = pathology_score
+                score += pathology_score
+            
             # If target macros provided, calculate macro similarity
             if target_macros:
                 macro_score = self._calculate_macro_similarity(recipe, target_macros)
                 recipe['macro_score'] = macro_score
             
+            recipe['total_score'] = score
             filtered.append(recipe)
         
-        # Sort by preference score
-        filtered.sort(key=lambda x: x.get('preference_score', 0), reverse=True)
+        # Sort by total score
+        filtered.sort(key=lambda x: x.get('total_score', 0), reverse=True)
         
         return filtered
     

@@ -153,28 +153,43 @@ async def generate_new_patient_plan(request: NewPatientRequest):
 async def generate_control_plan(request: ControlPatientRequest):
     """Generate meal plan for patient control (Motor 2)"""
     try:
-        # Get recipes from ChromaDB
-        recipes = chromadb_service.get_all_recipes()
+        # Try to get recipes from ChromaDB first
+        recipes_formatted = None
+        if chromadb_service.collection:
+            recipes_formatted = chromadb_service.get_all_recipes()
+        
+        # If ChromaDB is not available or returns empty, use RecipeManager
+        if not recipes_formatted or recipes_formatted == "No hay recetas disponibles en ChromaDB":
+            # Get all recipes from RecipeManager
+            all_recipes = recipe_manager.get_all_recipes()
+            # Format them for the prompt
+            recipes_formatted = prompt_generator.format_recipes_by_meal_type({
+                "general": all_recipes[:50]  # Limit to 50 recipes to avoid token limits
+            })
         
         # Generate prompt
         prompt = prompt_generator.generate_motor2_prompt(
             control_data=request,
             previous_plan=request.plan_anterior,
-            recipes_json=recipes
+            recipes_json=recipes_formatted
         )
         
         # Generate plan with OpenAI
         meal_plan = await openai_service.generate_meal_plan(prompt)
         
+        # Post-process meal plan
+        processed_meal_plan = meal_plan_processor.process_meal_plan(meal_plan)
+        processed_meal_plan = meal_plan_processor.add_recipe_appendix(processed_meal_plan)
+        
         # Generate PDF
         pdf_path = pdf_generator.generate_pdf(
-            meal_plan=meal_plan,
+            meal_plan=processed_meal_plan,
             patient_name=request.nombre,
             plan_type="control"
         )
         
         return MealPlanResponse(
-            meal_plan=meal_plan,
+            meal_plan=processed_meal_plan,
             pdf_path=pdf_path
         )
         
@@ -186,16 +201,43 @@ async def replace_meal(request: MealReplacementRequest):
     """Replace specific meal maintaining macros (Motor 3)"""
     try:
         # Search for replacement options
-        replacement_options = chromadb_service.search_similar_meals(
-            meal_type=request.comida_reemplazar,
-            new_meal_description=request.nueva_comida,
-            target_macros={
-                "proteinas": request.proteinas,
-                "carbohidratos": request.carbohidratos,
-                "grasas": request.grasas,
-                "calorias": request.calorias
-            }
-        )
+        replacement_options = None
+        
+        # Try ChromaDB first if available
+        if chromadb_service.collection:
+            replacement_options = chromadb_service.search_similar_meals(
+                meal_type=request.comida_reemplazar,
+                new_meal_description=request.nueva_comida,
+                target_macros={
+                    "proteinas": request.proteinas,
+                    "carbohidratos": request.carbohidratos,
+                    "grasas": request.grasas,
+                    "calorias": request.calorias
+                }
+            )
+        
+        # If ChromaDB is not available, use RecipeManager
+        if not replacement_options:
+            # Get recipes for the specific meal type
+            meal_type_recipes = recipe_manager.get_recipes_by_meal_type(request.comida_reemplazar)
+            # Filter by macros similarity
+            filtered_recipes = []
+            for recipe in meal_type_recipes:
+                # Simple macro similarity check
+                protein_diff = abs(recipe.get('proteinas_aprox', 0) - request.proteinas)
+                carb_diff = abs(recipe.get('carbohidratos_aprox', 0) - request.carbohidratos)
+                fat_diff = abs(recipe.get('grasas_aprox', 0) - request.grasas)
+                
+                # Allow 20% tolerance
+                if (protein_diff <= request.proteinas * 0.2 and
+                    carb_diff <= request.carbohidratos * 0.2 and
+                    fat_diff <= request.grasas * 0.2):
+                    filtered_recipes.append(recipe)
+            
+            # Format for prompt
+            replacement_options = prompt_generator.format_recipes_by_meal_type({
+                request.comida_reemplazar: filtered_recipes[:10]
+            })
         
         # Generate prompt
         prompt = prompt_generator.generate_motor3_prompt(
@@ -207,15 +249,19 @@ async def replace_meal(request: MealReplacementRequest):
         # Generate replacement with OpenAI
         meal_plan = await openai_service.generate_meal_plan(prompt)
         
+        # Post-process meal plan
+        processed_meal_plan = meal_plan_processor.process_meal_plan(meal_plan)
+        processed_meal_plan = meal_plan_processor.add_recipe_appendix(processed_meal_plan)
+        
         # Generate PDF
         pdf_path = pdf_generator.generate_pdf(
-            meal_plan=meal_plan,
+            meal_plan=processed_meal_plan,
             patient_name=request.paciente,
             plan_type="reemplazo"
         )
         
         return MealPlanResponse(
-            meal_plan=meal_plan,
+            meal_plan=processed_meal_plan,
             pdf_path=pdf_path
         )
         

@@ -28,9 +28,22 @@ class PathologyType(str, Enum):
     CANCER_PREQUIMIO = "cancer_prequimio"
     CANCER_POSQUIMIO = "cancer_posquimio"
     CANCER_RADIOTERAPIA = "cancer_radioterapia"
+    ANTICANCER_PREQUIMIO = "anticancer_prequimio"
+    ANTICANCER_POSTQUIMIO = "anticancer_postquimio"
+    ANTICANCER_POSRAYOS = "anticancer_posrayos"
+    ANTICANCER_POSTCIRUGIA = "anticancer_postcirugia"
     DESNUTRICION = "desnutricion"
     SARCOPENIA = "sarcopenia"
     HIPOREXIA = "hiporexia"
+    BARIATRICO = "bariatrico"
+    BALON_GASTRICO = "balon_gastrico"
+    POSTOPERATORIO = "postoperatorio"
+    POST_CIRUGIA = "post_cirugia"
+    BLANDA = "blanda"
+    DIGESTIVA = "digestiva"
+    MALA_ABSORCION = "mala_absorcion"
+    COLONOSCOPIA = "colonoscopia"
+    HIPOGLUCEMIA = "hipoglucemia"
     EMBARAZO_PRIMER_TRIMESTRE = "embarazo_primer_trimestre"
     EMBARAZO_SEGUNDO_TRIMESTRE = "embarazo_segundo_trimestre"
     EMBARAZO_TERCER_TRIMESTRE = "embarazo_tercer_trimestre"
@@ -734,6 +747,281 @@ PATHOLOGIES_DATABASE: Dict[str, Dict[str, Any]] = {
             "Enriquecer preparaciones sin aumentar volumen",
             "Considerar estimulantes del apetito naturales"
         ]
+    },
+    
+    PathologyType.ANTICANCER_PREQUIMIO: {
+        "name": "Anticáncer Pre-Quimioterapia",
+        "description": "Preparación nutricional previa a quimioterapia",
+        "nutritional_adjustments": {
+            "calories_adjustment": 200,
+            "carbs_percentage": 40,
+            "protein_percentage": 30,
+            "fat_percentage": 30,
+            "protein_per_kg": 2.0,
+            "fiber_min": 25
+        },
+        "dietary_restrictions": [
+            "alcohol", "alimentos muy procesados", "azúcares refinados"
+        ],
+        "recipe_tags_avoid": ["procesado", "frito", "alcohol"],
+        "recipe_tags_prefer": ["alta_proteina", "digestiva", "blanda", "sin_soja", "sin_gluten"],
+        "meal_distribution": {
+            "breakfast": 25,
+            "lunch": 30,
+            "dinner": 25,
+            "snacks": 20
+        },
+        "special_considerations": [
+            "Optimizar estado nutricional",
+            "Énfasis en alta proteína (2g/kg)",
+            "Mejorar sistema inmune",
+            "Hidratación abundante"
+        ]
+    },
+    
+    PathologyType.ANTICANCER_POSTQUIMIO: {
+        "name": "Anticáncer Post-Quimioterapia",
+        "description": "Recuperación nutricional post-quimioterapia",
+        "nutritional_adjustments": {
+            "calories_adjustment": 300,
+            "carbs_percentage": 45,
+            "protein_percentage": 25,
+            "fat_percentage": 30,
+            "protein_per_kg": 1.5,
+            "fiber_min": 15
+        },
+        "dietary_restrictions": [
+            "alcohol", "picantes", "ácidos", "muy calientes", "muy fríos"
+        ],
+        "recipe_tags_avoid": ["picante", "acido", "crudo", "frito"],
+        "recipe_tags_prefer": ["blanda", "digestiva", "antiinflamatoria", "sin_lactosa"],
+        "meal_distribution": {
+            "breakfast": 15,
+            "mid_morning": 10,
+            "lunch": 25,
+            "afternoon": 10,
+            "dinner": 25,
+            "evening": 15
+        },
+        "special_considerations": [
+            "Texturas suaves",
+            "Fraccionamiento 6-8 comidas",
+            "Evitar olores fuertes",
+            "Temperatura templada"
+        ]
+    },
+    
+    PathologyType.ANTICANCER_POSRAYOS: {
+        "name": "Anticáncer Post-Radioterapia",
+        "description": "Recuperación nutricional post-radioterapia",
+        "nutritional_adjustments": {
+            "calories_adjustment": 250,
+            "carbs_percentage": 45,
+            "protein_percentage": 25,
+            "fat_percentage": 30,
+            "protein_per_kg": 1.5
+        },
+        "dietary_restrictions": [
+            "alcohol", "irritantes", "ácidos", "fibra insoluble"
+        ],
+        "recipe_tags_avoid": ["irritante", "acido", "alto_fibra", "crudo"],
+        "recipe_tags_prefer": ["blanda", "digestiva", "sin_gluten", "sin_lactosa"],
+        "meal_distribution": {
+            "breakfast": 20,
+            "mid_morning": 10,
+            "lunch": 25,
+            "afternoon": 10,
+            "dinner": 25,
+            "evening": 10
+        },
+        "special_considerations": [
+            "Evitar irritantes según zona irradiada",
+            "Hidratación constante",
+            "Suplementación según déficits"
+        ]
+    },
+    
+    PathologyType.BARIATRICO: {
+        "name": "Cirugía Bariátrica",
+        "description": "Post-operatorio de cirugía bariátrica",
+        "nutritional_adjustments": {
+            "calories_adjustment": -500,
+            "carbs_percentage": 30,
+            "protein_percentage": 40,
+            "fat_percentage": 30,
+            "protein_per_kg": 1.5,
+            "max_volume_per_meal": 200
+        },
+        "dietary_restrictions": [
+            "azúcares simples", "bebidas con gas", "alimentos duros", "fibrosos"
+        ],
+        "recipe_tags_avoid": ["azucarado", "carbonatado", "duro", "fibroso"],
+        "recipe_tags_prefer": ["bariatrico", "alta_proteina", "blanda", "pequeña_porcion"],
+        "meal_distribution": {
+            "breakfast": 15,
+            "mid_morning": 15,
+            "lunch": 20,
+            "afternoon": 15,
+            "dinner": 20,
+            "evening": 15
+        },
+        "special_considerations": [
+            "Volúmenes pequeños (max 200ml)",
+            "Masticación exhaustiva",
+            "No líquidos con comidas",
+            "Proteína prioritaria"
+        ]
+    },
+    
+    PathologyType.BALON_GASTRICO: {
+        "name": "Balón Gástrico",
+        "description": "Paciente con balón intragástrico",
+        "nutritional_adjustments": {
+            "calories_adjustment": -400,
+            "carbs_percentage": 35,
+            "protein_percentage": 35,
+            "fat_percentage": 30,
+            "max_volume_per_meal": 150
+        },
+        "dietary_restrictions": [
+            "bebidas con gas", "alimentos que produzcan gases", "irritantes"
+        ],
+        "recipe_tags_avoid": ["carbonatado", "flatulento", "irritante"],
+        "recipe_tags_prefer": ["balon_gastrico", "digestiva", "pequeña_porcion"],
+        "meal_distribution": {
+            "breakfast": 15,
+            "mid_morning": 15,
+            "lunch": 20,
+            "afternoon": 15,
+            "dinner": 20,
+            "evening": 15
+        },
+        "special_considerations": [
+            "Volúmenes muy pequeños",
+            "Evitar flatulentos",
+            "Comer despacio",
+            "Hidratación entre comidas"
+        ]
+    },
+    
+    PathologyType.BLANDA: {
+        "name": "Dieta Blanda",
+        "description": "Textura modificada blanda",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30
+        },
+        "dietary_restrictions": [
+            "alimentos duros", "crudos duros", "fibrosos", "con cáscara"
+        ],
+        "recipe_tags_avoid": ["duro", "crudo", "fibroso", "crujiente"],
+        "recipe_tags_prefer": ["blanda", "cocido", "pure", "suave"],
+        "special_considerations": [
+            "Texturas suaves y fáciles de masticar",
+            "Cocción prolongada",
+            "Sin trozos duros"
+        ]
+    },
+    
+    PathologyType.DIGESTIVA: {
+        "name": "Dieta Digestiva",
+        "description": "Fácil digestión y bajo residuo",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30,
+            "fiber_max": 15
+        },
+        "dietary_restrictions": [
+            "frituras", "condimentos fuertes", "fibra insoluble", "lácteos enteros"
+        ],
+        "recipe_tags_avoid": ["frito", "condimentado", "alto_fibra", "graso"],
+        "recipe_tags_prefer": ["digestiva", "bajo_residuo", "cocido", "suave"],
+        "special_considerations": [
+            "Métodos de cocción simples",
+            "Bajo en grasa",
+            "Sin irritantes",
+            "Fibra soluble preferente"
+        ]
+    },
+    
+    PathologyType.MALA_ABSORCION: {
+        "name": "Malabsorción",
+        "description": "Síndrome de malabsorción intestinal",
+        "nutritional_adjustments": {
+            "calories_adjustment": 400,
+            "carbs_percentage": 50,
+            "protein_percentage": 20,
+            "fat_percentage": 30,
+            "use_mct_oil": True
+        },
+        "dietary_restrictions": [
+            "lactosa", "gluten", "fibra insoluble", "grasas de cadena larga"
+        ],
+        "recipe_tags_avoid": ["lactosa", "gluten", "alto_fibra", "graso"],
+        "recipe_tags_prefer": ["sin_lactosa", "sin_gluten", "mala_absorcion", "fortificado"],
+        "special_considerations": [
+            "Usar MCT oil si es posible",
+            "Suplementación vitamínica",
+            "Comidas frecuentes y pequeñas",
+            "Alimentos fortificados"
+        ]
+    },
+    
+    PathologyType.COLONOSCOPIA: {
+        "name": "Preparación Colonoscopía",
+        "description": "Dieta para preparación de colonoscopía",
+        "nutritional_adjustments": {
+            "calories_adjustment": -200,
+            "carbs_percentage": 60,
+            "protein_percentage": 20,
+            "fat_percentage": 20,
+            "fiber_max": 5
+        },
+        "dietary_restrictions": [
+            "fibra", "semillas", "cáscaras", "vegetales crudos", "frutas con piel"
+        ],
+        "recipe_tags_avoid": ["fibra", "integral", "semillas", "crudo"],
+        "recipe_tags_prefer": ["colonoscopia", "sin_residuo", "liquido", "blando"],
+        "special_considerations": [
+            "Sin residuos",
+            "Líquidos claros últimas 24h",
+            "Evitar colorantes rojos/morados"
+        ]
+    },
+    
+    PathologyType.HIPOGLUCEMIA: {
+        "name": "Hipoglucemia",
+        "description": "Tendencia a hipoglucemias",
+        "nutritional_adjustments": {
+            "calories_adjustment": 0,
+            "carbs_percentage": 45,
+            "protein_percentage": 25,
+            "fat_percentage": 30,
+            "glycemic_index": "bajo"
+        },
+        "dietary_restrictions": [
+            "ayunos prolongados", "azúcares simples solos", "alcohol"
+        ],
+        "recipe_tags_avoid": ["alto_ig", "azucar_simple", "alcohol"],
+        "recipe_tags_prefer": ["bajo_ig", "proteico", "fibra", "hipoglucemia"],
+        "meal_distribution": {
+            "breakfast": 20,
+            "mid_morning": 10,
+            "lunch": 25,
+            "afternoon": 10,
+            "dinner": 25,
+            "evening": 10
+        },
+        "special_considerations": [
+            "Comidas frecuentes cada 3 horas",
+            "Combinar carbohidratos con proteína",
+            "Índice glucémico bajo",
+            "Evitar ayunos"
+        ]
     }
 }
 
@@ -905,9 +1193,23 @@ def detect_pathologies_from_text(text: str) -> List[PathologyType]:
         ("prequimio", "pre quimio", "antes de quimioterapia"): PathologyType.CANCER_PREQUIMIO,
         ("posquimio", "post quimio", "después de quimioterapia"): PathologyType.CANCER_POSQUIMIO,
         ("radioterapia", "radiación", "rayos"): PathologyType.CANCER_RADIOTERAPIA,
+        ("anticancer prequimio", "anticáncer prequimio"): PathologyType.ANTICANCER_PREQUIMIO,
+        ("anticancer postquimio", "anticáncer postquimio"): PathologyType.ANTICANCER_POSTQUIMIO,
+        ("anticancer posrayos", "anticáncer posrayos", "post radioterapia"): PathologyType.ANTICANCER_POSRAYOS,
+        ("anticancer postcirugia", "anticáncer postcirugía", "post cirugía oncológica"): PathologyType.ANTICANCER_POSTCIRUGIA,
         ("desnutrición", "desnutrido", "bajo peso severo"): PathologyType.DESNUTRICION,
         ("sarcopenia", "pérdida muscular", "pérdida de masa muscular"): PathologyType.SARCOPENIA,
         ("hiporexia", "falta de apetito", "pérdida de apetito", "inapetencia"): PathologyType.HIPOREXIA,
+        
+        # Condiciones digestivas y quirúrgicas
+        ("bariátrico", "bariatrico", "cirugía bariátrica", "sleeve", "bypass gástrico"): PathologyType.BARIATRICO,
+        ("balón gástrico", "balon gastrico", "balón intragástrico"): PathologyType.BALON_GASTRICO,
+        ("postoperatorio", "post operatorio", "post cirugía", "postcirugía"): PathologyType.POSTOPERATORIO,
+        ("dieta blanda", "textura blanda", "alimentos blandos"): PathologyType.BLANDA,
+        ("digestiva", "fácil digestión", "dieta digestiva"): PathologyType.DIGESTIVA,
+        ("malabsorción", "mala absorción", "síndrome malabsorción"): PathologyType.MALA_ABSORCION,
+        ("colonoscopía", "colonoscopia", "preparación colonoscopía"): PathologyType.COLONOSCOPIA,
+        ("hipoglucemia", "hipoglicemia", "glucemia baja"): PathologyType.HIPOGLUCEMIA,
         
         # Embarazo
         ("embarazada", "gestación", "gestante", "embarazo"): None,  # Procesamiento especial
