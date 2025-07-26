@@ -9,10 +9,7 @@
     {
       "id": "REC_0001",
       "nombre": "Pancakes de banana, avena y miel",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "banana",
@@ -37,25 +34,13 @@
       "carbohidratos_aprox": 40,
       "grasas_aprox": 6,
       "tiempo_preparacion": 15,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "antioxidante",
-        "refrescante",
-        "rapido"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["antioxidante", "refrescante", "rapido"]
     },
     {
       "id": "REC_0032",
       "nombre": "Muffins de banana y avena",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "colacion"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
       "ingredientes": [
         {
           "item": "banana",
@@ -84,23 +69,13 @@
       "carbohidratos_aprox": 22,
       "grasas_aprox": 3,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "portable",
-        "dulce_natural",
-        "sin_azucar"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["portable", "dulce_natural", "sin_azucar"]
     },
     {
       "id": "REC_0033",
       "nombre": "Wrap de pollo y vegetales",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "tortilla integral",
@@ -129,22 +104,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 8,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "portable",
-        "practico",
-        "completo"
-      ]
+      "apto_para": ["general"],
+      "tags": ["portable", "practico", "completo"]
     },
     {
       "id": "REC_0034",
       "nombre": "Salmón al horno con limón",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "salmón",
@@ -173,24 +139,13 @@
       "carbohidratos_aprox": 3,
       "grasas_aprox": 22,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "omega3",
-        "elegante",
-        "facil"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["omega3", "elegante", "facil"]
     },
     {
       "id": "REC_0035",
       "nombre": "Falafel al horno",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "garbanzos",
@@ -219,25 +174,13 @@
       "carbohidratos_aprox": 38,
       "grasas_aprox": 8,
       "tiempo_preparacion": 35,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "vegano",
-        "celiaquia"
-      ],
-      "tags": [
-        "medio_oriente",
-        "proteico",
-        "vegetariano"
-      ]
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["medio_oriente", "proteico", "vegetariano"]
     },
     {
       "id": "REC_0036",
       "nombre": "Berenjenas rellenas",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "berenjenas",
@@ -266,24 +209,13 @@
       "carbohidratos_aprox": 18,
       "grasas_aprox": 18,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "relleno",
-        "completo",
-        "sabroso"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["relleno", "completo", "sabroso"]
     },
     {
       "id": "REC_0037",
       "nombre": "Tarta de espinaca",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "masa de tarta",
@@ -312,23 +244,13 @@
       "carbohidratos_aprox": 32,
       "grasas_aprox": 12,
       "tiempo_preparacion": 50,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "clasico",
-        "vegetales",
-        "argentino"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["clasico", "vegetales", "argentino"]
     },
     {
       "id": "REC_0038",
       "nombre": "Pollo al curry",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pollo",
@@ -357,23 +279,13 @@
       "carbohidratos_aprox": 42,
       "grasas_aprox": 12,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "exotico",
-        "especiado",
-        "cremoso"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["exotico", "especiado", "cremoso"]
     },
     {
       "id": "REC_0039",
       "nombre": "Ensalada griega",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "tomate",
@@ -402,25 +314,13 @@
       "carbohidratos_aprox": 15,
       "grasas_aprox": 22,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "mediterraneo",
-        "fresco",
-        "rapido"
-      ]
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["mediterraneo", "fresco", "rapido"]
     },
     {
       "id": "REC_0040",
       "nombre": "Risotto de hongos",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "arroz arborio",
@@ -449,24 +349,13 @@
       "carbohidratos_aprox": 58,
       "grasas_aprox": 10,
       "tiempo_preparacion": 35,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "cremoso",
-        "elegante",
-        "italiano"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["cremoso", "elegante", "italiano"]
     },
     {
       "id": "REC_0041",
       "nombre": "Albóndigas en salsa",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "carne molida",
@@ -495,22 +384,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 16,
       "tiempo_preparacion": 35,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "tradicional",
-        "reconfortante",
-        "familiar"
-      ]
+      "apto_para": ["general"],
+      "tags": ["tradicional", "reconfortante", "familiar"]
     },
     {
       "id": "REC_0042",
       "nombre": "Tacos de pescado",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pescado blanco",
@@ -539,22 +419,13 @@
       "carbohidratos_aprox": 30,
       "grasas_aprox": 12,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "mexicano",
-        "fresco",
-        "ligero"
-      ]
+      "apto_para": ["general"],
+      "tags": ["mexicano", "fresco", "ligero"]
     },
     {
       "id": "REC_0043",
       "nombre": "Cazuela de lentejas",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "lentejas",
@@ -583,23 +454,13 @@
       "carbohidratos_aprox": 48,
       "grasas_aprox": 12,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "legumbres",
-        "completo",
-        "economico"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["legumbres", "completo", "economico"]
     },
     {
       "id": "REC_0044",
       "nombre": "Brochetas de pollo y verduras",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pollo",
@@ -628,24 +489,13 @@
       "carbohidratos_aprox": 12,
       "grasas_aprox": 10,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "parrilla",
-        "colorido",
-        "verano"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["parrilla", "colorido", "verano"]
     },
     {
       "id": "REC_0045",
       "nombre": "Pasta con pesto",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pasta integral",
@@ -674,23 +524,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 20,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "italiano",
-        "aromatico",
-        "clasico"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["italiano", "aromatico", "clasico"]
     },
     {
       "id": "REC_0046",
       "nombre": "Ensalada de quinoa y garbanzos",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "quinoa",
@@ -719,25 +559,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 6,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "vegano",
-        "celiaquia"
-      ],
-      "tags": [
-        "proteico",
-        "vegetal",
-        "completo"
-      ]
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["proteico", "vegetal", "completo"]
     },
     {
       "id": "REC_0047",
       "nombre": "Pollo teriyaki",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pollo",
@@ -766,22 +594,13 @@
       "carbohidratos_aprox": 45,
       "grasas_aprox": 8,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "asiatico",
-        "dulce_salado",
-        "popular"
-      ]
+      "apto_para": ["general"],
+      "tags": ["asiatico", "dulce_salado", "popular"]
     },
     {
       "id": "REC_0048",
       "nombre": "Tortilla de espinaca",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "huevos",
@@ -806,25 +625,13 @@
       "carbohidratos_aprox": 8,
       "grasas_aprox": 20,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "vegetales",
-        "proteico",
-        "facil"
-      ]
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["vegetales", "proteico", "facil"]
     },
     {
       "id": "REC_0049",
       "nombre": "Sopa de calabaza",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "calabaza",
@@ -853,24 +660,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 8,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "cremoso",
-        "reconfortante",
-        "otoño"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["cremoso", "reconfortante", "otoño"]
     },
     {
       "id": "REC_0050",
       "nombre": "Milanesa de berenjena",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "berenjena",
@@ -899,23 +695,13 @@
       "carbohidratos_aprox": 38,
       "grasas_aprox": 12,
       "tiempo_preparacion": 40,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "vegetariano",
-        "crujiente",
-        "italiano"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["vegetariano", "crujiente", "italiano"]
     },
     {
       "id": "REC_0051",
       "nombre": "Arroz con pollo",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "arroz",
@@ -944,23 +730,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 10,
       "tiempo_preparacion": 35,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "tradicional",
-        "completo",
-        "familiar"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["tradicional", "completo", "familiar"]
     },
     {
       "id": "REC_0052",
       "nombre": "Ensalada Waldorf",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "manzana",
@@ -989,24 +765,13 @@
       "carbohidratos_aprox": 25,
       "grasas_aprox": 18,
       "tiempo_preparacion": 15,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "clasico",
-        "crujiente",
-        "agridulce"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["clasico", "crujiente", "agridulce"]
     },
     {
       "id": "REC_0053",
       "nombre": "Guiso de mondongo",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "mondongo",
@@ -1035,23 +800,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 16,
       "tiempo_preparacion": 120,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "tradicional",
-        "invernal",
-        "argentino"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["tradicional", "invernal", "argentino"]
     },
     {
       "id": "REC_0054",
       "nombre": "Budín inglés integral",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "harina integral",
@@ -1080,23 +835,13 @@
       "carbohidratos_aprox": 42,
       "grasas_aprox": 15,
       "tiempo_preparacion": 60,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "tradicional",
-        "frutas_secas",
-        "te"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["tradicional", "frutas_secas", "te"]
     },
     {
       "id": "REC_0055",
       "nombre": "Carne al horno con papas",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "roast beef",
@@ -1125,23 +870,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 18,
       "tiempo_preparacion": 60,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "domingo",
-        "horno",
-        "familiar"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["domingo", "horno", "familiar"]
     },
     {
       "id": "REC_0056",
       "nombre": "Empanadas de carne",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "masa para empanadas",
@@ -1170,22 +905,13 @@
       "carbohidratos_aprox": 20,
       "grasas_aprox": 8,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "argentino",
-        "fiesta",
-        "tradicional"
-      ]
+      "apto_para": ["general"],
+      "tags": ["argentino", "fiesta", "tradicional"]
     },
     {
       "id": "REC_0057",
       "nombre": "Paella vegetariana",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "arroz",
@@ -1214,25 +940,13 @@
       "carbohidratos_aprox": 58,
       "grasas_aprox": 8,
       "tiempo_preparacion": 40,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "vegano",
-        "celiaquia"
-      ],
-      "tags": [
-        "español",
-        "colorido",
-        "arroz"
-      ]
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["español", "colorido", "arroz"]
     },
     {
       "id": "REC_0058",
       "nombre": "Lomo a la pimienta",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "lomo",
@@ -1261,24 +975,13 @@
       "carbohidratos_aprox": 3,
       "grasas_aprox": 28,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "elegante",
-        "especial",
-        "francesa"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["elegante", "especial", "francesa"]
     },
     {
       "id": "REC_0059",
       "nombre": "Canelones de verdura",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "panqueques",
@@ -1307,23 +1010,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 18,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "cremoso",
-        "vegetales",
-        "gratinado"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["cremoso", "vegetales", "gratinado"]
     },
     {
       "id": "REC_0060",
       "nombre": "Pastel de papa",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "papa",
@@ -1352,23 +1045,13 @@
       "carbohidratos_aprox": 38,
       "grasas_aprox": 16,
       "tiempo_preparacion": 50,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "familiar",
-        "reconfortante",
-        "clasico"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["familiar", "reconfortante", "clasico"]
     },
     {
       "id": "REC_0061",
       "nombre": "Tostada francesa",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "pan integral",
@@ -1397,23 +1080,13 @@
       "carbohidratos_aprox": 42,
       "grasas_aprox": 8,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "dulce",
-        "clasico",
-        "desayuno"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["dulce", "clasico", "desayuno"]
     },
     {
       "id": "REC_0062",
       "nombre": "Ensalada de pasta",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pasta corta",
@@ -1442,23 +1115,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 18,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "frio",
-        "verano",
-        "italiano"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["frio", "verano", "italiano"]
     },
     {
       "id": "REC_0063",
       "nombre": "Pollo a la portuguesa",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pollo",
@@ -1487,23 +1150,13 @@
       "carbohidratos_aprox": 45,
       "grasas_aprox": 10,
       "tiempo_preparacion": 35,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "completo",
-        "tradicional",
-        "sabroso"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["completo", "tradicional", "sabroso"]
     },
     {
       "id": "REC_0064",
       "nombre": "Tarta de atún",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "masa de tarta",
@@ -1532,22 +1185,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 14,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "economico",
-        "proteico",
-        "facil"
-      ]
+      "apto_para": ["general"],
+      "tags": ["economico", "proteico", "facil"]
     },
     {
       "id": "REC_0065",
       "nombre": "Medallones de pescado",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pescado blanco",
@@ -1576,22 +1220,13 @@
       "carbohidratos_aprox": 30,
       "grasas_aprox": 8,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "pescado",
-        "economico",
-        "niños"
-      ]
+      "apto_para": ["general"],
+      "tags": ["pescado", "economico", "niños"]
     },
     {
       "id": "REC_0066",
       "nombre": "Sándwich de milanesa",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "milanesa",
@@ -1620,22 +1255,13 @@
       "carbohidratos_aprox": 45,
       "grasas_aprox": 18,
       "tiempo_preparacion": 15,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "argentino",
-        "rapido",
-        "callejero"
-      ]
+      "apto_para": ["general"],
+      "tags": ["argentino", "rapido", "callejero"]
     },
     {
       "id": "REC_0067",
       "nombre": "Revuelto de zapallitos",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "zapallitos",
@@ -1660,25 +1286,13 @@
       "carbohidratos_aprox": 10,
       "grasas_aprox": 16,
       "tiempo_preparacion": 15,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "rapido",
-        "vegetales",
-        "economico"
-      ]
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["rapido", "vegetales", "economico"]
     },
     {
       "id": "REC_0068",
       "nombre": "Pollo relleno",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "suprema de pollo",
@@ -1703,24 +1317,13 @@
       "carbohidratos_aprox": 3,
       "grasas_aprox": 16,
       "tiempo_preparacion": 40,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "elegante",
-        "relleno",
-        "proteico"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["elegante", "relleno", "proteico"]
     },
     {
       "id": "REC_0069",
       "nombre": "Budín de pan",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "pan del día anterior",
@@ -1749,23 +1352,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 8,
       "tiempo_preparacion": 60,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "aprovechamiento",
-        "dulce",
-        "economico"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["aprovechamiento", "dulce", "economico"]
     },
     {
       "id": "REC_0070",
       "nombre": "Locro",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "maíz blanco",
@@ -1794,23 +1387,13 @@
       "carbohidratos_aprox": 48,
       "grasas_aprox": 16,
       "tiempo_preparacion": 180,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "patrio",
-        "invernal",
-        "tradicional"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["patrio", "invernal", "tradicional"]
     },
     {
       "id": "REC_0071",
       "nombre": "Tostadas con queso y tomate",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "pan integral",
@@ -1835,23 +1418,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 8,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "rapido",
-        "simple",
-        "sabroso"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["rapido", "simple", "sabroso"]
     },
     {
       "id": "REC_0072",
       "nombre": "Guiso de lentejas",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "lentejas",
@@ -1880,23 +1453,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 10,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "legumbres",
-        "economico",
-        "nutritivo"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["legumbres", "economico", "nutritivo"]
     },
     {
       "id": "REC_0073",
       "nombre": "Matambre a la pizza",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "matambre",
@@ -1921,24 +1484,13 @@
       "carbohidratos_aprox": 5,
       "grasas_aprox": 26,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "argentino",
-        "proteico",
-        "innovador"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["argentino", "proteico", "innovador"]
     },
     {
       "id": "REC_0074",
       "nombre": "Tarta pascualina",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "masa de hojaldre",
@@ -1967,23 +1519,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 18,
       "tiempo_preparacion": 50,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "pascuas",
-        "tradicional",
-        "vegetales"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["pascuas", "tradicional", "vegetales"]
     },
     {
       "id": "REC_0075",
       "nombre": "Bifes a la criolla",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "bifes",
@@ -2012,24 +1554,13 @@
       "carbohidratos_aprox": 12,
       "grasas_aprox": 20,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "criollo",
-        "sabroso",
-        "tradicional"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["criollo", "sabroso", "tradicional"]
     },
     {
       "id": "REC_0076",
       "nombre": "Ñoquis de papa",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "papa",
@@ -2058,23 +1589,13 @@
       "carbohidratos_aprox": 72,
       "grasas_aprox": 6,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "29",
-        "italiano",
-        "casero"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["29", "italiano", "casero"]
     },
     {
       "id": "REC_0077",
       "nombre": "Pollo al disco",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pollo",
@@ -2103,23 +1624,13 @@
       "carbohidratos_aprox": 48,
       "grasas_aprox": 12,
       "tiempo_preparacion": 50,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "campo",
-        "rustico",
-        "abundante"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["campo", "rustico", "abundante"]
     },
     {
       "id": "REC_0078",
       "nombre": "Tortilla de verduras",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "huevos",
@@ -2148,24 +1659,13 @@
       "carbohidratos_aprox": 12,
       "grasas_aprox": 18,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "colorido",
-        "nutritivo",
-        "versatil"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["colorido", "nutritivo", "versatil"]
     },
     {
       "id": "REC_0079",
       "nombre": "Empanadas de humita",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "choclo",
@@ -2194,23 +1694,13 @@
       "carbohidratos_aprox": 26,
       "grasas_aprox": 6,
       "tiempo_preparacion": 40,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "norteño",
-        "maiz",
-        "cremoso"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["norteño", "maiz", "cremoso"]
     },
     {
       "id": "REC_0080",
       "nombre": "Carré de cerdo con papas",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "carré de cerdo",
@@ -2239,24 +1729,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 20,
       "tiempo_preparacion": 50,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "jugoso",
-        "aromatico",
-        "horno"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["jugoso", "aromatico", "horno"]
     },
     {
       "id": "REC_0081",
       "nombre": "Sándwich de jamón y queso tostado",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "cena"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "cena"],
       "ingredientes": [
         {
           "item": "pan integral",
@@ -2281,23 +1760,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 16,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "clasico",
-        "rapido",
-        "crujiente"
-      ]
+      "apto_para": ["general"],
+      "tags": ["clasico", "rapido", "crujiente"]
     },
     {
       "id": "REC_0082",
       "nombre": "Galletas de avena y banana",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "colacion"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
       "ingredientes": [
         {
           "item": "avena",
@@ -2322,23 +1791,13 @@
       "carbohidratos_aprox": 16,
       "grasas_aprox": 2,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "saludable",
-        "sin_harina",
-        "dulce"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["saludable", "sin_harina", "dulce"]
     },
     {
       "id": "REC_0083",
       "nombre": "Arroz chaufa",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "arroz cocido",
@@ -2367,23 +1826,13 @@
       "carbohidratos_aprox": 42,
       "grasas_aprox": 12,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "chino",
-        "wok",
-        "completo"
-      ]
+      "apto_para": ["general"],
+      "tags": ["chino", "wok", "completo"]
     },
     {
       "id": "REC_0084",
       "nombre": "Tostadas con pasta de maní",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "colacion"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
       "ingredientes": [
         {
           "item": "pan integral",
@@ -2408,24 +1857,13 @@
       "carbohidratos_aprox": 45,
       "grasas_aprox": 14,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "energetico",
-        "dulce",
-        "proteico"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["energetico", "dulce", "proteico"]
     },
     {
       "id": "REC_0085",
       "nombre": "Batido de proteínas",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "colacion"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
       "ingredientes": [
         {
           "item": "leche",
@@ -2454,24 +1892,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 14,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "post_entreno",
-        "nutritivo",
-        "bebible"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["post_entreno", "nutritivo", "bebible"]
     },
     {
       "id": "REC_0002",
       "nombre": "Huevos revueltos",
-      "tipo_comida": [
-        "desayuno",
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["desayuno", "almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "huevos",
@@ -2492,26 +1919,13 @@
       "carbohidratos_aprox": 2,
       "grasas_aprox": 14,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "proteico",
-        "rapido",
-        "basico"
-      ]
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["proteico", "rapido", "basico"]
     },
     {
       "id": "REC_0003",
       "nombre": "Omelette de queso y tomate",
-      "tipo_comida": [
-        "desayuno",
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["desayuno", "almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "huevos",
@@ -2536,26 +1950,13 @@
       "carbohidratos_aprox": 4,
       "grasas_aprox": 16,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "proteico",
-        "rapido",
-        "sabroso"
-      ]
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["proteico", "rapido", "sabroso"]
     },
     {
       "id": "REC_0004",
       "nombre": "Yogur natural con frutas",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "colacion"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
       "ingredientes": [
         {
           "item": "yogur natural",
@@ -2580,25 +1981,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 4,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "fresco",
-        "ligero",
-        "nutritivo"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["fresco", "ligero", "nutritivo"]
     },
     {
       "id": "REC_0005",
       "nombre": "Banana y frutillas con mantequilla de maní",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "colacion"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
       "ingredientes": [
         {
           "item": "banana",
@@ -2619,23 +2008,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 14,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "energetico",
-        "dulce",
-        "sin_coccion"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["energetico", "dulce", "sin_coccion"]
     },
     {
       "id": "REC_0006",
       "nombre": "Porridge de avena",
-      "tipo_comida": [
-        "desayuno"
-      ],
+      "tipo_comida": ["desayuno"],
       "ingredientes": [
         {
           "item": "avena",
@@ -2660,23 +2039,13 @@
       "carbohidratos_aprox": 38,
       "grasas_aprox": 5,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "reconfortante",
-        "nutritivo",
-        "caliente"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["reconfortante", "nutritivo", "caliente"]
     },
     {
       "id": "REC_0007",
       "nombre": "Tortilla de avena dulce",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "huevo",
@@ -2701,23 +2070,13 @@
       "carbohidratos_aprox": 22,
       "grasas_aprox": 6,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "dulce",
-        "proteico",
-        "versatil"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["dulce", "proteico", "versatil"]
     },
     {
       "id": "REC_0008",
       "nombre": "Licuado de banana",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "banana",
@@ -2738,24 +2097,13 @@
       "carbohidratos_aprox": 38,
       "grasas_aprox": 3,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "bebible",
-        "rapido",
-        "energetico"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["bebible", "rapido", "energetico"]
     },
     {
       "id": "REC_0009",
       "nombre": "Chía pudding",
-      "tipo_comida": [
-        "desayuno",
-        "merienda"
-      ],
+      "tipo_comida": ["desayuno", "merienda"],
       "ingredientes": [
         {
           "item": "semillas de chía",
@@ -2780,24 +2128,13 @@
       "carbohidratos_aprox": 24,
       "grasas_aprox": 8,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "preparacion_previa",
-        "nutritivo",
-        "omega3"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["preparacion_previa", "nutritivo", "omega3"]
     },
     {
       "id": "REC_0010",
       "nombre": "Wok de pollo",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pollo",
@@ -2830,23 +2167,13 @@
       "carbohidratos_aprox": 15,
       "grasas_aprox": 10,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "alto_proteina",
-        "colorido",
-        "saludable"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["alto_proteina", "colorido", "saludable"]
     },
     {
       "id": "REC_0011",
       "nombre": "Suprema de pollo",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pechuga de pollo",
@@ -2871,22 +2198,13 @@
       "carbohidratos_aprox": 22,
       "grasas_aprox": 8,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "crujiente",
-        "alto_proteina",
-        "horno"
-      ]
+      "apto_para": ["general"],
+      "tags": ["crujiente", "alto_proteina", "horno"]
     },
     {
       "id": "REC_0012",
       "nombre": "Tarta integral de verduras",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "harina integral",
@@ -2915,23 +2233,13 @@
       "carbohidratos_aprox": 45,
       "grasas_aprox": 12,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "integral",
-        "vegetales",
-        "completo"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["integral", "vegetales", "completo"]
     },
     {
       "id": "REC_0013",
       "nombre": "Bife a la plancha",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "bife de carne vacuna",
@@ -2952,24 +2260,13 @@
       "carbohidratos_aprox": 0,
       "grasas_aprox": 20,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "simple",
-        "proteico",
-        "rapido"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["simple", "proteico", "rapido"]
     },
     {
       "id": "REC_0014",
       "nombre": "Ensalada César con pollo",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "lechuga",
@@ -3002,22 +2299,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 16,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "clasico",
-        "completo",
-        "fresco"
-      ]
+      "apto_para": ["general"],
+      "tags": ["clasico", "completo", "fresco"]
     },
     {
       "id": "REC_0015",
       "nombre": "Milanesa de merluza",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "filete de merluza",
@@ -3042,22 +2330,13 @@
       "carbohidratos_aprox": 22,
       "grasas_aprox": 5,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "pescado",
-        "ligero",
-        "omega3"
-      ]
+      "apto_para": ["general"],
+      "tags": ["pescado", "ligero", "omega3"]
     },
     {
       "id": "REC_0016",
       "nombre": "Wok de verduras y tofu",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "tofu",
@@ -3086,24 +2365,13 @@
       "carbohidratos_aprox": 18,
       "grasas_aprox": 12,
       "tiempo_preparacion": 15,
-      "apto_para": [
-        "vegetariano",
-        "vegano",
-        "celiaquia"
-      ],
-      "tags": [
-        "asiatico",
-        "vegetariano",
-        "proteico"
-      ]
+      "apto_para": ["vegetariano", "vegano", "celiaquia"],
+      "tags": ["asiatico", "vegetariano", "proteico"]
     },
     {
       "id": "REC_0017",
       "nombre": "Pollo al horno con vegetales",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pechuga de pollo",
@@ -3132,23 +2400,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 10,
       "tiempo_preparacion": 50,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "horno",
-        "completo",
-        "familiar"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["horno", "completo", "familiar"]
     },
     {
       "id": "REC_0018",
       "nombre": "Hamburguesa casera",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "carne molida",
@@ -3177,22 +2435,13 @@
       "carbohidratos_aprox": 25,
       "grasas_aprox": 18,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general"
-      ],
-      "tags": [
-        "clasico",
-        "sabroso",
-        "personalizable"
-      ]
+      "apto_para": ["general"],
+      "tags": ["clasico", "sabroso", "personalizable"]
     },
     {
       "id": "REC_0019",
       "nombre": "Sopa de verduras",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "zapallo",
@@ -3221,25 +2470,13 @@
       "carbohidratos_aprox": 22,
       "grasas_aprox": 2,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "vegano",
-        "celiaquia"
-      ],
-      "tags": [
-        "reconfortante",
-        "bajo_calorias",
-        "fibra"
-      ]
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["reconfortante", "bajo_calorias", "fibra"]
     },
     {
       "id": "REC_0020",
       "nombre": "Arroz integral con pollo",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "arroz integral",
@@ -3264,23 +2501,13 @@
       "carbohidratos_aprox": 45,
       "grasas_aprox": 10,
       "tiempo_preparacion": 35,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "integral",
-        "completo",
-        "nutritivo"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["integral", "completo", "nutritivo"]
     },
     {
       "id": "REC_0021",
       "nombre": "Tostadas con palta y huevo",
-      "tipo_comida": [
-        "desayuno",
-        "almuerzo"
-      ],
+      "tipo_comida": ["desayuno", "almuerzo"],
       "ingredientes": [
         {
           "item": "pan integral",
@@ -3305,23 +2532,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 18,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "trendy",
-        "nutritivo",
-        "saciante"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["trendy", "nutritivo", "saciante"]
     },
     {
       "id": "REC_0022",
       "nombre": "Ensalada de atún",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "atún al natural",
@@ -3350,25 +2567,13 @@
       "carbohidratos_aprox": 8,
       "grasas_aprox": 14,
       "tiempo_preparacion": 10,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "proteico",
-        "rapido",
-        "fresco"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["proteico", "rapido", "fresco"]
     },
     {
       "id": "REC_0023",
       "nombre": "Budín de zapallo",
-      "tipo_comida": [
-        "almuerzo",
-        "cena",
-        "merienda"
-      ],
+      "tipo_comida": ["almuerzo", "cena", "merienda"],
       "ingredientes": [
         {
           "item": "zapallo",
@@ -3397,23 +2602,13 @@
       "carbohidratos_aprox": 28,
       "grasas_aprox": 5,
       "tiempo_preparacion": 50,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "vegetales",
-        "esponjoso",
-        "versatil"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["vegetales", "esponjoso", "versatil"]
     },
     {
       "id": "REC_0024",
       "nombre": "Fideos integrales con salsa de tomate",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "fideos integrales",
@@ -3442,24 +2637,13 @@
       "carbohidratos_aprox": 58,
       "grasas_aprox": 4,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "vegano"
-      ],
-      "tags": [
-        "clasico",
-        "economico",
-        "reconfortante"
-      ]
+      "apto_para": ["general", "vegetariano", "vegano"],
+      "tags": ["clasico", "economico", "reconfortante"]
     },
     {
       "id": "REC_0025",
       "nombre": "Tortilla de papa",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "papa",
@@ -3484,24 +2668,13 @@
       "carbohidratos_aprox": 35,
       "grasas_aprox": 18,
       "tiempo_preparacion": 30,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "celiaquia"
-      ],
-      "tags": [
-        "tradicional",
-        "economico",
-        "saciante"
-      ]
+      "apto_para": ["general", "vegetariano", "celiaquia"],
+      "tags": ["tradicional", "economico", "saciante"]
     },
     {
       "id": "REC_0026",
       "nombre": "Pollo a la mostaza",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pechuga de pollo",
@@ -3526,23 +2699,13 @@
       "carbohidratos_aprox": 15,
       "grasas_aprox": 8,
       "tiempo_preparacion": 35,
-      "apto_para": [
-        "general",
-        "celiaquia"
-      ],
-      "tags": [
-        "sabroso",
-        "agridulce",
-        "jugoso"
-      ]
+      "apto_para": ["general", "celiaquia"],
+      "tags": ["sabroso", "agridulce", "jugoso"]
     },
     {
       "id": "REC_0027",
       "nombre": "Lasaña de berenjenas",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "berenjenas",
@@ -3571,25 +2734,13 @@
       "carbohidratos_aprox": 18,
       "grasas_aprox": 20,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "sin_pasta",
-        "cremoso",
-        "vegetales"
-      ]
+      "apto_para": ["general", "vegetariano", "keto", "celiaquia"],
+      "tags": ["sin_pasta", "cremoso", "vegetales"]
     },
     {
       "id": "REC_0028",
       "nombre": "Ceviche de pescado",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "pescado blanco",
@@ -3618,24 +2769,13 @@
       "carbohidratos_aprox": 10,
       "grasas_aprox": 3,
       "tiempo_preparacion": 20,
-      "apto_para": [
-        "general",
-        "keto",
-        "celiaquia"
-      ],
-      "tags": [
-        "fresco",
-        "citrico",
-        "sin_coccion"
-      ]
+      "apto_para": ["general", "keto", "celiaquia"],
+      "tags": ["fresco", "citrico", "sin_coccion"]
     },
     {
       "id": "REC_0029",
       "nombre": "Quinoa con verduras",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "quinoa",
@@ -3660,25 +2800,13 @@
       "carbohidratos_aprox": 42,
       "grasas_aprox": 10,
       "tiempo_preparacion": 25,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "vegano",
-        "celiaquia"
-      ],
-      "tags": [
-        "superalimento",
-        "completo",
-        "sin_gluten"
-      ]
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["superalimento", "completo", "sin_gluten"]
     },
     {
       "id": "REC_0030",
       "nombre": "Pizza integral casera",
-      "tipo_comida": [
-        "almuerzo",
-        "cena"
-      ],
+      "tipo_comida": ["almuerzo", "cena"],
       "ingredientes": [
         {
           "item": "harina integral",
@@ -3707,24 +2835,13 @@
       "carbohidratos_aprox": 52,
       "grasas_aprox": 12,
       "tiempo_preparacion": 45,
-      "apto_para": [
-        "general",
-        "vegetariano"
-      ],
-      "tags": [
-        "favorito",
-        "casero",
-        "personalizable"
-      ]
+      "apto_para": ["general", "vegetariano"],
+      "tags": ["favorito", "casero", "personalizable"]
     },
     {
       "id": "REC_0031",
       "nombre": "Smoothie de frutos rojos",
-      "tipo_comida": [
-        "desayuno",
-        "merienda",
-        "colacion"
-      ],
+      "tipo_comida": ["desayuno", "merienda", "colacion"],
       "ingredientes": [
         {
           "item": "frutos rojos mixtos",
@@ -3749,17 +2866,8 @@
       "carbohidratos_aprox": 32,
       "grasas_aprox": 3,
       "tiempo_preparacion": 5,
-      "apto_para": [
-        "general",
-        "vegetariano",
-        "vegano",
-        "celiaquia"
-      ],
-      "tags": [
-        "saludable",
-        "fresco",
-        "nutritivo"
-      ]
+      "apto_para": ["general", "vegetariano", "vegano", "celiaquia"],
+      "tags": ["saludable", "fresco", "nutritivo"]
     }
   ]
 }

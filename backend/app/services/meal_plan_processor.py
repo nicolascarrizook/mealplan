@@ -217,3 +217,42 @@ Tags: {', '.join(recipe.get('tags', []))}
                 closest_id = valid_id
         
         return closest_id if closest_diff < 10 else None
+    
+    def check_for_zero_macros(self, meal_plan_text: str) -> List[str]:
+        """Check if any meal options have zero macros and return warnings"""
+        warnings = []
+        
+        # Pattern to find macro lines
+        macros_pattern = r'Macros:\s*P:\s*(\d+(?:\.\d+)?)g?\s*\|\s*C:\s*(\d+(?:\.\d+)?)g?\s*\|\s*G:\s*(\d+(?:\.\d+)?)g?\s*\|\s*Cal:\s*(\d+(?:\.\d+)?)'
+        
+        # Find all macro occurrences
+        matches = re.finditer(macros_pattern, meal_plan_text)
+        
+        for match in matches:
+            protein = float(match.group(1))
+            carbs = float(match.group(2))
+            fat = float(match.group(3))
+            calories = float(match.group(4))
+            
+            # Check if all macros are zero
+            if protein == 0 and carbs == 0 and fat == 0 and calories == 0:
+                # Try to find which meal this belongs to
+                # Look backwards for meal name
+                before_match = meal_plan_text[:match.start()]
+                lines_before = before_match.split('\n')
+                
+                meal_name = "Unknown meal"
+                option_name = "Unknown option"
+                
+                # Find meal and option names
+                for i in range(len(lines_before) - 1, -1, -1):
+                    line = lines_before[i].strip()
+                    if any(meal in line.upper() for meal in ['DESAYUNO', 'ALMUERZO', 'MERIENDA', 'CENA', 'BRUNCH', 'DRUNCH', 'COLACIÓN', 'MEDIA', 'POSTRE']):
+                        meal_name = line
+                        break
+                    if 'OPCIÓN' in line.upper():
+                        option_name = line
+                
+                warnings.append(f"\u26a0️ ADVERTENCIA: {meal_name} - {option_name} tiene todos los macros en cero")
+        
+        return warnings

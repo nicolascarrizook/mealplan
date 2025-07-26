@@ -128,6 +128,17 @@ async def generate_new_patient_plan(request: NewPatientRequest):
         # Extract used recipe IDs for potential post-processing
         used_recipe_ids = prompt_generator.extract_used_recipes(meal_plan)
         
+        # Check for zero macros
+        zero_macro_warnings = meal_plan_processor.check_for_zero_macros(meal_plan)
+        if zero_macro_warnings:
+            logger.warning(f"Found {len(zero_macro_warnings)} instances of zero macros")
+            for warning in zero_macro_warnings:
+                logger.warning(warning)
+            
+            # Retry with enhanced prompt about macros
+            enhanced_prompt = prompt + "\n\n⚠️ RECORDATORIO CRÍTICO SOBRE MACROS:\n- NUNCA dejes macros en cero\n- Si ajustás cantidades, recalculá los macros proporcionalmente\n- Cada opción debe tener valores nutricionales reales basados en la receta"
+            meal_plan = await openai_service.generate_meal_plan(enhanced_prompt)
+        
         # Post-process meal plan to ensure recipe details are complete
         processed_meal_plan = meal_plan_processor.process_meal_plan(meal_plan)
         

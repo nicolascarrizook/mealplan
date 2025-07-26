@@ -90,6 +90,14 @@ DETENER LA TAREA INMEDIATAMENTE. No entregar el plan y reportar el problema.
 4. Verificá que las 3 opciones sean equivalentes (±5%)
 5. Usá SIEMPRE el ID de la receta [REC_XXXX]
 
+📊 CÁLCULO DE MACROS AJUSTADOS:
+Cuando ajustés las cantidades de una receta, calculá los macros proporcionalmente:
+- Si la receta base tiene 100g de ingredientes y la ajustás a 150g (factor 1.5)
+- Multiplicá TODOS los macros por el mismo factor:
+  Ejemplo: Si la receta base tiene P:10g, C:20g, G:5g, Cal:200
+  Con factor 1.5 quedaría: P:15g, C:30g, G:7.5g, Cal:300
+- NUNCA dejes macros en cero si la receta tiene valores nutricionales
+
 FORMATO OBLIGATORIO PARA CADA COMIDA:
 
 DESAYUNO [agregar "(2 hs post medicación)" si toma levotiroxina]
@@ -99,7 +107,7 @@ OPCIÓN 1:
   * Ingrediente 1: XXg
   * Ingrediente 2: XXg
 - Forma de preparación: [método de cocción]
-- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
+- Macros: P: 15g | C: 45g | G: 8g | Cal: 320 (EJEMPLO - usar valores reales calculados)
 
 OPCIÓN 2:
 [Mismo formato - debe ser equivalente ±5%]
@@ -291,6 +299,10 @@ CONFIGURACIÓN DEL PLAN:
 
 {meal_config_text}
 
+🍴 RECORDATORIO IMPORTANTE:
+DEBES incluir TODAS las comidas listadas en la configuración anterior.
+Si dice "Postre cena" en las adicionales, DEBE aparecer en el plan final.
+
 {supplementation_section}
 
 {self.recipe_format_rules}
@@ -317,6 +329,8 @@ INSTRUCCIONES ESPECÍFICAS DE GENERACIÓN:
    - Equivalencia entre las 3 opciones (±5%)
 4. 🆔 USÁ SIEMPRE el formato [REC_XXXX] para identificar cada receta
 5. ✅ Verificá que todas las recetas existan en el catálogo
+6. 🍴 INCLUÍ TODAS las comidas configuradas (principales Y adicionales)
+7. 📊 NUNCA dejes macros en cero - siempre calculá proporcionalmente
 
 FORMATO DE SALIDA ESPERADO:
 
@@ -351,15 +365,7 @@ MERIENDA
 CENA
 [Mismo formato con 3 opciones]
 
-COMIDAS ADICIONALES (según configuración):
-- MEDIA MAÑANA (si aplica)
-- MEDIA TARDE (si aplica)
-- POSTRE ALMUERZO (si aplica)
-- POSTRE CENA (si aplica)
-- DULCE SIESTA (si aplica)
-- PRE-ENTRENO (si aplica)
-- POST-ENTRENO (si aplica)
-[Mismo formato con 3 opciones para cada una]
+{self._get_configured_additional_meals_section(patient_data)}
 
 SUPLEMENTACIÓN (si aplica):
 - Listar cada suplemento con su dosis específica
@@ -984,3 +990,39 @@ TIMING DE SUPLEMENTACIÓN:
 - IMPORTANTE: Respetar separaciones con medicación si aplica"""
         
         return "\n".join(recommendations) + "\n" + timing_section
+    
+    def _get_configured_additional_meals_section(self, patient_data: NewPatientRequest) -> str:
+        """Genera la sección de comidas adicionales basada en la configuración real"""
+        if not patient_data.meal_configuration:
+            return "COMIDAS ADICIONALES (según configuración):\n[No hay comidas adicionales configuradas]"
+        
+        meal_config = patient_data.meal_configuration.dict()
+        adicionales = []
+        
+        # Detectar cuáles comidas adicionales están activas
+        if meal_config.get('media_manana'):
+            adicionales.append("MEDIA MAÑANA")
+        if meal_config.get('media_tarde'):
+            adicionales.append("MEDIA TARDE")
+        if meal_config.get('postre_almuerzo'):
+            adicionales.append("POSTRE ALMUERZO")
+        if meal_config.get('postre_cena'):
+            adicionales.append("POSTRE CENA")
+        if meal_config.get('dulce_siesta'):
+            adicionales.append("DULCE SIESTA")
+        if meal_config.get('pre_entreno'):
+            adicionales.append("PRE-ENTRENO")
+        if meal_config.get('post_entreno'):
+            adicionales.append("POST-ENTRENO")
+        
+        if not adicionales:
+            return "COMIDAS ADICIONALES:\n[No hay comidas adicionales configuradas]"
+        
+        # Construir la sección con las comidas configuradas
+        section = "COMIDAS ADICIONALES CONFIGURADAS (OBLIGATORIAS):\n"
+        section += "⚠️ DEBEN incluirse TODAS estas comidas en el plan:\n\n"
+        
+        for comida in adicionales:
+            section += f"{comida}\n[Mismo formato con 3 opciones equivalentes]\n\n"
+        
+        return section.rstrip()
