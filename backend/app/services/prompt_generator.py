@@ -21,12 +21,11 @@ logger = logging.getLogger(__name__)
 class PromptGenerator:
     def __init__(self):
         self.base_rules = """
-🔁 ANTES DE COMENZAR:
-⚠️ Esta tarea depende de que revises exhaustivamente el catálogo de recetas cargado
-📌 Solo podés usar recetas incluidas en el sistema
-⛔ Está terminantemente prohibido inventar preparaciones, modificar ingredientes o mezclar recetas no autorizadas
-❌ No hagas cálculos, análisis previos ni comentarios clínicos si no se te solicitaron explícitamente
-✅ Si no hay recetas adecuadas para cumplir los requerimientos, DETENER y reportar el problema
+📋 SISTEMA DE RECETAS:
+✅ Tenés acceso a un catálogo completo de recetas validadas
+✅ Cada receta tiene un ID único [REC_XXXX] que debés usar para identificarla
+📌 IMPORTANTE: Solo podés usar las recetas del catálogo (ver sección "CATÁLOGO COMPLETO DE RECETAS DISPONIBLES")
+🎯 Podés ajustar las cantidades de cada receta para cumplir con los objetivos nutricionales
 
 ⚠️ INSTRUCCIONES OBLIGATORIAS:
 
@@ -84,13 +83,12 @@ DETENER LA TAREA INMEDIATAMENTE. No entregar el plan y reportar el problema.
 """
         
         self.recipe_format_rules = """
-✅ INSTRUCCIÓN FINAL:
-Generar un plan completo según el sistema, usando únicamente recetas del catálogo, con:
-✔️ Ingredientes en gramos crudos
-✔️ Forma de preparación
-✔️ Macronutrientes por comida (P, CH, G)
-✔️ Aporte calórico total
-✔️ 3 opciones equivalentes por bloque
+✅ PASOS PARA GENERAR EL PLAN:
+1. Revisá el catálogo de recetas disponibles (más abajo)
+2. Seleccioná 3 recetas diferentes para cada comida
+3. Ajustá las cantidades para cumplir con los requerimientos
+4. Verificá que las 3 opciones sean equivalentes (±5%)
+5. Usá SIEMPRE el ID de la receta [REC_XXXX]
 
 FORMATO OBLIGATORIO PARA CADA COMIDA:
 
@@ -122,9 +120,10 @@ COLACIONES (si aplica)
 [Formato similar pero con estructura más liviana]
 
 ⚠️ VALIDACIÓN OBLIGATORIA:
-- Verificar que las 3 opciones de cada comida tengan macros equivalentes (±5%)
+- Las 3 opciones de cada comida DEBEN tener macros equivalentes (±5%)
 - Si la distribución es equitativa, TODAS las comidas principales deben ser iguales
-- Si no se puede cumplir, DETENER y reportar
+- Cada receta DEBE existir en el catálogo con su ID correcto
+- Si no se puede cumplir alguna regla, DETENER y explicar el problema
 """
 
         self.supplementation_guidelines = """
@@ -233,6 +232,9 @@ DOSIS GENERALES RECOMENDADAS:
         # Generate supplementation section based on pathologies
         supplementation_section = self._generate_supplementation_section(patient_data)
         
+        # Log recipe information for debugging
+        logger.info(f"Generating prompt with {len(recipes_json.split('[REC_'))-1} recipes available")
+        
         prompt = f"""
 {self.base_rules}
 
@@ -291,22 +293,30 @@ CONFIGURACIÓN DEL PLAN:
 
 {supplementation_section}
 
-RECETAS DISPONIBLES:
-{recipes_json}
-
 {self.recipe_format_rules}
 
-INSTRUCCIONES PARA LA GENERACIÓN:
-1. OBLIGATORIO: Usar ÚNICAMENTE los IDs de recetas proporcionados arriba [REC_XXXX]
-2. Para cada comida, proporcionar 3 OPCIONES de recetas diferentes
-3. Las 3 opciones deben tener macros similares (±10% de diferencia)
-4. Adaptar las cantidades de ingredientes según los objetivos nutricionales
-5. Respetar las restricciones alimentarias y nivel económico
-6. Cada día debe tener exactamente las mismas comidas
-7. Incluir macros específicos para cada opción
-8. INCLUIR TODAS LAS COMIDAS CONFIGURADAS (principales + adicionales)
-9. Si hay suplementos configurados, incluirlos con las dosis especificadas
-10. Calcular macros totales al final (basados en la opción 1 de cada comida)
+📚 CATÁLOGO COMPLETO DE RECETAS DISPONIBLES:
+⚠️ IMPORTANTE: Este es tu banco de recetas. Solo podés usar estas opciones.
+
+{recipes_json}
+
+🔑 CÓMO USAR EL CATÁLOGO:
+1. Cada receta tiene un ID único [REC_XXXX] - usá este ID en el plan
+2. Podés ajustar las cantidades de los ingredientes proporcionalmente
+3. Mantené las proporciones originales entre ingredientes
+4. Seleccioná recetas que respeten las restricciones del paciente
+
+INSTRUCCIONES ESPECÍFICAS DE GENERACIÓN:
+1. 🔍 Primero LEE TODO el catálogo de recetas disponibles
+2. 🎯 Para cada comida, SELECCIONÁ 3 recetas del catálogo que:
+   - Sean del tipo de comida correcto (desayuno, almuerzo, etc.)
+   - Respeten las restricciones del paciente
+   - Se ajusten al nivel económico
+3. 📊 AJUSTÁ las cantidades de cada receta para lograr:
+   - Las calorías objetivo de cada comida
+   - Equivalencia entre las 3 opciones (±5%)
+4. 🆔 USÁ SIEMPRE el formato [REC_XXXX] para identificar cada receta
+5. ✅ Verificá que todas las recetas existan en el catálogo
 
 FORMATO DE SALIDA ESPERADO:
 
@@ -743,7 +753,7 @@ Calorías: XXX | XXX
         return "\n".join(formatted)
     
     def format_recipes_by_meal_type(self, recipes_dict: Dict[str, List[Dict]]) -> str:
-        """Format recipes organized by meal type for the prompt"""
+        """Format recipes organized by meal type for the prompt with full details"""
         formatted_sections = []
         
         for meal_type, recipes in recipes_dict.items():
@@ -751,17 +761,32 @@ Calorías: XXX | XXX
                 continue
                 
             formatted_sections.append(f"\n=== RECETAS PARA {meal_type.upper()} ===")
+            formatted_sections.append(f"Total de opciones disponibles: {len(recipes)} recetas\n")
             
-            for recipe in recipes:
-                # Format as summary with ID prominent
-                summary = (
-                    f"[{recipe['id']}] {recipe['nombre']} | "
-                    f"{recipe.get('calorias_aprox', 0)} kcal | "
+            for i, recipe in enumerate(recipes, 1):
+                # Format ingredients list
+                ingredients = ", ".join([
+                    f"{ing['item']} ({ing['cantidad']})"
+                    for ing in recipe.get('ingredientes', [])
+                ])
+                
+                # Format with full details including ingredients
+                detail = (
+                    f"{i}. [{recipe['id']}] {recipe['nombre']}\n"
+                    f"   📊 Nutrición: {recipe.get('calorias_aprox', 0)} kcal | "
                     f"P: {recipe.get('proteinas_aprox', 0)}g | "
                     f"C: {recipe.get('carbohidratos_aprox', 0)}g | "
-                    f"G: {recipe.get('grasas_aprox', 0)}g"
+                    f"G: {recipe.get('grasas_aprox', 0)}g\n"
+                    f"   🥘 Ingredientes: {ingredients}\n"
+                    f"   ⏱️ Tiempo: {recipe.get('tiempo_preparacion', 'No especificado')} min\n"
                 )
-                formatted_sections.append(summary)
+                
+                # Add tags if relevant
+                if recipe.get('tags') or recipe.get('apto_para'):
+                    all_tags = recipe.get('tags', []) + recipe.get('apto_para', [])
+                    detail += f"   🏷️ Apto para: {', '.join(all_tags)}\n"
+                
+                formatted_sections.append(detail)
         
         return "\n".join(formatted_sections)
     

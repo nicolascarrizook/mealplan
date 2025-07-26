@@ -4,7 +4,10 @@ from typing import Optional, Dict, List
 import asyncio
 import base64
 import json
+import logging
 from ..config import settings
+
+logger = logging.getLogger(__name__)
 
 class OpenAIService:
     def __init__(self):
@@ -16,6 +19,14 @@ class OpenAIService:
     async def generate_meal_plan(self, prompt: str) -> str:
         """Generate meal plan using OpenAI GPT-4"""
         
+        # Log prompt length and recipe count for debugging
+        prompt_length = len(prompt)
+        recipe_count = prompt.count('[REC_')
+        logger.info(f"Sending prompt to GPT-4: {prompt_length} characters, {recipe_count} recipe references")
+        
+        # Log first 500 chars of prompt for debugging
+        logger.debug(f"Prompt preview: {prompt[:500]}...")
+        
         for attempt in range(self.max_retries):
             try:
                 response = await self.client.chat.completions.create(
@@ -24,9 +35,10 @@ class OpenAIService:
                         {
                             "role": "system",
                             "content": """Sos un nutricionista experto en el método "Tres Días y Carga". 
-                            Generás planes alimentarios personalizados siguiendo estrictamente las reglas del método.
-                            Usás únicamente las recetas proporcionadas y adaptás las cantidades según los objetivos.
-                            Todas las cantidades deben estar en gramos y el plan debe ser de 3 días iguales."""
+                            Tenés acceso a un catálogo completo de recetas con sus IDs, ingredientes y valores nutricionales.
+                            DEBERÁS usar Únicamente las recetas del catálogo proporcionado, identificadas por su ID [REC_XXXX].
+                            Adaptá las cantidades de los ingredientes para cumplir con los requerimientos nutricionales.
+                            Todas las cantidades deben estar en gramos crudos y el plan debe ser de 3 días idénticos."""
                         },
                         {
                             "role": "user",
@@ -37,7 +49,19 @@ class OpenAIService:
                     max_tokens=3000
                 )
                 
-                return response.choices[0].message.content
+                result = response.choices[0].message.content
+                
+                # Log response info
+                logger.info(f"GPT-4 response received: {len(result)} characters")
+                
+                # Check if response contains recipe IDs
+                response_recipe_count = result.count('[REC_')
+                if response_recipe_count == 0:
+                    logger.warning("GPT-4 response contains no recipe IDs!")
+                else:
+                    logger.info(f"GPT-4 response contains {response_recipe_count} recipe references")
+                
+                return result
                 
             except openai.RateLimitError:
                 if attempt < self.max_retries - 1:
