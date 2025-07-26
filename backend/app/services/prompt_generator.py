@@ -92,11 +92,17 @@ DETENER LA TAREA INMEDIATAMENTE. No entregar el plan y reportar el problema.
 
 📊 CÁLCULO DE MACROS AJUSTADOS:
 Cuando ajustés las cantidades de una receta, calculá los macros proporcionalmente:
-- Si la receta base tiene 100g de ingredientes y la ajustás a 150g (factor 1.5)
-- Multiplicá TODOS los macros por el mismo factor:
-  Ejemplo: Si la receta base tiene P:10g, C:20g, G:5g, Cal:200
-  Con factor 1.5 quedaría: P:15g, C:30g, G:7.5g, Cal:300
-- NUNCA dejes macros en cero si la receta tiene valores nutricionales
+
+EJEMPLO PRÁCTICO:
+Receta base [REC_0071]: 220 kcal, P:12g, C:28g, G:8g
+Si necesitás 330 kcal para la merienda:
+- Factor de ajuste: 330/220 = 1.5
+- Proteínas ajustadas: 12g x 1.5 = 18g
+- Carbohidratos ajustados: 28g x 1.5 = 42g
+- Grasas ajustadas: 8g x 1.5 = 12g
+- Ajustá TODOS los ingredientes por el mismo factor
+
+⚠️ NUNCA dejes macros en cero - siempre calculá basado en la receta original
 
 FORMATO OBLIGATORIO PARA CADA COMIDA:
 
@@ -107,7 +113,7 @@ OPCIÓN 1:
   * Ingrediente 1: XXg
   * Ingrediente 2: XXg
 - Forma de preparación: [método de cocción]
-- Macros: P: 15g | C: 45g | G: 8g | Cal: 320 (EJEMPLO - usar valores reales calculados)
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
 
 OPCIÓN 2:
 [Mismo formato - debe ser equivalente ±5%]
@@ -132,6 +138,8 @@ COLACIONES (si aplica)
 - Si la distribución es equitativa, TODAS las comidas principales deben ser iguales
 - Cada receta DEBE existir en el catálogo con su ID correcto
 - Si no se puede cumplir alguna regla, DETENER y explicar el problema
+- Los macros DEBEN sumar los totales diarios especificados
+- NINGUNA comida adicional configurada puede omitirse
 """
 
         self.supplementation_guidelines = """
@@ -284,8 +292,17 @@ REQUERIMIENTOS NUTRICIONALES CALCULADOS:
 - Carbohidratos: {carbs_g}g ({round(macro_distribution['carbohidratos']*100)}%)
 - Grasas: {fat_g}g ({round(macro_distribution['grasas']*100)}%)
 
+🎯 ESTOS SON LOS VALORES QUE DEBE CUMPLIR EL PLAN COMPLETO
+La suma de todas las comidas del día debe dar estos totales exactos.
+
 DISTRIBUCIÓN DE CALORÍAS POR COMIDA:
 {meal_distribution_text}
+
+📊 DISTRIBUCIÓN DE MACROS POR COMIDA:
+Basándote en los porcentajes calculados, cada comida debe tener:
+{self._generate_macro_distribution_table(meal_distribution, daily_calories, macro_distribution)}
+
+⚠️ IMPORTANTE: TODAS las opciones de cada comida DEBEN cumplir estos valores (±5%)
 
 {macro_note_text}
 
@@ -302,6 +319,13 @@ CONFIGURACIÓN DEL PLAN:
 🍴 RECORDATORIO IMPORTANTE:
 DEBES incluir TODAS las comidas listadas en la configuración anterior.
 Si dice "Postre cena" en las adicionales, DEBE aparecer en el plan final.
+
+⚠️ VERIFICACIÓN OBLIGATORIA ANTES DE ENTREGAR:
+1. ¿Todas las opciones de cada comida tienen macros similares (±5%)?
+2. ¿Los macros totales del día coinciden con los requerimientos?
+3. ¿Incluiste TODAS las comidas configuradas (principales Y adicionales)?
+4. ¿Ninguna opción tiene macros en cero?
+5. ¿Usaste solo recetas del catálogo con sus IDs correctos?
 
 {supplementation_section}
 
@@ -331,10 +355,17 @@ INSTRUCCIONES ESPECÍFICAS DE GENERACIÓN:
 5. ✅ Verificá que todas las recetas existan en el catálogo
 6. 🍴 INCLUÍ TODAS las comidas configuradas (principales Y adicionales)
 7. 📊 NUNCA dejes macros en cero - siempre calculá proporcionalmente
+8. 🎯 Asegurá que TODAS las opciones de cada comida tengan macros equivalentes (±5%)
+9. ✅ Verificá que los macros totales del día coincidan con los requerimientos
 
 FORMATO DE SALIDA ESPERADO:
 
 PLAN ALIMENTARIO - 3 DÍAS IGUALES
+
+🚨 RECORDATORIO: Este plan debe cumplir EXACTAMENTE con:
+- Calorías totales: {daily_calories} kcal
+- Distribución: P:{round(macro_distribution['proteinas']*100)}% | C:{round(macro_distribution['carbohidratos']*100)}% | G:{round(macro_distribution['grasas']*100)}%
+- TODAS las comidas configuradas deben incluirse
 
 DESAYUNO [agregar "(2 hs post medicación)" si toma levotiroxina con fibra]
 OPCIÓN 1:
@@ -357,13 +388,46 @@ OPCIÓN 3:
 - Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
 
 ALMUERZO
-[Mismo formato con 3 opciones]
+OPCIÓN 1:
+- Receta: [REC_XXXX] - [Nombre de la receta]
+- Ingredientes con cantidades ajustadas:
+  * [Lista de ingredientes con gramos]
+- Forma de preparación: [método detallado]
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
+
+OPCIÓN 2:
+[Formato completo igual que opción 1]
+
+OPCIÓN 3:
+[Formato completo igual que opción 1]
 
 MERIENDA
-[Mismo formato con 3 opciones]
+OPCIÓN 1:
+- Receta: [REC_XXXX] - [Nombre de la receta]
+- Ingredientes con cantidades ajustadas:
+  * [Lista de ingredientes con gramos]
+- Forma de preparación: [método detallado]
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
+
+OPCIÓN 2:
+[Formato completo igual que opción 1]
+
+OPCIÓN 3:
+[Formato completo igual que opción 1]
 
 CENA
-[Mismo formato con 3 opciones]
+OPCIÓN 1:
+- Receta: [REC_XXXX] - [Nombre de la receta]
+- Ingredientes con cantidades ajustadas:
+  * [Lista de ingredientes con gramos]
+- Forma de preparación: [método detallado]
+- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX
+
+OPCIÓN 2:
+[Formato completo igual que opción 1]
+
+OPCIÓN 3:
+[Formato completo igual que opción 1]
 
 {self._get_configured_additional_meals_section(patient_data)}
 
@@ -372,10 +436,10 @@ SUPLEMENTACIÓN (si aplica):
 - Incluir timing recomendado
 
 RESUMEN NUTRICIONAL DIARIO:
-- Proteínas: XXg
-- Carbohidratos: XXg
-- Grasas: XXg
-- Calorías totales: XXXX kcal
+- Proteínas: {protein_g}g (DEBE coincidir con el requerimiento)
+- Carbohidratos: {carbs_g}g (DEBE coincidir con el requerimiento)
+- Grasas: {fat_g}g (DEBE coincidir con el requerimiento)
+- Calorías totales: {daily_calories} kcal
 - Déficit/Superávit: apropiado para objetivo
 
 RECOMENDACIONES PERSONALIZADAS:
@@ -1023,6 +1087,41 @@ TIMING DE SUPLEMENTACIÓN:
         section += "⚠️ DEBEN incluirse TODAS estas comidas en el plan:\n\n"
         
         for comida in adicionales:
-            section += f"{comida}\n[Mismo formato con 3 opciones equivalentes]\n\n"
+            section += f"{comida}\n"
+            section += "OPCIÓN 1:\n"
+            section += "- Receta: [REC_XXXX] - [Nombre de la receta]\n"
+            section += "- Ingredientes con cantidades ajustadas:\n"
+            section += "  * [Lista de ingredientes con gramos]\n"
+            section += "- Forma de preparación: [método detallado]\n"
+            section += "- Macros: P: XXg | C: XXg | G: XXg | Cal: XXX\n\n"
+            section += "OPCIÓN 2:\n[Formato completo igual que opción 1]\n\n"
+            section += "OPCIÓN 3:\n[Formato completo igual que opción 1]\n\n"
         
         return section.rstrip()
+    
+    def _generate_macro_distribution_table(self, meal_distribution: Dict[str, float], 
+                                           daily_calories: float, 
+                                           macro_distribution: Dict[str, float]) -> str:
+        """Genera una tabla con la distribución de macros por comida"""
+        table_lines = []
+        
+        # Calcular macros totales del día
+        total_protein_g = round((daily_calories * macro_distribution['proteinas']) / 4)
+        total_carbs_g = round((daily_calories * macro_distribution['carbohidratos']) / 4)
+        total_fat_g = round((daily_calories * macro_distribution['grasas']) / 9)
+        
+        for meal, calories in meal_distribution.items():
+            # Calcular proporción de esta comida respecto al total
+            meal_proportion = calories / daily_calories
+            
+            # Calcular macros para esta comida
+            meal_protein = round(total_protein_g * meal_proportion, 1)
+            meal_carbs = round(total_carbs_g * meal_proportion, 1)
+            meal_fat = round(total_fat_g * meal_proportion, 1)
+            
+            table_lines.append(
+                f"- {meal.upper()}: {int(calories)} kcal | "
+                f"P: {meal_protein}g | C: {meal_carbs}g | G: {meal_fat}g"
+            )
+        
+        return "\n".join(table_lines)
